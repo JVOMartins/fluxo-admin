@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  web:
+    container_name: fluxo-admin
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    restart: always
+    working_dir: /usr/src/web
+    volumes:
+      - ./web:/usr/src/web
+      - /usr/src/web/node_modules
+      - /usr/src/web/.next
+    ports:
+      - 3000:3000
