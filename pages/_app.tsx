@@ -1,7 +1,18 @@
-import '../styles/globals.css'
+import Head from 'next/head'
+import { ThemeProvider } from 'styled-components'
+import GlobalStyle from '../styles/global'
+import { theme } from '../styles/theme'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <Head>
+        <title>Fluxo Admin</title>
+      </Head>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </>
+  )
 }
-
-export default MyApp
