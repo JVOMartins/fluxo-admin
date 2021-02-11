@@ -1,9 +1,7 @@
-import React from 'react'
-
 const Home: React.FC = () => {
   return (
     <div>
-      <h1>Fluxo</h1>
+      <h1>Teste</h1>
     </div>
   )
 }
