@@ -7,8 +7,8 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    background: ${props => props.theme.palette.background.default};
-    color: ${props => props.theme.palette.text.primary};
+    background: '#fff';
+    color: '#000';
     font: 400 16px Roboto, sans-serif;
   }
 `
