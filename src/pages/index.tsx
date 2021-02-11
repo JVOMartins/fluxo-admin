@@ -1,7 +1,11 @@
+import Layout from '@components/Layout'
+
 const Home: React.FC = () => {
   return (
     <div>
-      <h1>Teste</h1>
+      <Layout>
+        <h1>Teste</h1>
+      </Layout>
     </div>
   )
 }

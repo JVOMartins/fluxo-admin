@@ -1,9 +1,7 @@
 import React from 'react'
-import Head from 'next/head'
 import { AppProps } from 'next/app'
-import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import theme from '@styles/theme'
+import AppThemeProvider from '@components/AppThemeProvider'
 
 const MyApp: React.FC<AppProps> = (props: AppProps) => {
   const { Component, pageProps } = props
@@ -17,17 +15,10 @@ const MyApp: React.FC<AppProps> = (props: AppProps) => {
 
   return (
     <>
-      <Head>
-        <title>Fluxo Admin</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      <ThemeProvider theme={theme}>
+      <AppThemeProvider>
         <CssBaseline />
         <Component {...pageProps} />
-      </ThemeProvider>
+      </AppThemeProvider>
     </>
   )
 }
