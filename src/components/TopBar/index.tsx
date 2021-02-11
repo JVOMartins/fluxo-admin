@@ -1,22 +1,20 @@
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
+  Avatar,
   Box,
-  Button,
   Hidden,
   IconButton,
-  InputBase,
-  Paper,
   Toolbar
 } from '@material-ui/core'
 
 import MenuIcon from '@material-ui/icons/Menu'
-import SearchIcon from '@material-ui/icons/Search'
+
 import Apps from '@material-ui/icons/Apps'
 import MoreVert from '@material-ui/icons/MoreVert'
 import VideoCall from '@material-ui/icons/VideoCall'
-import AccountCircle from '@material-ui/icons/AccountCircle'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
+import SearchBar from '@components/SearchBar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,31 +23,23 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#fff'
   },
   toolbar: {
-    minHeight: 56,
+    minHeight: 64,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
   logo: {
     cursor: 'pointer',
-    height: 32,
+    height: 25,
     marginLeft: theme.spacing(3)
   },
-  search: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    height: 35,
-    width: 700
-  },
-  input: {
-    flex: 1
-  },
   icons: {
-    width: 32
+    width: theme.spacing(5),
+    height: theme.spacing(5)
   },
   avatar: {
-    width: 48
+    width: theme.spacing(5),
+    height: theme.spacing(5)
   }
 }))
 
@@ -68,18 +58,7 @@ const TopBar: React.FC = () => {
           />
         </Box>
         <Hidden mdDown>
-          <Box>
-            <Paper component="form" className={classes.search}>
-              <InputBase
-                className={classes.input}
-                placeholder="Pesquisar"
-                inputProps={{ 'aria-label': 'search google maps' }}
-              />
-              <IconButton type="submit" aria-label="search">
-                <SearchIcon />
-              </IconButton>
-            </Paper>
-          </Box>
+          <SearchBar />
         </Hidden>
         <Box display="flex">
           <IconButton className={classes.icons}>
@@ -94,14 +73,7 @@ const TopBar: React.FC = () => {
           <IconButton className={classes.icons}>
             <MoreVert />
           </IconButton>
-          <Button
-            color="secondary"
-            component="a"
-            variant="outlined"
-            startIcon={<AccountCircle />}
-          >
-            Login
-          </Button>
+          <Avatar className={classes.avatar}>H</Avatar>
         </Box>
       </Toolbar>
     </AppBar>
