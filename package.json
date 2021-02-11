@@ -5,9 +5,20 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "lint-staged": {
+    "*": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "prettier --write . && git add -A ."
+    }
   },
   "dependencies": {
+    "husky": "^5.0.9",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
