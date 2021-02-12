@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Avatar,
@@ -15,33 +14,7 @@ import MoreVert from '@material-ui/icons/MoreVert'
 import VideoCall from '@material-ui/icons/VideoCall'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
 import SearchBar from '@components/SearchBar'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    boxShadow: 'none',
-    zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: '#fff'
-  },
-  toolbar: {
-    minHeight: 64,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  logo: {
-    cursor: 'pointer',
-    height: 25,
-    marginLeft: theme.spacing(3)
-  },
-  icons: {
-    width: theme.spacing(5),
-    height: theme.spacing(5)
-  },
-  avatar: {
-    width: theme.spacing(5),
-    height: theme.spacing(5)
-  }
-}))
+import useStyles from './styles'
 
 const TopBar: React.FC = () => {
   const classes = useStyles()
@@ -61,15 +34,17 @@ const TopBar: React.FC = () => {
           <SearchBar />
         </Hidden>
         <Box display="flex">
-          <IconButton className={classes.icons}>
-            <Brightness4Icon />
-          </IconButton>
-          <IconButton className={classes.icons}>
-            <VideoCall />
-          </IconButton>
-          <IconButton className={classes.icons}>
-            <Apps />
-          </IconButton>
+          <Hidden mdDown>
+            <IconButton className={classes.icons}>
+              <Brightness4Icon />
+            </IconButton>
+            <IconButton className={classes.icons}>
+              <VideoCall />
+            </IconButton>
+            <IconButton className={classes.icons}>
+              <Apps />
+            </IconButton>
+          </Hidden>
           <IconButton className={classes.icons}>
             <MoreVert />
           </IconButton>

@@ -8,7 +8,7 @@ const SearchBar: React.FC = () => {
   return (
     <>
       <Box>
-        <Paper component="form" className={classes.search}>
+        <Paper elevation={0} component="form" className={classes.search}>
           <InputBase
             className={classes.input}
             placeholder="Pesquisar"
