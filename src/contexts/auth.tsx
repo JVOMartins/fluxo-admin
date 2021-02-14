@@ -1,8 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
-
-import Cookies from 'js-cookie'
-import api, { endpoints } from '../lib/api'
-import LoadingScreen from '../components/LoadingScreen'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import * as auth from '@services/auth'
+import api from '@services/api'
 
 interface IUser {
   id: string
@@ -29,31 +27,31 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const loadStorageData = async () => {
-    const token = Cookies.get('token')
-    if (token) {
-      api.defaults.headers.Authorization = `Bearer ${token}`
+    const storageUser = await window.localStorage.getItem('@Auth:user')
+    const storageToken = await window.localStorage.getItem('@Auth:token')
+
+    if (storageUser && storageToken) {
+      api.defaults.headers['Authorization'] = `Bearer ${storageToken}`
+      setUser(JSON.parse(storageUser))
     }
-    setLoading(false)
   }
 
   const signIn = async ({ email, password }: Request) => {
-    const res = await api.post(endpoints.auth, { email, password })
+    const res = await auth.signIn({ email, password })
+    setUser(res.user)
 
-    if (res.data) {
-      setUser(res.data.user)
-      Cookies.set('token', res.data.token, { expires: 60 })
-      api.defaults.headers.Authorization = `Bearer ${res.data.token}`
-    }
+    api.defaults.headers['Authorization'] = `Bearer ${res.token}`
+
+    window.localStorage.setItem('@Auth:user', JSON.stringify(res.user))
+    window.localStorage.setItem('@Auth:token', res.token)
   }
 
   const signOut = () => {
-    Cookies.remove('token')
+    window.localStorage.clear()
     setUser(null)
-    delete api.defaults.headers.Authorization
-    window.location.pathname = '/login'
   }
 
   useEffect(() => {
@@ -69,12 +67,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   )
 }
 
-export const useAuth = () => useContext(AuthContext)
+const useAuth = () => useContext(AuthContext)
 
-export const ProtectRoute = ({ children }) => {
-  const { signed, loading } = useAuth()
-  if (loading || (!signed && window.location.pathname !== '/login')) {
-    return <LoadingScreen show={loading} />
-  }
-  return children
-}
+export default useAuth
