@@ -4,12 +4,12 @@ services:
   web:
     container_name: fluxo-admin
     build:
-      context: ./web
+      context: ./
       dockerfile: Dockerfile
     restart: always
     working_dir: /usr/src/web
     volumes:
-      - ./web:/usr/src/web
+      - ./:/usr/src/web
       - /usr/src/web/node_modules
       - /usr/src/web/.next
     ports:

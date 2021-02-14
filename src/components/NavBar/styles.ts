@@ -6,18 +6,38 @@ const useStyles = makeStyles(theme => ({
   },
   desktopDrawer: {
     width: 240,
-    top: 56,
-    height: 'calc(100% - 64px)',
-    borderRight: 'none'
+    height: '100%',
+    borderRight: 'none',
+    boxShadow: '-10px 0px 20px 0px #bbb',
+    position: 'relative',
+    [theme.breakpoints.down('sm')]: {
+      boxShadow: '0px 0px 2000px 2000px rgba(0, 0, 0, 0.5)'
+    }
   },
-  avatar: {
-    cursor: 'pointer',
-    width: 24,
-    height: 24
+  closeDrawerMobile: {
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: 'transparent',
+      display: 'flex',
+      right: 0,
+      padding: theme.spacing(2),
+      position: 'absolute',
+      border: 'none'
+    },
+    '&:focus': {
+      outline: 'none'
+    },
+    '&:hover': {
+      outline: 'none'
+    }
+  },
+  list: {
+    paddingTop: 0,
+    paddingBottom: 0
   },
   listItem: {
-    paddingTop: 6,
-    paddingBottom: 6,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3)
   },
   listItemText: {

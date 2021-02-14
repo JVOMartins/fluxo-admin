@@ -3,14 +3,39 @@ import { makeStyles } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none',
-    zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: '#fff'
+    backgroundColor: theme.palette.background.default
   },
   toolbar: {
     minHeight: 64,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: theme.palette.background.paper
+    },
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 230
+    }
+  },
+  toolbarWithoutDrawer: {
+    minHeight: 64,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginLeft: 0
+  },
+  closeDrawer: {
+    backgroundColor: 'transparent',
+    padding: theme.spacing(1),
+    border: 'none',
+    cursor: 'pointer',
+
+    '&:focus': {
+      outline: 'none'
+    },
+    '&:hover': {
+      outline: 'none'
+    }
   },
   logo: {
     cursor: 'pointer',

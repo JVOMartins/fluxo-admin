@@ -1,14 +1,17 @@
+import useSettings, { SettingsProvider } from '@contexts/Settings'
 import { ThemeProvider } from '@material-ui/core/styles'
 import theme from '@styles/theme'
-//import { createTheme } from '@styles/theme'
-//import useSettings from 'src/hooks/useSettings'
 
 const AppThemeProvider: React.FC = ({ children }) => {
-  //const { settings } = useSettings()
-  //console.log(settings)
-  //const theme = createTheme({ theme: settings.theme })
+  const { settings } = useSettings()
 
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  return (
+    <>
+      <SettingsProvider settings={settings}>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </SettingsProvider>
+    </>
+  )
 }
 
 export default AppThemeProvider
