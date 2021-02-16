@@ -1,12 +1,12 @@
-import { StringsEnglish } from './en'
+import { StringsEnglish } from './us'
 import { StringsSpanish } from './es'
-import { StringsPortuguese } from './pt'
+import { StringsPortuguese } from './br'
 
-export const locales = ['pt', 'en', 'es']
-export const defaultLocale = 'pt'
+export const locales = ['br', 'us', 'es']
+export const defaultLocale = 'br'
 
 export const LangStrings = {
-  en: StringsEnglish,
-  pt: StringsPortuguese,
+  us: StringsEnglish,
+  br: StringsPortuguese,
   es: StringsSpanish
 }

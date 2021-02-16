@@ -8,7 +8,8 @@ const useStyles = makeStyles(theme => ({
     width: 240,
     height: '100%',
     borderRight: 'none',
-    boxShadow: '-10px 0px 20px 0px #bbb',
+    boxShadow: '-10px 0px 20px 0px #ccc',
+    borderTop: `5px solid ${theme.palette.primary.main}`,
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
       boxShadow: '0px 0px 2000px 2000px rgba(0, 0, 0, 0.5)'
