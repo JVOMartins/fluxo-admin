@@ -29,6 +29,7 @@ export const SettingsProvider = ({ settings, children }) => {
 
   const restoreSettings = (): ISettings => {
     let settings = null
+
     try {
       const storedData = window.localStorage.getItem('settings')
       if (storedData) {
@@ -43,16 +44,13 @@ export const SettingsProvider = ({ settings, children }) => {
 
   const saveSettings = (update: ISettings): void => {
     const mergedSettings = update
-    console.log(mergedSettings)
     setCurrentSettings(mergedSettings)
     storeSettings(mergedSettings)
   }
 
   useEffect(() => {
     const restoredSettings = restoreSettings()
-    if (restoredSettings) {
-      setCurrentSettings(restoredSettings)
-    }
+    if (restoredSettings) setCurrentSettings(restoredSettings)
   }, [])
 
   return (
