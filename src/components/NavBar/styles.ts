@@ -43,6 +43,45 @@ const useStyles = makeStyles(theme => ({
   },
   listItemText: {
     fontSize: 14
+  },
+  scrollContent: {
+    overflow: 'auto',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+
+    '&::-webkit-scrollbar': {
+      width: 3
+    },
+    /* Track */
+    '&::-webkit-scrollbar-track': {
+      background: '#eee'
+    },
+    /* Handle */
+    '&::-webkit-scrollbar-thumb': {
+      background: theme.palette.primary.main
+    },
+
+    /* Handle on hover */
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: theme.palette.primary.main
+    }
+  },
+  footer: {
+    backgroundColor: '#ddd',
+    color: '#222',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    '& > small': {
+      padding: theme.spacing(2)
+    },
+    '& > a': {
+      width: 50,
+      display: 'flex',
+      alignContent: 'center'
+    }
   }
 }))
 
