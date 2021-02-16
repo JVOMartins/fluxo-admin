@@ -37,8 +37,8 @@ const SelectLanguage: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {avaliableLocales.map(item => (
-          <MenuItem onClick={() => handleLocale(item)}>
+        {avaliableLocales.map((item, index) => (
+          <MenuItem onClick={() => handleLocale(item)} key={index}>
             {item.toUpperCase()}
           </MenuItem>
         ))}
