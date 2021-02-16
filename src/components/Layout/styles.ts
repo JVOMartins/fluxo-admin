@@ -19,21 +19,27 @@ const useStyles = makeStyles(theme => ({
     flex: '1 1 auto',
     overflow: 'hidden',
     position: 'fixed',
-    paddingTop: 64,
+    paddingTop: 100,
     [theme.breakpoints.up('md')]: {
-      paddingLeft: 260
+      paddingLeft: 340
     },
     [theme.breakpoints.down('sm')]: {
-      paddingLeft: 24
+      paddingLeft: 20
     }
   },
   wrapperWithoutDrawer: {
     display: 'flex',
     flex: '1 1 auto',
     overflow: 'hidden',
-    paddingLeft: 24,
-    position: 'fixed',
-    paddingTop: 64
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: 40,
+      paddingTop: 100
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 20,
+      paddingTop: 60
+    },
+    position: 'fixed'
   },
   contentContainer: {
     display: 'flex',

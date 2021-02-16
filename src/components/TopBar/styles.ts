@@ -46,6 +46,10 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(5),
     height: theme.spacing(5)
   },
+  iconsMenu: {
+    width: theme.spacing(3),
+    height: theme.spacing(3)
+  },
   avatar: {
     width: theme.spacing(5),
     height: theme.spacing(5)

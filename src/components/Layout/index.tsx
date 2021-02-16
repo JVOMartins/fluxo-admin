@@ -4,9 +4,10 @@ import TopBar from '@components/TopBar'
 import NavBar from '@components/NavBar'
 import clsx from 'clsx'
 import useSettings from '@contexts/Settings'
+import { ReactNode } from 'react'
 
 interface LayoutProps {
-  children: JSX.Element
+  children: ReactNode
   title?: string
 }
 
