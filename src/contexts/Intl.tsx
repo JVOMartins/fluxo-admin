@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { LangStrings, locales, defaultLocale } from '@languages/Strings'
 
 interface LanguageContextData {
@@ -14,9 +14,17 @@ export const LanguageContext = createContext<LanguageContextData>(
 )
 
 export const LanguageProvider: React.FC = ({ children }) => {
-  const [currentLocale, setCurrentLocale] = useState('pt')
+  const [currentLocale, setCurrentLocale] = useState<string>(defaultLocale)
 
-  const updateLocale = (key: string) => setCurrentLocale(key)
+  const updateLocale = (key: string): void => {
+    window.localStorage.setItem('locale', key)
+    setCurrentLocale(key)
+  }
+
+  const restoreLocale = (): void => {
+    const savedLocale = window.localStorage.getItem('locale')
+    if (savedLocale) setCurrentLocale(savedLocale)
+  }
 
   const text = (key: string): object => {
     if (!LangStrings[currentLocale][key]) {
@@ -28,7 +36,9 @@ export const LanguageProvider: React.FC = ({ children }) => {
     )
   }
 
-  const avaliableLocales = locales
+  useEffect(() => {
+    restoreLocale()
+  }, [])
 
   return (
     <LanguageContext.Provider
@@ -37,7 +47,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         updateLocale,
         text,
         currentLocale,
-        avaliableLocales
+        avaliableLocales: locales
       }}
     >
       {children}
