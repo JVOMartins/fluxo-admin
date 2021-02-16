@@ -1,33 +1,50 @@
 import { createContext, useContext, useState } from 'react'
-import { LangStrings } from '@languages/Strings'
+import { LangStrings, locales, defaultLocale } from '@languages/Strings'
 
-export const defaultLocale = 'pt'
-export const locales = ['pt', 'en']
+interface LanguageContextData {
+  defaultLocale: string
+  text(key: string): object
+  currentLocale: string
+  updateLocale(key: string): void
+  avaliableLocales: Array<string>
+}
 
-export const LanguageContext = createContext([])
+export const LanguageContext = createContext<LanguageContextData>(
+  {} as LanguageContextData
+)
 
 export const LanguageProvider: React.FC = ({ children }) => {
-  const [locale, setLocale] = useState('pt')
+  const [currentLocale, setCurrentLocale] = useState('pt')
+
+  const updateLocale = (key: string) => setCurrentLocale(key)
+
+  const text = (key: string): object => {
+    if (!LangStrings[currentLocale][key]) {
+      console.warn(`No string '${key}' for locale '${currentLocale}'`)
+    }
+
+    return (
+      LangStrings[currentLocale][key] || LangStrings[defaultLocale][key] || ''
+    )
+  }
+
+  const avaliableLocales = locales
 
   return (
-    <LanguageContext.Provider value={[locale, setLocale]}>
+    <LanguageContext.Provider
+      value={{
+        defaultLocale,
+        updateLocale,
+        text,
+        currentLocale,
+        avaliableLocales
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   )
 }
 
-export default function useTranslation() {
-  const [locale, setLocale] = useContext(LanguageContext)
+const useTranslation = () => useContext(LanguageContext)
 
-  const text = (key: string) => {
-    if (!LangStrings[locale][key]) {
-      console.warn(`No string '${key}' for locale '${locale}'`)
-    }
-
-    return LangStrings[locale][key] || LangStrings[defaultLocale][key] || ''
-  }
-
-  const updateLocale = (key: string) => setLocale(key)
-
-  return { text, locale, updateLocale }
-}
+export default useTranslation

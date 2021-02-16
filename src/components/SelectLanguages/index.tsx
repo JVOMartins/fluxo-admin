@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { useCallback, useState } from 'react'
 
 const SelectLanguage: React.FC = () => {
-  const { locale, updateLocale } = useTranslation()
+  const { currentLocale, updateLocale, avaliableLocales } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,7 +28,7 @@ const SelectLanguage: React.FC = () => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        {locale}
+        {currentLocale}
       </Button>
       <Menu
         id="simple-menu"
@@ -37,8 +37,11 @@ const SelectLanguage: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => handleLocale('pt')}>PT</MenuItem>
-        <MenuItem onClick={() => handleLocale('en')}>EN</MenuItem>
+        {avaliableLocales.map(item => (
+          <MenuItem onClick={() => handleLocale(item)}>
+            {item.toUpperCase()}
+          </MenuItem>
+        ))}
       </Menu>
     </div>
   )
