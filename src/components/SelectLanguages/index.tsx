@@ -1,8 +1,11 @@
+import { useCallback, useState } from 'react'
+import { FlagIcon } from 'react-flag-kit'
+
 import useTranslation from '@contexts/Intl'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { useCallback, useState } from 'react'
+import { type } from 'os'
 
 const SelectLanguage: React.FC = () => {
   const { currentLocale, updateLocale, avaliableLocales } = useTranslation()
@@ -28,7 +31,7 @@ const SelectLanguage: React.FC = () => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        {currentLocale}
+        <FlagIcon code={currentLocale.toUpperCase()} size={24} />
       </Button>
       <Menu
         id="simple-menu"
@@ -39,7 +42,7 @@ const SelectLanguage: React.FC = () => {
       >
         {avaliableLocales.map((item, index) => (
           <MenuItem onClick={() => handleLocale(item)} key={index}>
-            {item.toUpperCase()}
+            <FlagIcon code={item.toUpperCase()} size={24} />
           </MenuItem>
         ))}
       </Menu>
