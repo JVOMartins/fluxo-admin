@@ -19,6 +19,7 @@ import useStyles from './styles'
 import useSettings from '@contexts/Settings'
 import clsx from 'clsx'
 import SelectLanguage from '@components/SelectLanguages'
+import Image from 'next/image'
 
 const TopBar: React.FC = () => {
   const classes = useStyles()
@@ -39,28 +40,13 @@ const TopBar: React.FC = () => {
             {!settings.openMenu && <MenuIcon className={classes.iconsMenu} />}
             {settings.openMenu && <CloseIcon className={classes.iconsMenu} />}
           </button>
-          <img
-            src="https://cdn.bitrix24.com.br/b16736413/landing/b45/b454759231a32acba2cc9ef79d88d0f7/logo_fluxo.001_1x.png"
-            alt="logo"
-            className={classes.logo}
-          />
+          <Image src="/logos/fluxo_icon.svg" alt="me" width="30" height="30" />
         </Box>
         <Hidden mdDown>
           <SearchBar />
         </Hidden>
         <Box display="flex">
           <SelectLanguage />
-          <Hidden mdDown>
-            <IconButton className={classes.icons}>
-              <Brightness4Icon />
-            </IconButton>
-            <IconButton className={classes.icons}>
-              <VideoCall />
-            </IconButton>
-            <IconButton className={classes.icons}>
-              <Apps />
-            </IconButton>
-          </Hidden>
           <IconButton className={classes.icons}>
             <MoreVert />
           </IconButton>

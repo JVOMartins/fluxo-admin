@@ -19,12 +19,15 @@ const useStyles = makeStyles(theme => ({
     flex: '1 1 auto',
     overflow: 'hidden',
     position: 'fixed',
+    width: '100%',
+    height: '100%',
     paddingTop: 100,
     [theme.breakpoints.up('md')]: {
-      paddingLeft: 340
+      paddingLeft: 300
     },
     [theme.breakpoints.down('sm')]: {
-      paddingLeft: 20
+      paddingLeft: 40,
+      paddingTop: 60
     }
   },
   wrapperWithoutDrawer: {
@@ -32,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     flex: '1 1 auto',
     overflow: 'hidden',
     [theme.breakpoints.up('md')]: {
-      paddingLeft: 40,
+      paddingLeft: 50,
       paddingTop: 100
     },
     [theme.breakpoints.down('sm')]: {

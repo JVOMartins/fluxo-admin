@@ -17,6 +17,8 @@ import useStyles from './styles'
 import CompanyLogo from '@components/CompanyLogo'
 import useSettings from '@contexts/Settings'
 
+import Image from 'next/image'
+
 const primaryMenu = [
   { id: 1, label: 'Engajamento', path: '/', icon: HomeIcon },
   { id: 2, label: 'Feedbacks', path: '/feedbacks', icon: Whatshot },
@@ -32,6 +34,7 @@ const engagementSubMenu = [
 
 const NavBar: React.FC = () => {
   const { settings, saveSettings } = useSettings()
+  const year = new Date().getFullYear()
   const classes = useStyles()
   const router = useRouter()
 
@@ -52,29 +55,42 @@ const NavBar: React.FC = () => {
       </button>
       <Box height="100%" display="flex" flexDirection="column">
         <CompanyLogo />
-        <List className={classes.list}>
-          {primaryMenu.map(item => {
-            const Icon = item.icon
-            return (
-              <ListItem
-                key={item.id}
-                button
-                classes={{ root: classes.listItem }}
-                selected={isSelected(item)}
-              >
-                <ListItemIcon>
-                  <Icon style={{ color: isSelected(item) && '#f44336' }} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.listItemText
-                  }}
-                  primary={item.label}
-                />
-              </ListItem>
-            )
-          })}
-        </List>
+        <div className={classes.scrollContent}>
+          <List className={classes.list}>
+            {primaryMenu.map(item => {
+              const Icon = item.icon
+              return (
+                <ListItem
+                  key={item.id}
+                  button
+                  classes={{ root: classes.listItem }}
+                  selected={isSelected(item)}
+                >
+                  <ListItemIcon>
+                    <Icon style={{ color: isSelected(item) && '#f44336' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{
+                      primary: classes.listItemText
+                    }}
+                    primary={item.label}
+                  />
+                </ListItem>
+              )
+            })}
+          </List>
+          <div className={classes.footer}>
+            <small>&copy; Fluxo - {year}</small>
+            <a href="https://fluxo.live" target="_blank">
+              <Image
+                src="/logos/fluxo_icon.svg"
+                alt="me"
+                width="30"
+                height="30"
+              />
+            </a>
+          </div>
+        </div>
       </Box>
     </Drawer>
   )

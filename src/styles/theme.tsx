@@ -6,7 +6,7 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#4fd2c2'
+      main: '#00AB55'
     },
     secondary: {
       main: '#3398dc'
@@ -40,6 +40,22 @@ const theme = createMuiTheme({
       easeOut: 'cubic-bezier(0.0, 0, 0.2, 1)',
       easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
       sharp: 'cubic-bezier(0.4, 0, 0.6, 1)'
+    }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 12,
+        border: 0
+      },
+      containedPrimary: {
+        border: 0,
+        color: 'white',
+        height: 40,
+        padding: '0 20px',
+        fontSize: 14,
+        boxShadow: '0 3px 5px 2px #ccc'
+      }
     }
   }
 })
