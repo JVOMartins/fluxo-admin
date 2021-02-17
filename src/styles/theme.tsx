@@ -45,15 +45,15 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        borderRadius: 15,
+        borderRadius: 12,
         border: 0
       },
       containedPrimary: {
         border: 0,
         color: 'white',
-        height: 48,
-        padding: '0 30px',
-        fontSize: 16,
+        height: 40,
+        padding: '0 20px',
+        fontSize: 14,
         boxShadow: '0 3px 5px 2px #ccc'
       }
     }
