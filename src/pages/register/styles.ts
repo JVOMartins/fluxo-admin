@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     width: '100vw',
     height: '100vh'
   },
-  square: {
+  container: {
     width: '50vw',
     height: '70vh',
     display: 'flex',
@@ -18,31 +18,31 @@ const useStyles = makeStyles(theme => ({
     },
     boxShadow: '2px 5px 10px 1px #eee'
   },
-  left: {
+  leftImage: {
     width: '60%',
     backgroundColor: theme.palette.background.paper,
     padding: 20,
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     },
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderBottomLeftRadius: theme.shape.borderRadius
+    borderTopLeftRadius: 16,
+    borderBottomLeftRadius: 16
   },
-  right: {
+  rightForm: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
     flexDirection: 'column',
     backgroundColor: theme.palette.background.paper,
-    borderTopRightRadius: theme.shape.borderRadius,
-    borderBottomRightRadius: theme.shape.borderRadius,
+    borderTopRightRadius: 16,
+    borderBottomRightRadius: 16,
     padding: '50px',
     [theme.breakpoints.down('sm')]: {
       padding: '20px'
     }
   },
-  form: {
+  formContent: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -57,10 +57,10 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
-  input: {
+  inputText: {
     width: '100%'
   },
-  buttons: {
+  buttonsActions: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
       height: 100
     }
   },
-  options: {
+  optionsFooter: {
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
