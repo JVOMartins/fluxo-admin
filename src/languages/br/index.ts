@@ -4,7 +4,7 @@ export const StringsPortuguese = {
   loginSubtitle:
     'Faça o login utilizando o formulário abaixo para acompanhar a felicidade dos seus colaboradores!',
   loginInputEmail: 'E-mail',
-  loginInputPassword: 'Senhas',
+  loginInputPassword: 'Senha',
   loginButtonSend: 'Entrar',
   loginButtonResetPassword: 'Recuperar senha',
   loginTextRegister: 'Ainda não tem conta?',
