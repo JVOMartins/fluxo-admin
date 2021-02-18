@@ -28,6 +28,11 @@ const Reset: React.FC = () => {
                 label={text('resetInputEmail')}
                 variant="outlined"
                 className={classes.input}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
               <div className={classes.buttons}>
                 <Button color="primary" variant="contained">
@@ -41,7 +46,7 @@ const Reset: React.FC = () => {
                 color="primary"
                 onClick={() => router.push('/login')}
               >
-                &larr; {text('resetButtonRegister')}
+                &larr; {text('resetButtonBack')}
               </Button>
             </div>
           </div>

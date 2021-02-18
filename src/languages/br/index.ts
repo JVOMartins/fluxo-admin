@@ -9,13 +9,27 @@ export const StringsPortuguese = {
   loginButtonResetPassword: 'Recuperar senha',
   loginTextRegister: 'Ainda não tem conta?',
   loginButtonRegister: 'Cadastre-se',
+
   /** Login Page */
   resetTitle: 'Recupere sua senha',
   resetSubtitle:
     'Você pode recuperar seu acesso colocando o e-mail cadastrado no campo abaixo.',
   resetInputEmail: 'E-mail',
   resetButtonSend: 'Recuperar Senha',
-  resetButtonRegister: 'Voltar',
+  resetButtonBack: 'Voltar',
+
+  /** Login Page */
+  registerTitle: 'Cadastre-se',
+  registerSubtitle:
+    'Crie seu cadastro para desfrutar da ferramenta e conhecer o melhor da sua equipe e empresa!',
+  registerInputFirstName: 'Nome',
+  registerInputLastName: 'Sobrenome',
+  registerInputPhone: 'Telefone',
+  registerInputEmail: 'E-mail',
+  registerInputPassword: 'Senha',
+  registerInputConfirmPassword: 'Confirmar Senha',
+  registerButtonSend: 'Cadastrar',
+  registerButtonBack: 'Voltar',
 
   /** Home Page */
   about: 'Sobre',

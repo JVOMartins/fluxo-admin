@@ -30,6 +30,11 @@ const Login: React.FC = () => {
                 label={text('loginInputEmail')}
                 variant="outlined"
                 className={classes.input}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
               <TextField
                 id="password"
@@ -37,6 +42,11 @@ const Login: React.FC = () => {
                 variant="outlined"
                 type="password"
                 className={classes.input}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
               <div className={classes.buttons}>
                 <Button color="primary" variant="contained">
@@ -56,7 +66,11 @@ const Login: React.FC = () => {
               <Typography variant="body2">
                 {text('loginTextRegister')}
               </Typography>
-              <Button variant="text" color="primary">
+              <Button
+                variant="text"
+                color="primary"
+                onClick={() => router.push('/register')}
+              >
                 {text('loginButtonRegister')}
               </Button>
             </div>
