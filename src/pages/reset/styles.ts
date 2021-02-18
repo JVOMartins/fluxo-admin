@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
   square: {
     width: '50vw',
-    height: '50vh',
+    height: '70vh',
     display: 'flex',
     borderRadius: 16,
     [theme.breakpoints.down('sm')]: {
@@ -21,9 +21,11 @@ const useStyles = makeStyles(theme => ({
   },
   left: {
     width: '60%',
-    backgroundImage:
-      'url(https://images.pexels.com/photos/4524057/pexels-photo-4524057.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260)',
-    backgroundSize: 'cover',
+    backgroundImage: 'url("/images/login.webp")',
+    backgroundPosition: 'center center',
+    backgroundSize: '500px',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: theme.palette.background.paper,
     padding: 20,
     [theme.breakpoints.down('sm')]: {
       display: 'none'

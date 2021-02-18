@@ -1,13 +1,25 @@
-import { Button, TextField, Typography } from '@material-ui/core'
+import {
+  Button,
+  FormControlLabel,
+  Switch,
+  TextField,
+  Typography
+} from '@material-ui/core'
 import Image from 'next/image'
 import useStyles from './styles'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const Register: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
   const { text } = useTranslation()
+
+  const [stateSwitch, setStateSwitch] = useState<boolean>(true)
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStateSwitch(!stateSwitch)
+  }
 
   return (
     <>
@@ -32,7 +44,6 @@ const Register: React.FC = () => {
                   label={text('registerInputFirstName')}
                   variant="outlined"
                   className={classes.input}
-                  size="small"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
@@ -44,7 +55,6 @@ const Register: React.FC = () => {
                   label={text('registerInputLastName')}
                   variant="outlined"
                   className={classes.input}
-                  size="small"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
@@ -58,7 +68,6 @@ const Register: React.FC = () => {
                   label={text('registerInputPhone')}
                   variant="outlined"
                   className={classes.input}
-                  size="small"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
@@ -71,7 +80,6 @@ const Register: React.FC = () => {
                   variant="outlined"
                   type="email"
                   className={classes.input}
-                  size="small"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
@@ -86,7 +94,6 @@ const Register: React.FC = () => {
                   variant="outlined"
                   type="password"
                   className={classes.input}
-                  size="small"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
@@ -99,12 +106,37 @@ const Register: React.FC = () => {
                   variant="outlined"
                   type="password"
                   className={classes.input}
-                  size="small"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
                     shrink: true
                   }}
+                />
+              </div>
+              <div>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={stateSwitch}
+                      onChange={handleChange}
+                      name="terms"
+                      size="small"
+                    />
+                  }
+                  label="Li e concordo os Termos de uso e Política de privacidade"
+                />
+              </div>
+              <div>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={stateSwitch}
+                      onChange={handleChange}
+                      name="news"
+                      size="small"
+                    />
+                  }
+                  label="Aceito receber notificações e promoções exclusivas dos parceiros Fluxo via celular ou e-mail"
                 />
               </div>
               <div className={classes.buttons}>
@@ -114,9 +146,6 @@ const Register: React.FC = () => {
               </div>
             </form>
             <div className={classes.options}>
-              <Typography variant="body2">
-                {text('registerTextRegister')}
-              </Typography>
               <Button
                 variant="text"
                 color="primary"

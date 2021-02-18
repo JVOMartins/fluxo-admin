@@ -8,6 +8,7 @@ const Reset: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
   const { text } = useTranslation()
+
   return (
     <>
       <div className={classes.root}>
