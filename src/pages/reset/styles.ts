@@ -43,17 +43,17 @@ const useStyles = makeStyles(theme => ({
       padding: '20px'
     }
   },
-  form: {
+  formContent: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     width: '100%'
   },
-  input: {
+  inputText: {
     margin: '10px 0',
     width: '100%'
   },
-  buttons: {
+  buttonsActions: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
       height: 100
     }
   },
-  options: {
+  optionsFooter: {
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
