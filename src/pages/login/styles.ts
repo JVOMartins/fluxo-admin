@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     width: '100vw',
     height: '100vh'
   },
-  square: {
+  container: {
     width: '50vw',
     height: '70vh',
     display: 'flex',
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     },
     boxShadow: '2px 5px 10px 1px #eee'
   },
-  left: {
+  leftImage: {
     width: '60%',
     backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     borderTopLeftRadius: 16,
     borderBottomLeftRadius: 16
   },
-  right: {
+  rightForm: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -42,17 +42,17 @@ const useStyles = makeStyles(theme => ({
       padding: '20px'
     }
   },
-  form: {
+  formContent: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     width: '100%'
   },
-  input: {
+  inputText: {
     margin: '10px 0',
     width: '100%'
   },
-  buttons: {
+  buttonsActions: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
       height: 100
     }
   },
-  options: {
+  optionsFooter: {
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
