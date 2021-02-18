@@ -1,11 +1,10 @@
 import { Button, TextField, Typography } from '@material-ui/core'
 import Image from 'next/image'
 import useStyles from './styles'
-import LockIcon from '@material-ui/icons/Lock'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
 
-const Login: React.FC = () => {
+const Reset: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
   const { text } = useTranslation()
@@ -19,28 +18,16 @@ const Login: React.FC = () => {
             <div>
               <Image src="/logos/fluxo_icon.svg" width={50} height={50} />
               <Typography variant="h6" component="h1">
-                {text('loginTitle')}
+                {text('resetTitle')}
               </Typography>
-              <Typography variant="body2">{text('loginSubtitle')}</Typography>
+              <Typography variant="body2">{text('resetSubtitle')}</Typography>
             </div>
 
             <form autoComplete="off" className={classes.form}>
               <TextField
                 id="email"
-                label={text('loginInputEmail')}
+                label={text('resetInputEmail')}
                 variant="outlined"
-                className={classes.input}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-              <TextField
-                id="password"
-                label={text('loginInputPassword')}
-                variant="outlined"
-                type="password"
                 className={classes.input}
                 fullWidth
                 margin="normal"
@@ -50,28 +37,17 @@ const Login: React.FC = () => {
               />
               <div className={classes.buttons}>
                 <Button color="primary" variant="contained">
-                  {text('loginButtonSend')}
-                </Button>
-                <Button
-                  variant="text"
-                  size="small"
-                  startIcon={<LockIcon />}
-                  onClick={() => router.push('/reset')}
-                >
-                  {text('loginButtonResetPassword')}
+                  {text('resetButtonSend')}
                 </Button>
               </div>
             </form>
             <div className={classes.options}>
-              <Typography variant="body2">
-                {text('loginTextRegister')}
-              </Typography>
               <Button
                 variant="text"
                 color="primary"
-                onClick={() => router.push('/register')}
+                onClick={() => router.push('/login')}
               >
-                {text('loginButtonRegister')}
+                &larr; {text('resetButtonBack')}
               </Button>
             </div>
           </div>
@@ -81,4 +57,4 @@ const Login: React.FC = () => {
   )
 }
 
-export default Login
+export default Reset

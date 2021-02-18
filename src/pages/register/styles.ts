@@ -14,8 +14,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     borderRadius: 16,
     [theme.breakpoints.down('sm')]: {
-      width: '90vw',
-      height: '90vh'
+      width: '90vw'
     },
     boxShadow: '2px 5px 10px 1px #eee'
   },
@@ -30,8 +29,8 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     },
-    borderTopLeftRadius: 16,
-    borderBottomLeftRadius: 16
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderBottomLeftRadius: theme.shape.borderRadius
   },
   right: {
     width: '100%',
@@ -40,8 +39,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-around',
     flexDirection: 'column',
     backgroundColor: theme.palette.background.paper,
-    borderTopRightRadius: 16,
-    borderBottomRightRadius: 16,
+    borderTopRightRadius: theme.shape.borderRadius,
+    borderBottomRightRadius: theme.shape.borderRadius,
     padding: '50px',
     [theme.breakpoints.down('sm')]: {
       padding: '20px'
@@ -51,16 +50,25 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    width: '100%'
+    width: '100%',
+    marginTop: theme.spacing(1),
+
+    '& > div': {
+      display: 'flex',
+      '& .MuiTextField-root': {
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(1)
+      }
+    }
   },
   input: {
-    margin: '10px 0',
     width: '100%'
   },
   buttons: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
+    marginTop: 8,
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
       height: 100
