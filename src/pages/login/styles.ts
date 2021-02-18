@@ -21,12 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   left: {
     width: '60%',
-    backgroundImage: 'url("/images/login.webp")',
-    backgroundPosition: 'center center',
-    backgroundSize: '500px',
-    backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.background.paper,
-    padding: 20,
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     },

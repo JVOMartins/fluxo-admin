@@ -25,7 +25,14 @@ const Register: React.FC = () => {
     <>
       <div className={classes.root}>
         <div className={classes.square}>
-          <div className={classes.left}></div>
+          <div className={classes.left}>
+            <Image
+              src="/images/login.webp"
+              width={400}
+              height={300}
+              layout="responsive"
+            />
+          </div>
           <div className={classes.right}>
             <div>
               <Image src="/logos/fluxo_icon.svg" width={50} height={50} />
