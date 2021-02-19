@@ -56,6 +56,11 @@ const theme = createMuiTheme({
         fontSize: 14,
         boxShadow: '0 3px 5px 2px #ccc'
       }
+    },
+    MuiListItemIcon: {
+      root: {
+        color: 'inherit'
+      }
     }
   }
 })

@@ -5,8 +5,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 150,
-    backgroundColor: '#fcfcfc'
+    height: 200,
+    backgroundColor: '#fff'
   }
 }))
 

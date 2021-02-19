@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import useStyles from './styles'
 import { useRouter } from 'next/router'
 
@@ -11,70 +10,91 @@ import Collapse from '@material-ui/core/Collapse'
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
-import IconDashboard from '@material-ui/icons/Dashboard'
-import IconShoppingCart from '@material-ui/icons/ShoppingCart'
-import IconPeople from '@material-ui/icons/People'
-import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
-import SettingsIcon from '@material-ui/icons/Settings'
+import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined'
+import QuestionAnswerOutlinedIcon from '@material-ui/icons/QuestionAnswerOutlined'
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
+import RecordVoiceOverOutlinedIcon from '@material-ui/icons/RecordVoiceOverOutlined'
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
+import clsx from 'clsx'
+import useSettings from '@contexts/Settings'
+import useTranslation from '@contexts/Intl'
 
 const AppMenu: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
+  const { text } = useTranslation()
+  const { settings, saveSettings } = useSettings()
 
-  const [open, setOpen] = useState(false)
-  const [open2, setOpen2] = useState(false)
+  const handleOpenMenu = (key: string) => {
+    switch (key) {
+      case 'engagement':
+        saveSettings({
+          ...settings,
+          openEngagementMenu: !settings.openEngagementMenu
+        })
+        break
+      case 'manager':
+        saveSettings({
+          ...settings,
+          openManagerMenu: !settings.openManagerMenu
+        })
+        break
 
-  const handleOpenMenu = (key: string): void => {
-    setOpen(!open)
+      default:
+        break
+    }
   }
 
-  const isSelected = item => router.pathname === item.path
+  const isSelected = path => router.pathname === path
 
   return (
     <List component="nav" className={classes.appMenu} disablePadding>
       <ListItem
         button
-        className={classes.menuItem}
+        className={clsx({
+          [classes.menuItem]: !isSelected('/'),
+          [classes.menuItemSelected]: isSelected('/')
+        })}
         onClick={() => {
-          setOpen(!open)
-          router.push('/reset')
+          handleOpenMenu('engagement')
+          router.push('/')
         }}
       >
-        <ListItemIcon className={classes.menuItemIcon}>
-          <IconDashboard />
+        <ListItemIcon>
+          <DashboardOutlinedIcon />
         </ListItemIcon>
         <ListItemText
-          primary="Engajamento"
+          primary={text('menuEngagement')}
           className={classes.menuItemText}
           disableTypography
         />
-        {open ? <IconExpandLess /> : <IconExpandMore />}
+        {settings.openEngagementMenu ? <IconExpandLess /> : <IconExpandMore />}
       </ListItem>
 
       <Collapse
-        in={open}
+        in={settings.openEngagementMenu}
         timeout="auto"
         unmountOnExit
         className={classes.appSubMenu}
       >
         <List component="div" disablePadding>
           <ListItem button className={classes.menuItemSubGroup}>
-            <ListItemIcon className={classes.menuItemIcon}>
+            <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Benchmark"
+              primary={text('menuEngagementBenchmark')}
               className={classes.menuItemText}
               disableTypography
             />
           </ListItem>
 
           <ListItem button className={classes.menuItemSubGroup}>
-            <ListItemIcon className={classes.menuItemIcon}>
+            <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Relatórios"
+              primary={text('menuEngagementReports')}
               className={classes.menuItemText}
               disableTypography
             />
@@ -82,23 +102,19 @@ const AppMenu: React.FC = () => {
         </List>
       </Collapse>
 
-      <ListItem button className={classes.menuItem}>
-        <ListItemIcon className={classes.menuItemIcon}>
-          <IconShoppingCart />
+      <ListItem
+        button
+        className={clsx({
+          [classes.menuItem]: !isSelected('/feedback'),
+          [classes.menuItemSelected]: isSelected('/feedback')
+        })}
+        onClick={() => router.push('/feedback')}
+      >
+        <ListItemIcon>
+          <QuestionAnswerOutlinedIcon />
         </ListItemIcon>
         <ListItemText
-          primary="Feedbacks"
-          className={classes.menuItemText}
-          disableTypography
-        />
-      </ListItem>
-
-      <ListItem button className={classes.menuItem}>
-        <ListItemIcon className={classes.menuItemIcon}>
-          <IconPeople />
-        </ListItemIcon>
-        <ListItemText
-          primary="Enquetes"
+          primary={text('menuFeedbacks')}
           className={classes.menuItemText}
           disableTypography
         />
@@ -106,53 +122,71 @@ const AppMenu: React.FC = () => {
 
       <ListItem
         button
-        onClick={() => setOpen2(!open2)}
-        className={classes.menuItem}
+        className={clsx({
+          [classes.menuItem]: !isSelected('/polls'),
+          [classes.menuItemSelected]: isSelected('/polls')
+        })}
+        onClick={() => router.push('/polls')}
       >
-        <ListItemIcon className={classes.menuItemIcon}>
-          <IconLibraryBooks />
+        <ListItemIcon>
+          <AssignmentOutlinedIcon />
         </ListItemIcon>
         <ListItemText
-          primary="Gestor"
+          primary={text('menuPolls')}
           className={classes.menuItemText}
           disableTypography
         />
-        {open ? <IconExpandLess /> : <IconExpandMore />}
+      </ListItem>
+
+      <ListItem
+        button
+        onClick={() => handleOpenMenu('manager')}
+        className={classes.menuItem}
+      >
+        <ListItemIcon>
+          <RecordVoiceOverOutlinedIcon />
+        </ListItemIcon>
+        <ListItemText
+          primary={text('menuManager')}
+          className={classes.menuItemText}
+          disableTypography
+        />
+        {settings.openManagerMenu ? <IconExpandLess /> : <IconExpandMore />}
       </ListItem>
 
       <Collapse
-        in={open2}
+        in={settings.openManagerMenu}
         timeout="auto"
         unmountOnExit
         className={classes.appSubMenu}
       >
         <List component="div" disablePadding>
           <ListItem button className={classes.menuItemSubGroup}>
-            <ListItemIcon className={classes.menuItemIcon}>
+            <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Usuários"
+              primary={text('menuManagerUsers')}
               className={classes.menuItemText}
               disableTypography
             />
           </ListItem>
           <ListItem button className={classes.menuItemSubGroup}>
-            <ListItemIcon className={classes.menuItemIcon}>
+            <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Grupos"
+              primary={text('menuManagerGroups')}
               className={classes.menuItemText}
               disableTypography
             />
           </ListItem>
           <ListItem button className={classes.menuItemSubGroup}>
-            <ListItemIcon className={classes.menuItemIcon}>
+            <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Metas"
+              primary={text('menuManagerGoals')}
               className={classes.menuItemText}
               disableTypography
             />
@@ -160,11 +194,22 @@ const AppMenu: React.FC = () => {
         </List>
       </Collapse>
 
-      <ListItem button className={classes.menuItem}>
-        <ListItemIcon className={classes.menuItemIcon}>
-          <SettingsIcon />
+      <ListItem
+        button
+        className={clsx({
+          [classes.menuItem]: !isSelected('/config'),
+          [classes.menuItemSelected]: isSelected('/config')
+        })}
+        onClick={() => router.push('/config')}
+      >
+        <ListItemIcon>
+          <SettingsOutlinedIcon />
         </ListItemIcon>
-        <ListItemText primary="Configurações" />
+        <ListItemText
+          primary={text('menuConfig')}
+          className={classes.menuItemText}
+          disableTypography
+        />
       </ListItem>
     </List>
   )
