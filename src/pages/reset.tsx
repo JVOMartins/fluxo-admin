@@ -2,6 +2,8 @@ import { Button, makeStyles, TextField } from '@material-ui/core'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
 import LayoutLogin from '@components/LayoutLogin'
+import { useCallback, useState } from 'react'
+import { validateMail } from '@utils/validateMail'
 
 const useStyles = makeStyles(theme => ({
   formContent: {
@@ -37,11 +39,24 @@ const Reset: React.FC = () => {
   const router = useRouter()
   const { text } = useTranslation()
 
+  const [mail, setMail] = useState<string>('')
+  const [validMail, setValidMail] = useState<boolean>(true)
+
+  const handleChangeMail = useCallback(
+    (value: string): void => {
+      const isValidMail = validateMail(value)
+      setValidMail(isValidMail)
+    },
+    [validMail]
+  )
+
   return (
     <>
       <LayoutLogin title="resetTitle" subtitle="resetSubtitle">
         <form autoComplete="off" className={classes.formContent}>
           <TextField
+            error={mail && !validMail}
+            helperText={mail && !validMail ? 'E-mail Inválido' : null}
             id="email"
             label={text('resetInputEmail')}
             variant="outlined"
@@ -51,9 +66,16 @@ const Reset: React.FC = () => {
             InputLabelProps={{
               shrink: true
             }}
+            value={mail}
+            onChange={event => setMail(event.target.value)}
+            onBlur={() => handleChangeMail(mail)}
           />
           <div className={classes.buttonsActions}>
-            <Button color="primary" variant="contained">
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={!mail || !validMail}
+            >
               {text('resetButtonSend')}
             </Button>
           </div>

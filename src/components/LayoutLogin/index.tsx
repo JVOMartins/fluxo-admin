@@ -3,7 +3,7 @@ import Image from 'next/image'
 import useTranslation from '@contexts/Intl'
 import Head from 'next/head'
 import useStyles from './styles'
-import { ReactNode } from 'react'
+import { memo, ReactNode } from 'react'
 
 interface LayoutLoginProps {
   children: ReactNode
@@ -54,4 +54,4 @@ const LayoutLogin: React.FC<LayoutLoginProps> = (props: LayoutLoginProps) => {
   )
 }
 
-export default LayoutLogin
+export default memo(LayoutLogin)
