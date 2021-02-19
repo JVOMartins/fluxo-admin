@@ -10,6 +10,7 @@ import Image from 'next/image'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import Head from 'next/head'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -102,6 +103,9 @@ const Register: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>Fluxo | Cadastro</title>
+      </Head>
       <div className={classes.root}>
         <div className={classes.container}>
           <div className={classes.leftImage}>

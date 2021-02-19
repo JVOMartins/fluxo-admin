@@ -2,6 +2,7 @@ import { Button, makeStyles, TextField, Typography } from '@material-ui/core'
 import Image from 'next/image'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,6 +82,9 @@ const Reset: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>Fluxo | Recuperar Senha</title>
+      </Head>
       <div className={classes.root}>
         <div className={classes.container}>
           <div className={classes.leftImage}>

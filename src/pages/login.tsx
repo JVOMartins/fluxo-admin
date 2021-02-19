@@ -3,6 +3,7 @@ import Image from 'next/image'
 import LockIcon from '@material-ui/icons/Lock'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,6 +82,9 @@ const Login: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>Fluxo | Login</title>
+      </Head>
       <div className={classes.root}>
         <div className={classes.container}>
           <div className={classes.leftImage}>
