@@ -1,7 +1,6 @@
 import React from 'react'
-import Document, { Html, Main, NextScript } from 'next/document'
+import Document, { Html, Main, Head, NextScript } from 'next/document'
 import { ServerStyleSheets } from '@material-ui/core/styles'
-import Head from 'next/head'
 import theme from '@styles/theme'
 
 export default class MyDocument extends Document {
@@ -10,10 +9,6 @@ export default class MyDocument extends Document {
       <Html lang="pt-Br">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-          />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700"

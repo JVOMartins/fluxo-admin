@@ -1,7 +1,9 @@
 import { Button, makeStyles, TextField, Typography } from '@material-ui/core'
 import Image from 'next/image'
+import LockIcon from '@material-ui/icons/Lock'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +27,6 @@ const useStyles = makeStyles(theme => ({
   leftImage: {
     width: '60%',
     backgroundColor: theme.palette.background.paper,
-    padding: 20,
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     },
@@ -74,13 +75,16 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Reset: React.FC = () => {
+const Login: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
   const { text } = useTranslation()
 
   return (
     <>
+      <Head>
+        <title>Fluxo | Login</title>
+      </Head>
       <div className={classes.root}>
         <div className={classes.container}>
           <div className={classes.leftImage}>
@@ -92,17 +96,31 @@ const Reset: React.FC = () => {
             />
           </div>
           <div className={classes.rightForm}>
-            <Image src="/logos/fluxo_icon.svg" width={50} height={50} />
-            <Typography variant="h6" component="h1">
-              {text('resetTitle')}
-            </Typography>
-            <Typography variant="body2">{text('resetSubtitle')}</Typography>
+            <div>
+              <Image src="/logos/fluxo_icon.svg" width={50} height={50} />
+              <Typography variant="h6" component="h1">
+                {text('loginTitle')}
+              </Typography>
+              <Typography variant="body2">{text('loginSubtitle')}</Typography>
+            </div>
 
             <form autoComplete="off" className={classes.formContent}>
               <TextField
                 id="email"
-                label={text('resetInputEmail')}
+                label={text('loginInputEmail')}
                 variant="outlined"
+                className={classes.inputText}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+              <TextField
+                id="password"
+                label={text('loginInputPassword')}
+                variant="outlined"
+                type="password"
                 className={classes.inputText}
                 fullWidth
                 margin="normal"
@@ -112,17 +130,28 @@ const Reset: React.FC = () => {
               />
               <div className={classes.buttonsActions}>
                 <Button color="primary" variant="contained">
-                  {text('resetButtonSend')}
+                  {text('loginButtonSend')}
+                </Button>
+                <Button
+                  variant="text"
+                  size="small"
+                  startIcon={<LockIcon />}
+                  onClick={() => router.push('/reset')}
+                >
+                  {text('loginButtonResetPassword')}
                 </Button>
               </div>
             </form>
             <div className={classes.optionsFooter}>
+              <Typography variant="body2">
+                {text('loginTextRegister')}
+              </Typography>
               <Button
                 variant="text"
                 color="primary"
-                onClick={() => router.push('/login')}
+                onClick={() => router.push('/register')}
               >
-                &larr; {text('resetButtonBack')}
+                {text('loginButtonRegister')}
               </Button>
             </div>
           </div>
@@ -132,4 +161,4 @@ const Reset: React.FC = () => {
   )
 }
 
-export default Reset
+export default Login
