@@ -4,7 +4,7 @@ import TopBar from '@components/TopBar'
 import NavBar from '@components/NavBar'
 import clsx from 'clsx'
 import useSettings from '@contexts/Settings'
-import { ReactNode } from 'react'
+import { memo, ReactNode } from 'react'
 
 interface LayoutProps {
   children: ReactNode
@@ -38,4 +38,4 @@ const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
   )
 }
 
-export default Layout
+export default memo(Layout)

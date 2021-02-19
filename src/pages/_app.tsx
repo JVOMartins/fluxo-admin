@@ -24,6 +24,7 @@ const MyApp: React.FC<AppProps> = (props: AppProps) => {
           startPosition={0.3}
           stopDelayMs={200}
           height={3}
+          options={{ easing: 'ease', speed: 500 }}
         />
         <Component {...pageProps} />
       </AppThemeProvider>

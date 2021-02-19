@@ -35,9 +35,10 @@ const NavBar: React.FC = () => {
             <a href="https://fluxo.live" target="_blank">
               <Image
                 src="/logos/fluxo_icon.svg"
-                alt="me"
-                width="30"
-                height="30"
+                alt="Fluxo"
+                width={30}
+                height={30}
+                loading="eager"
               />
             </a>
           </div>

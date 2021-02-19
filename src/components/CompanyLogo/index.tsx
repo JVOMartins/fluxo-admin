@@ -6,7 +6,13 @@ const CompanyLogo: React.FC = () => {
   return (
     <>
       <div className={classes.logo}>
-        <Image src="/hcgo.png" alt="Logo" width={150} height={80} />
+        <Image
+          src="/hcgo.png"
+          alt="Logo"
+          width={150}
+          height={80}
+          loading="eager"
+        />
       </div>
     </>
   )
