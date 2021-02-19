@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
 interface ISettings {
-  openMenu: boolean
+  openMenu?: boolean
+  openEngagementMenu?: boolean
+  openManagerMenu?: boolean
 }
 
 interface SettingContextData {
@@ -10,7 +12,9 @@ interface SettingContextData {
 }
 
 const defaultSettings: ISettings = {
-  openMenu: true
+  openMenu: true,
+  openEngagementMenu: true,
+  openManagerMenu: true
 }
 
 const SettingsContext = createContext<SettingContextData>({

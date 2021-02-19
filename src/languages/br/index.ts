@@ -1,4 +1,16 @@
 export const StringsPortuguese = {
+  /** Menu configurações */
+  menuEngagement: 'Engajamento',
+  menuEngagementBenchmark: 'Benchmark',
+  menuEngagementReports: 'Relatórios',
+  menuFeedbacks: 'Feedback',
+  menuPolls: 'Enquetes',
+  menuManager: 'Gestor',
+  menuManagerUsers: 'Usuários',
+  menuManagerGroups: 'Grupos',
+  menuManagerGoals: 'Metas',
+  menuConfig: 'Configurações',
+
   /** Login Page */
   loginTitle: 'Bem Vindo à Fluxo',
   loginSubtitle:
