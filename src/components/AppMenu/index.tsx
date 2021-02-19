@@ -78,7 +78,11 @@ const AppMenu: React.FC = () => {
         className={classes.appSubMenu}
       >
         <List component="div" disablePadding>
-          <ListItem button className={classes.menuItemSubGroup}>
+          <ListItem
+            button
+            className={classes.menuItemSubGroup}
+            onClick={() => router.push('/engagement/benchmark')}
+          >
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
@@ -89,7 +93,11 @@ const AppMenu: React.FC = () => {
             />
           </ListItem>
 
-          <ListItem button className={classes.menuItemSubGroup}>
+          <ListItem
+            button
+            className={classes.menuItemSubGroup}
+            onClick={() => router.push('/engagement/reports')}
+          >
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
@@ -161,7 +169,11 @@ const AppMenu: React.FC = () => {
         className={classes.appSubMenu}
       >
         <List component="div" disablePadding>
-          <ListItem button className={classes.menuItemSubGroup}>
+          <ListItem
+            button
+            className={classes.menuItemSubGroup}
+            onClick={() => router.push('/manager/users')}
+          >
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
@@ -171,7 +183,11 @@ const AppMenu: React.FC = () => {
               disableTypography
             />
           </ListItem>
-          <ListItem button className={classes.menuItemSubGroup}>
+          <ListItem
+            button
+            className={classes.menuItemSubGroup}
+            onClick={() => router.push('/manager/groups')}
+          >
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
@@ -181,7 +197,11 @@ const AppMenu: React.FC = () => {
               disableTypography
             />
           </ListItem>
-          <ListItem button className={classes.menuItemSubGroup}>
+          <ListItem
+            button
+            className={classes.menuItemSubGroup}
+            onClick={() => router.push('/manager/goals')}
+          >
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>

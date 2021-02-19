@@ -40,7 +40,13 @@ const TopBar: React.FC = () => {
             {!settings.openMenu && <MenuIcon className={classes.iconsMenu} />}
             {settings.openMenu && <CloseIcon className={classes.iconsMenu} />}
           </button>
-          <Image src="/logos/fluxo_icon.svg" alt="me" width="30" height="30" />
+          <Image
+            src="/logos/fluxo_icon.svg"
+            alt="Fluxo"
+            width={30}
+            height={30}
+            loading="eager"
+          />
         </Box>
         <Hidden mdDown>
           <SearchBar />
