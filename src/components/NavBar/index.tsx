@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { Drawer, Box } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import useStyles from './styles'
@@ -13,6 +12,10 @@ const NavBar: React.FC = () => {
   const year = new Date().getFullYear()
   const classes = useStyles()
 
+  const handleOpenMenu = (): void => {
+    saveSettings({ ...settings, openMenu: !settings.openMenu })
+  }
+
   return (
     <Drawer
       anchor="left"
@@ -21,7 +24,7 @@ const NavBar: React.FC = () => {
       variant="persistent"
     >
       <button
-        onClick={() => saveSettings({ openMenu: !settings.openMenu })}
+        onClick={() => handleOpenMenu()}
         className={classes.closeDrawerMobile}
       >
         <CloseIcon />

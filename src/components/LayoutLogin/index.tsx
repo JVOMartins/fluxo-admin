@@ -18,7 +18,7 @@ const LayoutLogin: React.FC<LayoutLoginProps> = (props: LayoutLoginProps) => {
   return (
     <>
       <Head>
-        <title>Fluxo | {text(`${props.title}`)}</title>
+        <title>Fluxo</title>
       </Head>
       <div className={classes.root}>
         <div className={classes.container}>
