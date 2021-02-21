@@ -6,27 +6,29 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100vw',
-    height: '100vh'
+    height: '100vh',
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: theme.palette.primary.main
+    }
   },
   container: {
     width: '50vw',
     height: '70vh',
     display: 'flex',
     borderRadius: 16,
+    backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
-      width: '90vw',
-      height: '90vh'
+      width: '97vw',
+      height: '98vh',
+      boxShadow: 'none'
     },
     boxShadow: '2px 5px 10px 1px #eee'
   },
   leftImage: {
     width: '60%',
-    backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
       display: 'none'
-    },
-    borderTopLeftRadius: 16,
-    borderBottomLeftRadius: 16
+    }
   },
   rightForm: {
     width: '100%',
@@ -35,11 +37,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-around',
     flexDirection: 'column',
     backgroundColor: theme.palette.background.paper,
-    borderTopRightRadius: 16,
-    borderBottomRightRadius: 16,
     padding: '50px',
     [theme.breakpoints.down('sm')]: {
-      padding: '20px'
+      padding: '20px',
+      borderRadius: 16
     }
   },
   titles: {
