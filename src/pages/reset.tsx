@@ -3,7 +3,7 @@ import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
 import LayoutLogin from '@components/LayoutLogin'
 import { useCallback, useState } from 'react'
-import { validateMail } from '@utils/validateMail'
+import validateMail from '@utils/validateMail'
 
 const useStyles = makeStyles(theme => ({
   formContent: {
