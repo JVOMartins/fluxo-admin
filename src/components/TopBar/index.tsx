@@ -47,6 +47,7 @@ const TopBar: React.FC = () => {
             width={30}
             height={30}
             loading="eager"
+            className={classes.imageGrayscale}
           />
         </Box>
         <Hidden mdDown>
