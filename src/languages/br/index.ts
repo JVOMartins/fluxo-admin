@@ -47,5 +47,8 @@ export const StringsPortuguese = {
   about: 'Sobre',
   articles: 'Artigos',
   home: 'Home',
-  slogan: 'Exemplo de Tradução em PT'
+  slogan: 'Exemplo de Tradução em PT',
+
+  /** Polls Page */
+  pageTitlePolls: 'Enquetes'
 }

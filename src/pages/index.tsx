@@ -1,6 +1,7 @@
 import Layout from '@components/Layout'
 import useTranslation from '@contexts/Intl'
 import { Button } from '@material-ui/core'
+import withAuth from '@utils/withAuth'
 import { Container } from 'next/app'
 import { useRouter } from 'next/router'
 
@@ -26,4 +27,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default withAuth(Home)
