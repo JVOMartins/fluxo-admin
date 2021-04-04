@@ -27,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <>
       <Head>
-        <title>Fluxo | {text(title)}</title>
+        <title>Fluxo {!!title && `| ${text(title)}`}</title>
       </Head>
       <Box className={classes.root}>
         <NavBar />
@@ -40,7 +40,9 @@ const Layout: React.FC<LayoutProps> = ({
           <TopBar />
           <Box className={classes.contentContainer}>
             <Box className={classes.content}>
-              <TitlePage title={title} icon={icon}></TitlePage>
+              {!!title && !!icon && (
+                <TitlePage title={title} icon={icon}></TitlePage>
+              )}
               <Box className={classes.children}>{children}</Box>
             </Box>
           </Box>

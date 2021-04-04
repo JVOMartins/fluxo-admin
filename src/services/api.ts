@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://findmeapitest.herokuapp.com'
+const BASE_URL = 'http://localhost:3344/api/v1'
 
 const api = axios.create({
   baseURL: BASE_URL
@@ -9,8 +9,5 @@ const api = axios.create({
 export default api
 
 export const endpoints = {
-  clients: '/clients',
-  users: '/users',
-  so: '/services_orders',
-  auth: '/sessions'
+  polls: '/polls'
 }

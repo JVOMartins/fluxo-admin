@@ -48,7 +48,7 @@ const theme = createMuiTheme({
         borderRadius: 8,
         border: 0,
         color: 'white',
-        height: 48,
+        height: 36,
         fontSize: 14,
         fontWeight: 700
       }

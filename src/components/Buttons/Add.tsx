@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 
 interface AddButtonProps {
-  label: string
+  label: string | object
   onClick: (event: any) => void
 }
 
