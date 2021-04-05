@@ -46,15 +46,11 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         borderRadius: 8,
-        border: 0
-      },
-      containedPrimary: {
         border: 0,
         color: 'white',
-        height: 40,
-        padding: '0 20px',
+        height: 36,
         fontSize: 14,
-        boxShadow: '0 3px 5px 2px #ccc'
+        fontWeight: 700
       }
     },
     MuiListItemIcon: {

@@ -22,15 +22,7 @@ const LayoutLogin: React.FC<LayoutLoginProps> = (props: LayoutLoginProps) => {
       </Head>
       <div className={classes.root}>
         <div className={classes.container}>
-          <div className={classes.leftImage}>
-            <Image
-              src="/images/login.webp"
-              width={400}
-              height={300}
-              layout="responsive"
-              loading="eager"
-            />
-          </div>
+          <div className={classes.leftImage}></div>
           <div className={classes.rightForm}>
             <div className={classes.titles}>
               <Image

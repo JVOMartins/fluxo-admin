@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     marginLeft: 0
   },
+  imageGrayscale: {
+    filter: 'grayscale(1)',
+    opacity: 0.5
+  },
   closeDrawer: {
     backgroundColor: 'transparent',
     padding: theme.spacing(1),

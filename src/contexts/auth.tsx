@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import * as auth from '@services/auth'
 import api from '@services/api'
+import Cookies from 'js-cookie'
 
 interface IUser {
   id: string
@@ -29,9 +30,9 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const loadStorageData = async () => {
-    const storageUser = await window.localStorage.getItem('@Auth:user')
-    const storageToken = await window.localStorage.getItem('@Auth:token')
+  const loadStorageData = () => {
+    const storageUser = window.localStorage.getItem('@AuthFluxo:user')
+    const storageToken = Cookies.get('AuthFluxo_token')
 
     if (storageUser && storageToken) {
       api.defaults.headers['Authorization'] = `Bearer ${storageToken}`
@@ -42,15 +43,14 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signIn = async ({ email, password }: Request) => {
     const res = await auth.signIn({ email, password })
     setUser(res.user)
-
-    api.defaults.headers['Authorization'] = `Bearer ${res.token}`
-
-    window.localStorage.setItem('@Auth:user', JSON.stringify(res.user))
-    window.localStorage.setItem('@Auth:token', res.token)
+    api.defaults.headers['Authorization'] = `Bearer ${res.token.token}`
+    window.localStorage.setItem('@AuthFluxo:user', JSON.stringify(res.user))
+    Cookies.set('AuthFluxo_token', res.token.token, { expires: 7 })
   }
 
   const signOut = () => {
     window.localStorage.clear()
+    Cookies.remove('AuthFluxo_token')
     setUser(null)
   }
 

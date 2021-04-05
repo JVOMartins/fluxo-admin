@@ -4,13 +4,20 @@ interface IUser {
   id: string
   name: string
   email: string
+  avatar?: string
   created_at: string
   updated_at: string
 }
 
+interface IToken {
+  type: string
+  token: string
+  refreshToken: string
+}
+
 interface Response {
   user: IUser
-  token: string
+  token: IToken
 }
 
 interface Request {

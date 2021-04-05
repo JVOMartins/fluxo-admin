@@ -11,6 +11,10 @@ export const StringsPortuguese = {
   menuManagerGoals: 'Metas',
   menuConfig: 'Configurações',
 
+  /** Botoes */
+  btnClose: 'Fechar',
+  btnSave: 'Salvar',
+
   /** Login Page */
   loginTitle: 'Bem Vindo à Fluxo',
   loginSubtitle:
@@ -43,9 +47,15 @@ export const StringsPortuguese = {
   registerButtonSend: 'Cadastrar',
   registerButtonBack: 'Voltar',
 
-  /** Home Page */
-  about: 'Sobre',
-  articles: 'Artigos',
-  home: 'Home',
-  slogan: 'Exemplo de Tradução em PT'
+  /** Dashboard Page */
+  pageDashboardTitle: 'Dashboard',
+
+  /** Polls Page */
+  pageTitlePolls: 'Enquetes',
+  btnNewPolls: 'Nova Enquete',
+  titleNewPolls: 'Nova Enquete',
+  titleNewQuestions: 'Nova Pergunta',
+
+  labelPollName: 'Nome',
+  labelPollDescription: 'Descrição'
 }
