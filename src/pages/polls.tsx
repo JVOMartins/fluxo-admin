@@ -6,6 +6,7 @@ import PollOutlinedIcon from '@material-ui/icons/PollOutlined'
 import {
   Box,
   makeStyles,
+  MenuItem,
   Paper,
   Tab,
   Tabs,
@@ -15,10 +16,12 @@ import { ExportButton, AddButton, ActionsButton } from '@components/Buttons'
 import { CardItems } from '@components/CardItems'
 import personalStyles from '@styles/styles'
 import { useEffect, useState } from 'react'
-import { getPolls, IPolls } from '@services/Polls'
+import { defaultPoll, deletePoll, getPolls, IPolls } from '@services/Polls'
 import { LoadingDiv } from '@components/LoadingDiv'
 import { ModalPolls } from '@components/Polls/ModalPolls'
 import { ModalQuestions } from '@components/Polls/ModalQuestions'
+import withAuth from '@utils/withAuth'
+import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 
 const useStyles = makeStyles(theme => ({
   buttons: {
@@ -110,13 +113,15 @@ function TabPanel(props: TabPanelProps) {
   )
 }
 
-const Home: NextPage = () => {
+const Polls: NextPage = () => {
   const { text } = useTranslation()
   const router = useRouter()
   const classes = useStyles()
+  const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [loading, setLoading] = useState<boolean>(false)
-  const [currentPoll, setCurrentPoll] = useState<string>('')
+  const [currentPoll, setCurrentPoll] = useState<number>()
   const [polls, setPolls] = useState<Array<IPolls>>([])
+  const [currentEditPoll, setCurrentEditPoll] = useState<IPolls>(defaultPoll)
   const [tab, setTab] = useState<string>('general')
   const [formNewPoll, setFormNewOpen] = useState<boolean>(false)
   const [formNewQuestion, setFormNewQuestion] = useState<boolean>(false)
@@ -130,6 +135,33 @@ const Home: NextPage = () => {
     setPolls(polls)
   }
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deletePoll(id)
+      getAllPolls()
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Excluído com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+  }
+
+  const handleUpdate = async (id: number) => {
+    setCurrentEditPoll(polls.find(item => item.id === id))
+    setFormNewOpen(true)
+  }
+  const handleNew = async () => {
+    setCurrentEditPoll(defaultPoll)
+    setFormNewOpen(true)
+  }
+
   useEffect(() => {
     setLoading(true)
     setTimeout(() => setLoading(false), 1000)
@@ -141,9 +173,20 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <ToastFloat
+        open={toast.open}
+        onClose={() => setToast({ open: false })}
+        type={toast.type}
+        message={toast.message}
+      />
+
       <ModalPolls
         open={formNewPoll}
-        onClose={() => setFormNewOpen(!formNewPoll)}
+        currentEditPoll={currentEditPoll}
+        onClose={() => {
+          setFormNewOpen(!formNewPoll)
+          getAllPolls()
+        }}
       />
 
       <ModalQuestions
@@ -159,7 +202,7 @@ const Home: NextPage = () => {
           <Box>
             <AddButton
               label={text('btnNewPolls')}
-              onClick={() => setFormNewOpen(true)}
+              onClick={() => handleNew()}
             />
           </Box>
           <Box>
@@ -182,7 +225,16 @@ const Home: NextPage = () => {
                     </Typography>
                   </Box>
                   <Box className={classes.options}>
-                    <ActionsButton />
+                    <ActionsButton>
+                      <MenuItem onClick={console.log}>Baixar QRCODE</MenuItem>
+                      <MenuItem onClick={console.log}>Duplicar</MenuItem>
+                      <MenuItem onClick={() => handleUpdate(poll.id)}>
+                        Editar
+                      </MenuItem>
+                      <MenuItem onClick={() => handleDelete(poll.id)}>
+                        Excluir
+                      </MenuItem>
+                    </ActionsButton>
                   </Box>
                 </CardItems>
               ))}
@@ -226,4 +278,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default withAuth(Polls)

@@ -1,8 +1,14 @@
 import { IconButton, Menu, MenuItem, Tooltip } from '@material-ui/core'
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
-const ActionsButton: React.FC = () => {
+interface ActionsButtonProps {
+  children?: ReactNode
+}
+
+const ActionsButton: React.FC<ActionsButtonProps> = ({
+  children
+}: ActionsButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -28,7 +34,7 @@ const ActionsButton: React.FC = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Excel</MenuItem>
+        {children}
       </Menu>
     </>
   )

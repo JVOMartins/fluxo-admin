@@ -7,20 +7,22 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
-import { defaultPoll, IPolls } from '@services/Polls'
+import { createPolls, defaultPoll, IPolls, updatePoll } from '@services/Polls'
 
 interface ModalPollsProps {
   open: boolean
   onClose: (event: any) => void
+  currentEditPoll?: IPolls
 }
 
 const ModalPolls: React.FC<ModalPollsProps> = ({
   open,
-  onClose
+  onClose,
+  currentEditPoll
 }: ModalPollsProps) => {
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
-  const [poll, setPoll] = useState<IPolls>(defaultPoll)
+  const [poll, setPoll] = useState<IPolls>(currentEditPoll || defaultPoll)
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -29,7 +31,31 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
     setPoll({ ...poll, [name]: value })
   }
 
-  useEffect(() => {}, [])
+  const handleCreatePoll = async () => {
+    try {
+      poll.id ? await updatePoll(poll.id, poll) : await createPolls(poll)
+      setPoll(defaultPoll)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Gravado com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (Object.values(currentEditPoll).some(item => item.length > 0)) {
+      setPoll(currentEditPoll)
+    } else {
+      setPoll(defaultPoll)
+    }
+  }, [currentEditPoll])
 
   return (
     <>
@@ -73,7 +99,11 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
           <Button onClick={onClose} color="primary">
             {text('btnClose')}
           </Button>
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => handleCreatePoll()}
+          >
             {text('btnSave')}
           </Button>
         </DialogActions>

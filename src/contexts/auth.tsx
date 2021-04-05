@@ -32,7 +32,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const loadStorageData = () => {
     const storageUser = window.localStorage.getItem('@AuthFluxo:user')
-    const storageToken = Cookies.get('@AuthFluxo:token')
+    const storageToken = Cookies.get('AuthFluxo_token')
 
     if (storageUser && storageToken) {
       api.defaults.headers['Authorization'] = `Bearer ${storageToken}`
@@ -43,14 +43,14 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signIn = async ({ email, password }: Request) => {
     const res = await auth.signIn({ email, password })
     setUser(res.user)
-    api.defaults.headers['Authorization'] = `Bearer ${res.token}`
+    api.defaults.headers['Authorization'] = `Bearer ${res.token.token}`
     window.localStorage.setItem('@AuthFluxo:user', JSON.stringify(res.user))
-    Cookies.set('@AuthFluxo:token', res.token, { expires: 7 })
+    Cookies.set('AuthFluxo_token', res.token.token, { expires: 7 })
   }
 
   const signOut = () => {
     window.localStorage.clear()
-    Cookies.remove('@AuthFluxo:token')
+    Cookies.remove('AuthFluxo_token')
     setUser(null)
   }
 

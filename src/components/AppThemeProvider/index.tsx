@@ -1,3 +1,4 @@
+import { AuthProvider } from '@contexts/auth'
 import { LanguageProvider } from '@contexts/Intl'
 import useSettings, { SettingsProvider } from '@contexts/Settings'
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -8,11 +9,13 @@ const AppThemeProvider: React.FC = ({ children }) => {
 
   return (
     <>
-      <LanguageProvider>
-        <SettingsProvider settings={settings}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </SettingsProvider>
-      </LanguageProvider>
+      <AuthProvider>
+        <LanguageProvider>
+          <SettingsProvider settings={settings}>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </SettingsProvider>
+        </LanguageProvider>
+      </AuthProvider>
     </>
   )
 }

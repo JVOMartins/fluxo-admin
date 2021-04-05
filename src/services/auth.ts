@@ -9,9 +9,15 @@ interface IUser {
   updated_at: string
 }
 
+interface IToken {
+  type: string
+  token: string
+  refreshToken: string
+}
+
 interface Response {
   user: IUser
-  token: string
+  token: IToken
 }
 
 interface Request {

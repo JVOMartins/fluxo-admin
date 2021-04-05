@@ -7,7 +7,7 @@ export default function withAuth(WrappedComponent: ElementType) {
     const router = useRouter()
 
     useEffect(() => {
-      const token = Cookies.get('@AuthFluxo:token')
+      const token = Cookies.get('AuthFluxo_token')
       if (!token) router.replace('/login')
     }, [])
 

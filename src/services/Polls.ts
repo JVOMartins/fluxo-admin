@@ -11,7 +11,7 @@ export interface RequestPolls {
 }
 
 export interface IPolls {
-  id?: string
+  id?: number
   name: string
   description: string
   code?: string
@@ -23,6 +23,21 @@ export interface IPolls {
 }
 
 export async function getPolls(): Promise<Array<IPolls>> {
-  const question = await api.get(`${endpoints.polls}`)
-  return question.data
+  const res = await api.get(`${endpoints.polls}`)
+  return res.data
+}
+
+export async function createPolls(data: IPolls): Promise<IPolls> {
+  const res = await api.post(`${endpoints.polls}`, data)
+  return res.data
+}
+
+export async function updatePoll(id: number, data: IPolls): Promise<IPolls> {
+  const res = await api.put(`${endpoints.polls}/${id}`, data)
+  return res.data
+}
+
+export async function deletePoll(id: number): Promise<IPolls> {
+  const res = await api.delete(`${endpoints.polls}/${id}`)
+  return res.data
 }
