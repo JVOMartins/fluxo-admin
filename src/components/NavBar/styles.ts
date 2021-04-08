@@ -11,7 +11,8 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
       boxShadow: '0px 0px 2000px 2000px rgba(0, 0, 0, 0.5)'
-    }
+    },
+    zIndex: 5
   },
   closeDrawerMobile: {
     display: 'none',

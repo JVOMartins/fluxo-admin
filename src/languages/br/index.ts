@@ -57,5 +57,14 @@ export const StringsPortuguese = {
   titleNewQuestions: 'Nova Pergunta',
 
   labelPollName: 'Nome',
-  labelPollDescription: 'Descrição'
+  labelPollDescription: 'Descrição',
+
+  labelPollQuestionPosition: 'Posição',
+  labelPollQuestion: 'Pergunta',
+  labelPollQuestionType: 'Tipo',
+
+  labelPollQuestionTypeParagraph: 'Texto Simples',
+  labelPollQuestionTypeMultipleText: 'Multipla escolha de texto',
+  labelPollQuestionTypeMultipleImage: 'Multipla escolha de imagem',
+  labelPollQuestionTypeZeroten: 'Escala de 0 a 10'
 }

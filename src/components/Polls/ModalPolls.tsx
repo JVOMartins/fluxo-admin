@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
 import { createPolls, defaultPoll, IPolls, updatePoll } from '@services/Polls'
+import { AddButton } from '@components/Buttons'
 
 interface ModalPollsProps {
   open: boolean
@@ -21,6 +22,7 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
   currentEditPoll
 }: ModalPollsProps) => {
   const { text } = useTranslation()
+  const [loading, setLoading] = useState<boolean>(false)
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [poll, setPoll] = useState<IPolls>(currentEditPoll || defaultPoll)
 
@@ -31,7 +33,8 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
     setPoll({ ...poll, [name]: value })
   }
 
-  const handleCreatePoll = async () => {
+  const handleClick = async () => {
+    setLoading(true)
     try {
       poll.id ? await updatePoll(poll.id, poll) : await createPolls(poll)
       setPoll(defaultPoll)
@@ -47,14 +50,12 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
         message: error.message
       })
     }
+    setLoading(false)
+    onClose(true)
   }
 
   useEffect(() => {
-    if (Object.values(currentEditPoll).some(item => item.length > 0)) {
-      setPoll(currentEditPoll)
-    } else {
-      setPoll(defaultPoll)
-    }
+    currentEditPoll ? setPoll(currentEditPoll) : setPoll(defaultPoll)
   }, [currentEditPoll])
 
   return (
@@ -96,16 +97,14 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
           />
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={onClose} color="primary" size="small">
             {text('btnClose')}
           </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => handleCreatePoll()}
-          >
-            {text('btnSave')}
-          </Button>
+          <AddButton
+            label={text('btnSave')}
+            loading={loading}
+            onClick={() => handleClick()}
+          />
         </DialogActions>
       </Dialog>
     </>
