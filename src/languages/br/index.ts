@@ -52,9 +52,13 @@ export const StringsPortuguese = {
 
   /** Polls Page */
   pageTitlePolls: 'Enquetes',
+  pageSubtitleQuestions: 'Perguntas',
   btnNewPolls: 'Nova Enquete',
   titleNewPolls: 'Nova Enquete',
-  titleNewQuestions: 'Nova Pergunta',
+  titleNewQuestions: 'Pergunta',
+
+  titleTabGeneral: 'Geral',
+  titleTabIndividual: 'Individual',
 
   labelPollName: 'Nome',
   labelPollDescription: 'Descrição',
@@ -62,6 +66,8 @@ export const StringsPortuguese = {
   labelPollQuestionPosition: 'Posição',
   labelPollQuestion: 'Pergunta',
   labelPollQuestionType: 'Tipo',
+
+  tooltipEditQuestion: 'Clique duas vezes para editar a pergunta',
 
   labelPollQuestionTypeParagraph: 'Texto Simples',
   labelPollQuestionTypeMultipleText: 'Multipla escolha de texto',

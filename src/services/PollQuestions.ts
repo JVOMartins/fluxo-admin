@@ -16,10 +16,10 @@ export interface RequestPollQuestions {
 
 export interface IPollQuestions {
   id?: number
-  question: string
-  description: string
-  type: string
-  position: number
+  question?: string
+  description?: string
+  type?: string
+  position?: number
   poll_id?: number
   company_id?: number
   deleted_at?: string

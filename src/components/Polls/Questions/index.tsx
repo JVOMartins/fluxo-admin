@@ -7,11 +7,13 @@ import {
   Tabs,
   Typography
 } from '@material-ui/core'
-import { getPollQuestions } from '@services/PollQuestions'
 import personalStyles from '@styles/styles'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ListQuestions } from './ListQuestions'
 import { ModalQuestions } from './ModalQuestions'
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import useTranslation from '@contexts/Intl'
 
 const useStyles = makeStyles(theme => ({
   contentPage: {
@@ -61,6 +63,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
   currentPoll
 }: QuestionListProps) => {
   const classes = useStyles()
+  const { text } = useTranslation()
   const [formNewQuestion, setFormNewQuestion] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('general')
 
@@ -78,8 +81,14 @@ const QuestionList: React.FC<QuestionListProps> = ({
 
       <Paper elevation={0} className={classes.contentPage}>
         <Box className={classes.titlePage}>
-          <Typography variant="subtitle1">Perguntas</Typography>
-          <AddButton label="Nova" onClick={() => setFormNewQuestion(true)} />
+          <Typography variant="h6" component="h4">
+            <DescriptionOutlinedIcon /> {text('pageSubtitleQuestions')}
+          </Typography>
+          <AddButton
+            label={`${text('titleNewQuestions')}`}
+            onClick={() => setFormNewQuestion(true)}
+            icon={<AddOutlinedIcon />}
+          />
         </Box>
         <Box>
           <Tabs
@@ -89,8 +98,8 @@ const QuestionList: React.FC<QuestionListProps> = ({
             textColor="primary"
             aria-label="tabs example"
           >
-            <Tab label="Geral" value="general" />
-            <Tab label="Individual" value="individual" />
+            <Tab label={text('titleTabGeneral')} value="general" />
+            <Tab label={text('titleTabIndividual')} value="individual" />
           </Tabs>
           <TabPanel value={tab} index="general">
             <ListQuestions currentPoll={currentPoll} />

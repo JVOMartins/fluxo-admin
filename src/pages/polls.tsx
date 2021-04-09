@@ -1,15 +1,12 @@
 import Layout from '@components/Layout'
 import useTranslation from '@contexts/Intl'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import PollOutlinedIcon from '@material-ui/icons/PollOutlined'
 import { Box, Grid, makeStyles, MenuItem, Typography } from '@material-ui/core'
 import { ExportButton, AddButton, ActionsButton } from '@components/Buttons'
 import { CardItems } from '@components/CardItems'
-import personalStyles from '@styles/styles'
 import { useEffect, useState } from 'react'
 import { defaultPoll, deletePoll, getPolls, IPolls } from '@services/Polls'
-import { LoadingDiv } from '@components/LoadingDiv'
 import { ModalPolls } from '@components/Polls/ModalPolls'
 import withAuth from '@utils/withAuth'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
@@ -84,11 +81,6 @@ const Polls: NextPage = () => {
   }
 
   useEffect(() => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 1000)
-  }, [currentPoll])
-
-  useEffect(() => {
     getAllPolls()
   }, [])
 
@@ -156,15 +148,11 @@ const Polls: NextPage = () => {
                 </CardItems>
               ))}
           </Grid>
-          <Grid item xs={12} md={9}>
-            {loading ? (
-              <LoadingDiv />
-            ) : currentPoll ? (
+          {currentPoll && (
+            <Grid item xs={12} md={9}>
               <QuestionList currentPoll={currentPoll} />
-            ) : (
-              <Typography>&larr; Escolha a enquete desejada</Typography>
-            )}
-          </Grid>
+            </Grid>
+          )}
         </Grid>
       </Layout>
     </>
