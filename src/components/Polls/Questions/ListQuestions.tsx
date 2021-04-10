@@ -25,25 +25,27 @@ const useStyles = makeStyles(theme => ({
   questions: {
     marginBottom: 48,
     display: 'flex',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'stretch',
 
     '& > .options': {
       display: 'flex',
       flexDirection: 'column',
       flex: '1 12 auto',
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: '#fafafa',
+      marginRight: 8,
+      padding: 8,
+      borderRadius: 8
     },
 
     '& > .details': {
-      width: '100%',
-      borderTop: '1px solid #f4f4f4',
-      borderBottom: '1px solid #f4f4f4'
+      width: '100%'
     }
   },
   question: {
     display: 'flex',
-    paddingTop: 8,
 
     '& > p': {
       padding: '10px 0',
@@ -78,18 +80,20 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     id: number,
     value: string
   ): Promise<void> => {
-    await updatePollQuestions(currentPoll, id, { question: value.trim() })
-    const index = questions.findIndex(item => item.id === id)
+    const index = questions.findIndex(
+      item => item.id === id && item.question !== value.trim()
+    )
     if (index >= 0) {
+      await updatePollQuestions(currentPoll, id, { question: value.trim() })
       let temp = questions.slice()
       temp[index].question = value.trim()
       setQuestions(temp)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Editado com sucesso!'
+      })
     }
-    setToast({
-      type: 'success',
-      open: true,
-      message: 'Editado com sucesso!'
-    })
   }
 
   const handleEditPositions = async (
@@ -123,27 +127,15 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         questions.map((item, index) => (
           <Box key={item.id} className={classes.questions}>
             <Box className="options">
-              <TextField
-                size="small"
-                type="number"
-                name="position"
-                margin="none"
-                variant="standard"
-                defaultValue={item.position}
-                InputProps={{ inputProps: { min: 1 } }}
-                onBlur={event =>
-                  handleEditPositions(
-                    item.id,
-                    (event.target.value as unknown) as number
-                  )
-                }
-                style={{ width: 35 }}
-              />
-
               <ActionsButton>
                 <MenuItem>Nova Resposta</MenuItem>
                 <MenuItem>Excluir</MenuItem>
               </ActionsButton>
+              <InputNumber
+                number={item.position}
+                min={1}
+                onBlur={num => handleEditPositions(item.id, num)}
+              />
             </Box>
             <Box className="details">
               <Box className={classes.index}></Box>
@@ -167,7 +159,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                     <Tooltip
                       title={`${text('tooltipEditQuestion')}`}
                       arrow
-                      placement="left"
+                      placement="top-start"
                     >
                       <Typography
                         variant="body1"
@@ -179,7 +171,23 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   )}
                 </Box>
               </Box>
-              <Box>Respostas</Box>
+              <Box>
+                Respostas
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+              </Box>
             </Box>
           </Box>
         ))}
