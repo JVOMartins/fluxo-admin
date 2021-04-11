@@ -85,7 +85,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
             <DescriptionOutlinedIcon /> {text('pageSubtitleQuestions')}
           </Typography>
           <AddButton
-            label={`${text('titleNewQuestions')}`}
+            label={`${text('btnNewQuestions')}`}
             onClick={() => setFormNewQuestion(true)}
             icon={<AddOutlinedIcon />}
           />
@@ -102,7 +102,10 @@ const QuestionList: React.FC<QuestionListProps> = ({
             <Tab label={text('titleTabIndividual')} value="individual" />
           </Tabs>
           <TabPanel value={tab} index="general">
-            <ListQuestions currentPoll={currentPoll} />
+            <ListQuestions
+              currentPoll={currentPoll}
+              checkNewsQuestions={formNewQuestion}
+            />
           </TabPanel>
           <TabPanel value={tab} index="individual">
             Item Two

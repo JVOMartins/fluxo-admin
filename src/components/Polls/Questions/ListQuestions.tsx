@@ -8,6 +8,7 @@ import {
   Typography
 } from '@material-ui/core'
 import {
+  deletePollQuestions,
   getPollQuestions,
   IPollQuestions,
   updatePollQuestions
@@ -17,6 +18,8 @@ import { ActionsButton } from '@components/Buttons'
 import useTranslation from '@contexts/Intl'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import { InputNumber } from '@components/InputNumber'
+import Swal from 'sweetalert2'
+import { ListAnswers } from '../Answers/ListAnswers'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -58,10 +61,12 @@ const useStyles = makeStyles(theme => ({
 
 interface ListQuestionsProps {
   currentPoll: number
+  checkNewsQuestions: boolean
 }
 
 const ListQuestions: React.FC<ListQuestionsProps> = ({
-  currentPoll
+  currentPoll,
+  checkNewsQuestions
 }: ListQuestionsProps) => {
   const classes = useStyles()
   const { text } = useTranslation()
@@ -103,9 +108,41 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     }
   }
 
+  const handleDelete = async (id: number) => {
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Isso irá excluir o item e seus registros',
+      icon: 'error',
+      showCancelButton: true,
+      cancelButtonText: 'Não',
+      confirmButtonText: 'Sim'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          const index = questions.findIndex(item => item.id === id)
+          if (index >= 0) {
+            await deletePollQuestions(currentPoll, id)
+            setQuestions(questions.filter(item => item.id !== id))
+            setToast({
+              type: 'success',
+              open: true,
+              message: 'Excluído com sucesso!'
+            })
+          }
+        } catch (error) {
+          setToast({
+            type: 'error',
+            open: true,
+            message: error.message
+          })
+        }
+      }
+    })
+  }
+
   useEffect(() => {
-    getAllQuestionsByPoll(currentPoll)
-  }, [currentPoll])
+    if (!checkNewsQuestions) getAllQuestionsByPoll(currentPoll)
+  }, [currentPoll, checkNewsQuestions])
 
   return (
     <>
@@ -116,15 +153,21 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         message={toast.message}
       />
       {loading && <LoadingDiv />}
+      {!loading && questions.length === 0 && (
+        <Typography>{text('registersEmpty')}</Typography>
+      )}
       {!loading &&
+        questions.length > 0 &&
         questions.map((item, index) => (
           <Box key={item.id} className={classes.questions}>
             <Box className="options">
-              <ActionsButton>
+              <ActionsButton tooltip={text('tooltipOptions')}>
                 {item.type.includes('multiple') && (
                   <MenuItem>Nova Resposta</MenuItem>
                 )}
-                <MenuItem>Excluir</MenuItem>
+                <MenuItem onClick={() => handleDelete(item.id)}>
+                  Excluir
+                </MenuItem>
               </ActionsButton>
               <InputNumber
                 number={item.position}
@@ -202,7 +245,14 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   )}
                 </Box>
               </Box>
-              <Box>Respostas</Box>
+              {item.type.includes('multiple') && (
+                <Box>
+                  <ListAnswers
+                    currentPoll={currentPoll}
+                    currentQuestion={item.id}
+                  />
+                </Box>
+              )}
             </Box>
           </Box>
         ))}

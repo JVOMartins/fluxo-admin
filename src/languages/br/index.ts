@@ -1,4 +1,9 @@
 export const StringsPortuguese = {
+  /** Geral  */
+  registersEmpty: 'Nenhum registro encontrado',
+  tooltipOptions: 'Opções',
+  tooltipExport: 'Exportar',
+
   /** Menu configurações */
   menuEngagement: 'Engajamento',
   menuEngagementBenchmark: 'Benchmark',
@@ -55,7 +60,8 @@ export const StringsPortuguese = {
   pageSubtitleQuestions: 'Perguntas',
   btnNewPolls: 'Nova Enquete',
   titleNewPolls: 'Nova Enquete',
-  titleNewQuestions: 'Pergunta',
+  btnNewQuestions: 'Pergunta',
+  titleNewQuestions: 'Nova Pergunta',
 
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',

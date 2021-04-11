@@ -3,11 +3,9 @@ import { Box } from '@material-ui/core'
 
 const LoadingDiv: React.FC = () => (
   <Box className={classes.loading}>
-    <img
-      className={classes.loadingImage}
-      src="./loading.svg"
-      alt="Loading..."
-    />
+    <span className={classes.loader}>
+      <span className={classes.loaderInner}></span>
+    </span>
   </Box>
 )
 

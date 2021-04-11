@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     position: 'relative',
     backgroundColor: '#fff',
-    width: '100%',
     padding: personalStyles.metrics.padding,
     borderRadius: personalStyles.metrics.borderRadius,
     marginBottom: personalStyles.metrics.margin,
     minWidth: 200,
+    width: '100%',
     border: '3px solid',
     borderColor: theme.palette.primary.main,
     [theme.breakpoints.down('sm')]: {

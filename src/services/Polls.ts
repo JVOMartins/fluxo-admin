@@ -38,6 +38,6 @@ export async function updatePoll(id: number, data: IPolls): Promise<IPolls> {
 }
 
 export async function deletePoll(id: number): Promise<IPolls> {
-  const res = await api.delete(`${endpoints.polls}/${id}`)
+  const res = await api.delete(`${endpoints.polls}/${id}?force=true`)
   return res.data
 }
