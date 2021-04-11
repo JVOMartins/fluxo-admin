@@ -46,9 +46,10 @@ const useStyles = makeStyles(theme => ({
   },
   question: {
     display: 'flex',
-
-    '& > p': {
-      padding: '10px 0',
+    flexDirection: 'column',
+    outline: 'none',
+    '& > .editable': {
+      paddingBottom: '10px',
       cursor: 'pointer',
       width: '100%'
     }
@@ -68,6 +69,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [questions, setQuestions] = useState<Array<IPollQuestions>>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [editQuestion, setEditQuestion] = useState<number>(-1)
+  const [editDescription, setEditDescription] = useState<number>(-1)
 
   const getAllQuestionsByPoll = async (pollId: number) => {
     setLoading(true)
@@ -78,15 +80,20 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
 
   const handleEditQuestion = async (
     id: number,
-    value: string
+    column: string,
+    value: string | number
   ): Promise<void> => {
+    const val = typeof value === 'string' ? value.trim() : value
     const index = questions.findIndex(
-      item => item.id === id && item.question !== value.trim()
+      item => item.id === id && item[column] !== val
     )
     if (index >= 0) {
-      await updatePollQuestions(currentPoll, id, { question: value.trim() })
+      await updatePollQuestions(currentPoll, id, { [column]: val })
       let temp = questions.slice()
-      temp[index].question = value.trim()
+      temp[index][column] = val
+      if (column === 'position') {
+        temp = temp.sort((a, b) => a.position - b.position).slice()
+      }
       setQuestions(temp)
       setToast({
         type: 'success',
@@ -94,20 +101,6 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         message: 'Editado com sucesso!'
       })
     }
-  }
-
-  const handleEditPositions = async (
-    id: number,
-    value: number
-  ): Promise<void> => {
-    await updatePollQuestions(currentPoll, id, { position: value })
-    const index = questions.findIndex(item => item.id === id)
-    setToast({
-      type: 'success',
-      open: true,
-      message: 'Editado com sucesso!'
-    })
-    getAllQuestionsByPoll(currentPoll)
   }
 
   useEffect(() => {
@@ -128,66 +121,88 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
           <Box key={item.id} className={classes.questions}>
             <Box className="options">
               <ActionsButton>
-                <MenuItem>Nova Resposta</MenuItem>
+                {item.type.includes('multiple') && (
+                  <MenuItem>Nova Resposta</MenuItem>
+                )}
                 <MenuItem>Excluir</MenuItem>
               </ActionsButton>
               <InputNumber
                 number={item.position}
                 min={1}
-                onBlur={num => handleEditPositions(item.id, num)}
+                onBlur={num => handleEditQuestion(item.id, 'position', num)}
               />
             </Box>
             <Box className="details">
               <Box className={classes.index}></Box>
               <Box>
-                <Box className={classes.question}>
+                <Box className={classes.question} tabIndex={-1}>
                   {editQuestion === index ? (
                     <TextField
                       id={`${item.poll_id}_${item?.id}`}
-                      label="Editar"
+                      label="Editar Pergunta"
                       multiline
                       rows={2}
                       variant="outlined"
                       fullWidth
                       defaultValue={item.question}
                       onBlur={event => {
-                        handleEditQuestion(item.id, event.target.value)
+                        handleEditQuestion(
+                          item.id,
+                          'question',
+                          event.target.value
+                        )
                         setEditQuestion(-1)
                       }}
                     />
                   ) : (
                     <Tooltip
                       title={`${text('tooltipEditQuestion')}`}
-                      arrow
                       placement="top-start"
                     >
                       <Typography
                         variant="body1"
                         onDoubleClick={() => setEditQuestion(index)}
+                        className="editable"
                       >
                         {item.question}
                       </Typography>
                     </Tooltip>
                   )}
+                  {editDescription === index ? (
+                    <TextField
+                      id={`${item.poll_id}_${item?.id}`}
+                      label="Editar Descrição"
+                      multiline
+                      rows={1}
+                      variant="outlined"
+                      fullWidth
+                      defaultValue={item.description}
+                      onBlur={event => {
+                        handleEditQuestion(
+                          item.id,
+                          'description',
+                          event.target.value
+                        )
+                        setEditDescription(-1)
+                      }}
+                    />
+                  ) : (
+                    <Tooltip
+                      title={`${text('tooltipEditQuestion')}`}
+                      placement="top-start"
+                    >
+                      <Typography
+                        variant="caption"
+                        onDoubleClick={() => setEditDescription(index)}
+                        className="editable"
+                      >
+                        Descrição: {item.description}
+                      </Typography>
+                    </Tooltip>
+                  )}
                 </Box>
               </Box>
-              <Box>
-                Respostas
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-              </Box>
+              <Box>Respostas</Box>
             </Box>
           </Box>
         ))}

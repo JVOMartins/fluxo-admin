@@ -90,26 +90,6 @@ const ModalQuestions: React.FC<ModalPollsProps> = ({
             fullWidth
             margin="normal"
           />
-          <TextField
-            name="question"
-            label={`${text('labelPollQuestion')}`}
-            variant="outlined"
-            value={question.question}
-            onChange={event => handleChange(event)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            name="description"
-            label={`${text('labelPollDescription')}`}
-            variant="outlined"
-            value={question.description}
-            onChange={event => handleChange(event)}
-            multiline
-            rows={4}
-            fullWidth
-            margin="normal"
-          />
           <FormControl variant="outlined" fullWidth margin="normal">
             <InputLabel htmlFor="outlined-age-native-simple">
               {text('labelPollQuestionType')}
@@ -139,6 +119,28 @@ const ModalQuestions: React.FC<ModalPollsProps> = ({
               </option>
             </Select>
           </FormControl>
+          <TextField
+            name="question"
+            label={`${text('labelPollQuestion')}`}
+            variant="outlined"
+            value={question.question}
+            onChange={event => handleChange(event)}
+            multiline
+            rows={4}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="description"
+            label={`${text('labelPollDescription')}`}
+            variant="outlined"
+            value={question.description}
+            onChange={event => handleChange(event)}
+            multiline
+            rows={4}
+            fullWidth
+            margin="normal"
+          />
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
           <Button onClick={onClose} color="primary">
