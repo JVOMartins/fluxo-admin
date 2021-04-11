@@ -5,11 +5,13 @@ import { ReactNode, useState } from 'react'
 interface ActionsButtonProps {
   children?: ReactNode
   size?: 'small' | 'medium'
+  tooltip?: string | object
 }
 
 const ActionsButton: React.FC<ActionsButtonProps> = ({
   children,
-  size
+  size,
+  tooltip
 }: ActionsButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -23,7 +25,7 @@ const ActionsButton: React.FC<ActionsButtonProps> = ({
   }
   return (
     <>
-      <Tooltip title="Exportar">
+      <Tooltip title={tooltip}>
         <IconButton onClick={handleClick} size={size}>
           <MoreVertOutlinedIcon fontSize="inherit" />
         </IconButton>

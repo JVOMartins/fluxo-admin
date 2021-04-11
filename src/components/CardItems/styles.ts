@@ -42,15 +42,15 @@ const useStyles = makeStyles(theme => ({
     '&::before': {
       content: '""',
       position: 'absolute',
-      top: '40%',
-      left: '94.5%',
+      top: '45%',
+      right: -40,
       width: 0,
       height: 0,
       transform: 'rotate(-90deg)',
-      borderTop: ' solid 15px',
+      borderTop: ' solid 10px',
       borderTopColor: personalStyles.colors.primary,
-      borderLeft: 'solid 30px transparent',
-      borderRight: 'solid 30px transparent'
+      borderLeft: 'solid 35px transparent',
+      borderRight: 'solid 35px transparent'
     }
   }
 }))
