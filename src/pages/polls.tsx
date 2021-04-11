@@ -31,7 +31,6 @@ const Polls: NextPage = () => {
   const { text } = useTranslation()
   const classes = useStyles()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
-  const [loading, setLoading] = useState<boolean>(false)
   const [currentPoll, setCurrentPoll] = useState<number>()
   const [polls, setPolls] = useState<Array<IPolls>>([])
   const [currentEditPoll, setCurrentEditPoll] = useState<IPolls>(defaultPoll)
@@ -107,7 +106,7 @@ const Polls: NextPage = () => {
         icon={<PollOutlinedIcon fontSize="large" />}
       >
         <Grid container spacing={3}>
-          <Grid item xs={12} className={classes.buttons}>
+          <Grid item sm={12} className={classes.buttons}>
             <Box>
               <AddButton
                 label={text('btnNewPolls')}
@@ -119,7 +118,7 @@ const Polls: NextPage = () => {
               <ExportButton />
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item sm={12} md={3}>
             {!!polls &&
               polls.map(poll => (
                 <CardItems
@@ -149,7 +148,7 @@ const Polls: NextPage = () => {
               ))}
           </Grid>
           {currentPoll && (
-            <Grid item xs={12} md={9}>
+            <Grid item sm={12} md={9}>
               <QuestionList currentPoll={currentPoll} />
             </Grid>
           )}

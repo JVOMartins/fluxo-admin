@@ -1,13 +1,17 @@
-import { IconButton, Menu, MenuItem, Tooltip } from '@material-ui/core'
+import { IconButton, Menu, Tooltip } from '@material-ui/core'
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined'
 import { ReactNode, useState } from 'react'
 
 interface ActionsButtonProps {
   children?: ReactNode
+  size?: 'small' | 'medium'
+  tooltip?: string | object
 }
 
 const ActionsButton: React.FC<ActionsButtonProps> = ({
-  children
+  children,
+  size,
+  tooltip
 }: ActionsButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -21,8 +25,8 @@ const ActionsButton: React.FC<ActionsButtonProps> = ({
   }
   return (
     <>
-      <Tooltip title="Exportar">
-        <IconButton onClick={handleClick}>
+      <Tooltip title={tooltip}>
+        <IconButton onClick={handleClick} size={size}>
           <MoreVertOutlinedIcon fontSize="inherit" />
         </IconButton>
       </Tooltip>

@@ -34,7 +34,7 @@ const LayoutLogin: React.FC<LayoutLoginProps> = (props: LayoutLoginProps) => {
               <Typography variant="h6" component="h1">
                 {text(`${props.title}`)}
               </Typography>
-              <Typography variant="body2">
+              <Typography component="span" variant="body2">
                 {text(`${props.subtitle}`)}
               </Typography>
             </div>

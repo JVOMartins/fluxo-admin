@@ -67,10 +67,10 @@ export const StringsPortuguese = {
   labelPollQuestion: 'Pergunta',
   labelPollQuestionType: 'Tipo',
 
-  tooltipEditQuestion: 'Clique duas vezes para editar a pergunta',
+  tooltipEditQuestion: 'Clique duas vezes para editar',
 
   labelPollQuestionTypeParagraph: 'Texto Simples',
   labelPollQuestionTypeMultipleText: 'Multipla escolha de texto',
   labelPollQuestionTypeMultipleImage: 'Multipla escolha de imagem',
-  labelPollQuestionTypeZeroten: 'Escala de 0 a 10'
+  labelPollQuestionTypeZeroten: 'Escala de 0 a 10 (NPS)'
 }

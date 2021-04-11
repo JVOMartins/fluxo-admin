@@ -93,7 +93,9 @@ const Login: NextPage = () => {
           </div>
         </form>
         <div className={classes.optionsFooter}>
-          <Typography variant="body2">{text('loginTextRegister')}</Typography>
+          <Typography component="span" variant="body2">
+            {text('loginTextRegister')}
+          </Typography>
           <Button
             variant="text"
             color="primary"

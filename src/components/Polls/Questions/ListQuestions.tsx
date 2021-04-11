@@ -25,28 +25,31 @@ const useStyles = makeStyles(theme => ({
   questions: {
     marginBottom: 48,
     display: 'flex',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'stretch',
 
     '& > .options': {
       display: 'flex',
       flexDirection: 'column',
       flex: '1 12 auto',
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: '#fafafa',
+      marginRight: 8,
+      padding: 8,
+      borderRadius: 8
     },
 
     '& > .details': {
-      width: '100%',
-      borderTop: '1px solid #f4f4f4',
-      borderBottom: '1px solid #f4f4f4'
+      width: '100%'
     }
   },
   question: {
     display: 'flex',
-    paddingTop: 8,
-
-    '& > p': {
-      padding: '10px 0',
+    flexDirection: 'column',
+    outline: 'none',
+    '& > .editable': {
+      paddingBottom: '10px',
       cursor: 'pointer',
       width: '100%'
     }
@@ -66,6 +69,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [questions, setQuestions] = useState<Array<IPollQuestions>>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [editQuestion, setEditQuestion] = useState<number>(-1)
+  const [editDescription, setEditDescription] = useState<number>(-1)
 
   const getAllQuestionsByPoll = async (pollId: number) => {
     setLoading(true)
@@ -76,34 +80,27 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
 
   const handleEditQuestion = async (
     id: number,
-    value: string
+    column: string,
+    value: string | number
   ): Promise<void> => {
-    await updatePollQuestions(currentPoll, id, { question: value.trim() })
-    const index = questions.findIndex(item => item.id === id)
+    const val = typeof value === 'string' ? value.trim() : value
+    const index = questions.findIndex(
+      item => item.id === id && item[column] !== val
+    )
     if (index >= 0) {
+      await updatePollQuestions(currentPoll, id, { [column]: val })
       let temp = questions.slice()
-      temp[index].question = value.trim()
+      temp[index][column] = val
+      if (column === 'position') {
+        temp = temp.sort((a, b) => a.position - b.position).slice()
+      }
       setQuestions(temp)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Editado com sucesso!'
+      })
     }
-    setToast({
-      type: 'success',
-      open: true,
-      message: 'Editado com sucesso!'
-    })
-  }
-
-  const handleEditPositions = async (
-    id: number,
-    value: number
-  ): Promise<void> => {
-    await updatePollQuestions(currentPoll, id, { position: value })
-    const index = questions.findIndex(item => item.id === id)
-    setToast({
-      type: 'success',
-      open: true,
-      message: 'Editado com sucesso!'
-    })
-    getAllQuestionsByPoll(currentPoll)
   }
 
   useEffect(() => {
@@ -123,57 +120,83 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         questions.map((item, index) => (
           <Box key={item.id} className={classes.questions}>
             <Box className="options">
-              <TextField
-                size="small"
-                type="number"
-                name="position"
-                margin="none"
-                variant="standard"
-                defaultValue={item.position}
-                InputProps={{ inputProps: { min: 1 } }}
-                onBlur={event =>
-                  handleEditPositions(
-                    item.id,
-                    (event.target.value as unknown) as number
-                  )
-                }
-                style={{ width: 35 }}
-              />
-
               <ActionsButton>
-                <MenuItem>Nova Resposta</MenuItem>
+                {item.type.includes('multiple') && (
+                  <MenuItem>Nova Resposta</MenuItem>
+                )}
                 <MenuItem>Excluir</MenuItem>
               </ActionsButton>
+              <InputNumber
+                number={item.position}
+                min={1}
+                onBlur={num => handleEditQuestion(item.id, 'position', num)}
+              />
             </Box>
             <Box className="details">
               <Box className={classes.index}></Box>
               <Box>
-                <Box className={classes.question}>
+                <Box className={classes.question} tabIndex={-1}>
                   {editQuestion === index ? (
                     <TextField
                       id={`${item.poll_id}_${item?.id}`}
-                      label="Editar"
+                      label="Editar Pergunta"
                       multiline
                       rows={2}
                       variant="outlined"
                       fullWidth
                       defaultValue={item.question}
                       onBlur={event => {
-                        handleEditQuestion(item.id, event.target.value)
+                        handleEditQuestion(
+                          item.id,
+                          'question',
+                          event.target.value
+                        )
                         setEditQuestion(-1)
                       }}
                     />
                   ) : (
                     <Tooltip
                       title={`${text('tooltipEditQuestion')}`}
-                      arrow
-                      placement="left"
+                      placement="top-start"
                     >
                       <Typography
                         variant="body1"
                         onDoubleClick={() => setEditQuestion(index)}
+                        className="editable"
                       >
                         {item.question}
+                      </Typography>
+                    </Tooltip>
+                  )}
+                  {editDescription === index ? (
+                    <TextField
+                      id={`${item.poll_id}_${item?.id}`}
+                      label="Editar Descrição"
+                      multiline
+                      rows={1}
+                      variant="outlined"
+                      fullWidth
+                      defaultValue={item.description}
+                      onBlur={event => {
+                        handleEditQuestion(
+                          item.id,
+                          'description',
+                          event.target.value
+                        )
+                        setEditDescription(-1)
+                      }}
+                    />
+                  ) : (
+                    <Tooltip
+                      title={`${text('tooltipEditQuestion')}`}
+                      placement="top-start"
+                    >
+                      <Typography
+                        variant="caption"
+                        onDoubleClick={() => setEditDescription(index)}
+                        className="editable"
+                      >
+                        Descrição: {item.description}
                       </Typography>
                     </Tooltip>
                   )}
