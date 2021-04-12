@@ -7,29 +7,33 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
-import {
-  createPollQuestions,
-  defaultPollQuestion,
-  IPollQuestions
-} from '@services/PollQuestions'
-import { FormControl, InputLabel, Select } from '@material-ui/core'
+import { IPollQuestions } from '@services/PollQuestions'
 import { AddButton } from '@components/Buttons'
+import {
+  createPollQuestionAnswers,
+  defaultPollQuestionAnswers,
+  IPollQuestionAnswers
+} from '@services/PollQuestionsAnswers'
 
-interface ModalQuestionsProps {
+interface ModalAnswersProps {
   open: boolean
   pollId: number
+  question: IPollQuestions
   onClose: (event: any) => void
 }
 
-const ModalQuestions: React.FC<ModalQuestionsProps> = ({
+const ModalAnswers: React.FC<ModalAnswersProps> = ({
   open,
   pollId,
+  question,
   onClose
-}: ModalQuestionsProps) => {
+}: ModalAnswersProps) => {
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [loading, setLoading] = useState<boolean>(false)
-  const [question, setQuestion] = useState<IPollQuestions>(defaultPollQuestion)
+  const [answer, setAnswer] = useState<IPollQuestionAnswers>(
+    defaultPollQuestionAnswers
+  )
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -37,14 +41,14 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
     >
   ): void => {
     const { name, value } = event.target
-    setQuestion({ ...question, [name]: value })
+    setAnswer({ ...answer, [name]: value })
   }
 
   const handleClick = async () => {
     setLoading(true)
     try {
-      await createPollQuestions(pollId, question)
-      setQuestion(defaultPollQuestion)
+      await createPollQuestionAnswers(pollId, question.id, answer)
+      setAnswer(defaultPollQuestionAnswers)
       setToast({
         type: 'success',
         open: true,
@@ -85,56 +89,45 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
             type="number"
             label={`${text('labelPollPosition')}`}
             variant="outlined"
-            value={question.position}
+            value={answer.position}
             onChange={event => handleChange(event)}
             fullWidth
             margin="normal"
           />
-          <FormControl variant="outlined" fullWidth margin="normal">
-            <InputLabel htmlFor="outlined-age-native-simple">
-              {text('labelPollQuestionType')}
-            </InputLabel>
-            <Select
-              native
-              value={question.type}
+          {question.type.includes('text') && (
+            <TextField
+              name="value"
+              label={`${text('labelPollAnswerValue')}`}
+              variant="outlined"
+              value={answer.value}
               onChange={event => handleChange(event)}
-              label={`${text('labelPollQuestionType')}`}
-              inputProps={{
-                name: 'type',
-                id: 'type'
-              }}
-            >
-              <option aria-label="None" value="" />
-              <option value="paragraph">
-                {text('labelPollQuestionTypeParagraph')}
-              </option>
-              <option value="multiple_text">
-                {text('labelPollQuestionTypeMultipleText')}
-              </option>
-              <option value="multiple_image">
-                {text('labelPollQuestionTypeMultipleImage')}
-              </option>
-              <option value="zeroten">
-                {text('labelPollQuestionTypeZeroten')}
-              </option>
-            </Select>
-          </FormControl>
-          <TextField
-            name="question"
-            label={`${text('labelPollQuestion')}`}
-            variant="outlined"
-            value={question.question}
-            onChange={event => handleChange(event)}
-            multiline
-            rows={4}
-            fullWidth
-            margin="normal"
-          />
+              multiline
+              rows={4}
+              fullWidth
+              margin="normal"
+            />
+          )}
+          {question.type.includes('image') && (
+            <label htmlFor="button-file">
+              <input
+                accept="image/*"
+                id="button-file"
+                multiple
+                type="file"
+                style={{ display: 'none' }}
+                value={answer.value}
+                onChange={event => handleChange(event)}
+              />
+              <Button variant="contained" color="primary" component="span">
+                Upload
+              </Button>
+            </label>
+          )}
           <TextField
             name="description"
-            label={`${text('labelPollDescription')}`}
+            label={`${text('labelPollAnswerDescription')}`}
             variant="outlined"
-            value={question.description}
+            value={answer.description}
             onChange={event => handleChange(event)}
             multiline
             rows={4}
@@ -157,4 +150,4 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
   )
 }
 
-export { ModalQuestions }
+export { ModalAnswers }

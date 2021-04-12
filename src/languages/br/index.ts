@@ -1,4 +1,9 @@
 export const StringsPortuguese = {
+  /** Geral  */
+  registersEmpty: 'Nenhum registro encontrado',
+  tooltipOptions: 'Opções',
+  tooltipExport: 'Exportar',
+
   /** Menu configurações */
   menuEngagement: 'Engajamento',
   menuEngagementBenchmark: 'Benchmark',
@@ -14,6 +19,7 @@ export const StringsPortuguese = {
   /** Botoes */
   btnClose: 'Fechar',
   btnSave: 'Salvar',
+  btnDelete: 'Excluir',
 
   /** Login Page */
   loginTitle: 'Bem Vindo à Fluxo',
@@ -55,17 +61,24 @@ export const StringsPortuguese = {
   pageSubtitleQuestions: 'Perguntas',
   btnNewPolls: 'Nova Enquete',
   titleNewPolls: 'Nova Enquete',
-  titleNewQuestions: 'Pergunta',
+  btnNewQuestions: 'Pergunta',
+  titleNewQuestions: 'Nova Pergunta',
 
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',
 
+  btnNewResponse: 'Nova Resposta',
+
   labelPollName: 'Nome',
   labelPollDescription: 'Descrição',
 
-  labelPollQuestionPosition: 'Posição',
+  labelPollPosition: 'Posição',
   labelPollQuestion: 'Pergunta',
   labelPollQuestionType: 'Tipo',
+  labelEditQuestion: 'Editar Pergunta',
+  labelEditDescription: 'Editar Descrição',
+  labelPollAnswerValue: 'Valor',
+  labelPollAnswerDescription: 'Descrição',
 
   tooltipEditQuestion: 'Clique duas vezes para editar',
 

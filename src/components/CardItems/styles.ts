@@ -7,17 +7,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
-    position: 'relative',
     width: '100%',
     padding: personalStyles.metrics.padding,
     borderRadius: personalStyles.metrics.borderRadius,
     marginBottom: personalStyles.metrics.margin,
-    minWidth: 200,
+    minWidth: 250,
     border: '3px solid transparent',
-    [theme.breakpoints.down('sm')]: {
-      margin: 0,
-      marginRigth: personalStyles.metrics.margin
-    },
     cursor: 'pointer'
   },
   cardActive: {
@@ -26,24 +21,20 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     position: 'relative',
     backgroundColor: '#fff',
-    width: '100%',
     padding: personalStyles.metrics.padding,
     borderRadius: personalStyles.metrics.borderRadius,
     marginBottom: personalStyles.metrics.margin,
-    minWidth: 200,
+    minWidth: 250,
+    width: '100%',
     border: '3px solid',
     borderColor: theme.palette.primary.main,
-    [theme.breakpoints.down('sm')]: {
-      margin: 0,
-      marginRigth: personalStyles.metrics.margin
-    },
     cursor: 'pointer',
 
     '&::before': {
       content: '""',
       position: 'absolute',
       top: '45%',
-      right: -40,
+      right: -43,
       width: 0,
       height: 0,
       transform: 'rotate(-90deg)',

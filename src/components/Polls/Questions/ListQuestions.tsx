@@ -8,6 +8,8 @@ import {
   Typography
 } from '@material-ui/core'
 import {
+  defaultPollQuestion,
+  deletePollQuestions,
   getPollQuestions,
   IPollQuestions,
   updatePollQuestions
@@ -17,6 +19,9 @@ import { ActionsButton } from '@components/Buttons'
 import useTranslation from '@contexts/Intl'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import { InputNumber } from '@components/InputNumber'
+import Swal from 'sweetalert2'
+import { ListAnswers } from '../Answers/ListAnswers'
+import { ModalAnswers } from '../Answers/ModalAnswers'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -58,10 +63,12 @@ const useStyles = makeStyles(theme => ({
 
 interface ListQuestionsProps {
   currentPoll: number
+  checkNewsQuestions: boolean
 }
 
 const ListQuestions: React.FC<ListQuestionsProps> = ({
-  currentPoll
+  currentPoll,
+  checkNewsQuestions
 }: ListQuestionsProps) => {
   const classes = useStyles()
   const { text } = useTranslation()
@@ -69,7 +76,11 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [questions, setQuestions] = useState<Array<IPollQuestions>>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [editQuestion, setEditQuestion] = useState<number>(-1)
+  const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
+    defaultPollQuestion
+  )
   const [editDescription, setEditDescription] = useState<number>(-1)
+  const [formNewAnswer, setFormNewAnswer] = useState<boolean>(false)
 
   const getAllQuestionsByPoll = async (pollId: number) => {
     setLoading(true)
@@ -103,9 +114,41 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     }
   }
 
+  const handleDelete = async (id: number) => {
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Isso irá excluir o item e seus registros',
+      icon: 'error',
+      showCancelButton: true,
+      cancelButtonText: 'Não',
+      confirmButtonText: 'Sim'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          const index = questions.findIndex(item => item.id === id)
+          if (index >= 0) {
+            await deletePollQuestions(currentPoll, id)
+            setQuestions(questions.filter(item => item.id !== id))
+            setToast({
+              type: 'success',
+              open: true,
+              message: 'Excluído com sucesso!'
+            })
+          }
+        } catch (error) {
+          setToast({
+            type: 'error',
+            open: true,
+            message: error.message
+          })
+        }
+      }
+    })
+  }
+
   useEffect(() => {
-    getAllQuestionsByPoll(currentPoll)
-  }, [currentPoll])
+    if (!checkNewsQuestions) getAllQuestionsByPoll(currentPoll)
+  }, [currentPoll, checkNewsQuestions])
 
   return (
     <>
@@ -115,16 +158,38 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         type={toast.type}
         message={toast.message}
       />
+      <ModalAnswers
+        open={formNewAnswer}
+        onClose={() => {
+          setFormNewAnswer(!formNewAnswer)
+          setAddQuestionAnswer(defaultPollQuestion)
+        }}
+        pollId={currentPoll}
+        question={addQuestionAnswer}
+      />
       {loading && <LoadingDiv />}
+      {!loading && questions.length === 0 && (
+        <Typography>{text('registersEmpty')}</Typography>
+      )}
       {!loading &&
+        questions.length > 0 &&
         questions.map((item, index) => (
           <Box key={item.id} className={classes.questions}>
             <Box className="options">
-              <ActionsButton>
+              <ActionsButton tooltip={text('tooltipOptions')}>
                 {item.type.includes('multiple') && (
-                  <MenuItem>Nova Resposta</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setAddQuestionAnswer(item)
+                      setFormNewAnswer(true)
+                    }}
+                  >
+                    {text('btnNewResponse')}
+                  </MenuItem>
                 )}
-                <MenuItem>Excluir</MenuItem>
+                <MenuItem onClick={() => handleDelete(item.id)}>
+                  {text('btnDelete')}
+                </MenuItem>
               </ActionsButton>
               <InputNumber
                 number={item.position}
@@ -133,13 +198,12 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
               />
             </Box>
             <Box className="details">
-              <Box className={classes.index}></Box>
               <Box>
                 <Box className={classes.question} tabIndex={-1}>
                   {editQuestion === index ? (
                     <TextField
                       id={`${item.poll_id}_${item?.id}`}
-                      label="Editar Pergunta"
+                      label={text('labelEditQuestion')}
                       multiline
                       rows={2}
                       variant="outlined"
@@ -171,8 +235,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   {editDescription === index ? (
                     <TextField
                       id={`${item.poll_id}_${item?.id}`}
-                      label="Editar Descrição"
-                      multiline
+                      label={text('labelEditDescription')}
                       rows={1}
                       variant="outlined"
                       fullWidth
@@ -202,7 +265,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   )}
                 </Box>
               </Box>
-              <Box>Respostas</Box>
+
+              <Box>
+                <ListAnswers currentQuestionAnswers={item.answers} />
+              </Box>
             </Box>
           </Box>
         ))}

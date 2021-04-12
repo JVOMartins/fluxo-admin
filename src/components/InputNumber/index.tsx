@@ -3,11 +3,12 @@ import ExpandLessOutlinedIcon from '@material-ui/icons/ExpandLessOutlined'
 import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
 import { useEffect, useState } from 'react'
 
-interface InputNumberProps {
+export interface InputNumberProps {
   number: number
   min?: number
   max?: number
   step?: number
+  size?: 'small' | 'medium'
   onBlur?: (event: any) => void
 }
 
@@ -16,7 +17,8 @@ const InputNumber: React.FC<InputNumberProps> = ({
   min,
   max,
   step = 1,
-  onBlur
+  onBlur,
+  size = 'medium'
 }: InputNumberProps) => {
   const [num, setNum] = useState<number>(number)
 

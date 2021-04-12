@@ -2,8 +2,9 @@ import Layout from '@components/Layout'
 import useTranslation from '@contexts/Intl'
 import { NextPage } from 'next'
 import PollOutlinedIcon from '@material-ui/icons/PollOutlined'
+import ImportExportIcon from '@material-ui/icons/ImportExport'
 import { Box, Grid, makeStyles, MenuItem, Typography } from '@material-ui/core'
-import { ExportButton, AddButton, ActionsButton } from '@components/Buttons'
+import { AddButton, ActionsButton } from '@components/Buttons'
 import { CardItems } from '@components/CardItems'
 import { useEffect, useState } from 'react'
 import { defaultPoll, deletePoll, getPolls, IPolls } from '@services/Polls'
@@ -15,10 +16,56 @@ import Swal from 'sweetalert2'
 import { QuestionList } from '@components/Polls/Questions'
 
 const useStyles = makeStyles(theme => ({
+  content: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   buttons: {
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  list: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    marginTop: 16,
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      width: 'auto'
+    }
+  },
+  left: {
+    display: 'flex',
+    width: '30%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginRight: 16,
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      overflowX: 'auto',
+      marginBottom: 16,
+      width: '100%',
+      overflowScrolling: 'touch'
+    }
+  },
+  right: {
+    display: 'flex',
+    width: '70%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 16,
+      width: '100%'
+    }
   },
   options: {
     display: 'flex',
@@ -80,8 +127,8 @@ const Polls: NextPage = () => {
   }
 
   useEffect(() => {
-    getAllPolls()
-  }, [])
+    if (!formNewPoll) getAllPolls()
+  }, [formNewPoll])
 
   return (
     <>
@@ -97,7 +144,6 @@ const Polls: NextPage = () => {
         currentEditPoll={currentEditPoll}
         onClose={() => {
           setFormNewOpen(!formNewPoll)
-          getAllPolls()
         }}
       />
 
@@ -105,8 +151,8 @@ const Polls: NextPage = () => {
         title="pageTitlePolls"
         icon={<PollOutlinedIcon fontSize="large" />}
       >
-        <Grid container spacing={3}>
-          <Grid item sm={12} className={classes.buttons}>
+        <Box className={classes.content}>
+          <Box className={classes.buttons}>
             <Box>
               <AddButton
                 label={text('btnNewPolls')}
@@ -115,44 +161,51 @@ const Polls: NextPage = () => {
               />
             </Box>
             <Box>
-              <ExportButton />
+              <ActionsButton
+                icon={<ImportExportIcon />}
+                tooltip={text('tooltipExport')}
+              >
+                <MenuItem>Excel</MenuItem>
+              </ActionsButton>
             </Box>
-          </Grid>
-          <Grid item sm={12} md={3}>
-            {!!polls &&
-              polls.map(poll => (
-                <CardItems
-                  active={currentPoll === poll.id}
-                  onClick={() => setCurrentPoll(poll.id)}
-                  key={poll.id}
-                >
-                  <Box>
-                    <Typography variant="body1">{poll.name}</Typography>
-                    <Typography variant="caption">
-                      https://enquetes.fluxo.live/{poll.code}
-                    </Typography>
-                  </Box>
-                  <Box className={classes.options}>
-                    <ActionsButton>
-                      <MenuItem onClick={console.log}>Baixar QRCODE</MenuItem>
-                      <MenuItem onClick={console.log}>Duplicar</MenuItem>
-                      <MenuItem onClick={() => handleUpdate(poll.id)}>
-                        Editar
-                      </MenuItem>
-                      <MenuItem onClick={() => handleDelete(poll.id)}>
-                        Excluir
-                      </MenuItem>
-                    </ActionsButton>
-                  </Box>
-                </CardItems>
-              ))}
-          </Grid>
-          {currentPoll && (
-            <Grid item sm={12} md={9}>
-              <QuestionList currentPoll={currentPoll} />
-            </Grid>
-          )}
-        </Grid>
+          </Box>
+          <Box className={classes.list}>
+            <Box className={classes.left}>
+              {!!polls &&
+                polls.map(poll => (
+                  <CardItems
+                    active={currentPoll === poll.id}
+                    onClick={() => setCurrentPoll(poll.id)}
+                    key={poll.id}
+                  >
+                    <Box>
+                      <Typography variant="body1">{poll.name}</Typography>
+                      <Typography variant="caption">
+                        https://enquetes.fluxo.live/{poll.code}
+                      </Typography>
+                    </Box>
+                    <Box className={classes.options}>
+                      <ActionsButton tooltip={text('tooltipOptions')}>
+                        <MenuItem onClick={console.log}>Baixar QRCODE</MenuItem>
+                        <MenuItem onClick={console.log}>Duplicar</MenuItem>
+                        <MenuItem onClick={() => handleUpdate(poll.id)}>
+                          Editar
+                        </MenuItem>
+                        <MenuItem onClick={() => handleDelete(poll.id)}>
+                          Excluir
+                        </MenuItem>
+                      </ActionsButton>
+                    </Box>
+                  </CardItems>
+                ))}
+            </Box>
+            {currentPoll && (
+              <Box className={classes.right}>
+                <QuestionList currentPoll={currentPoll} />
+              </Box>
+            )}
+          </Box>
+        </Box>
       </Layout>
     </>
   )

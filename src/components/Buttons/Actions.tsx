@@ -6,12 +6,14 @@ interface ActionsButtonProps {
   children?: ReactNode
   size?: 'small' | 'medium'
   tooltip?: string | object
+  icon?: ReactNode
 }
 
 const ActionsButton: React.FC<ActionsButtonProps> = ({
   children,
   size,
-  tooltip
+  tooltip,
+  icon
 }: ActionsButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -27,7 +29,7 @@ const ActionsButton: React.FC<ActionsButtonProps> = ({
     <>
       <Tooltip title={tooltip}>
         <IconButton onClick={handleClick} size={size}>
-          <MoreVertOutlinedIcon fontSize="inherit" />
+          {!!icon ? icon : <MoreVertOutlinedIcon fontSize="inherit" />}
         </IconButton>
       </Tooltip>
 

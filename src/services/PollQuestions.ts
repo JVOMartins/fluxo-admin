@@ -1,4 +1,5 @@
 import api, { endpoints } from './api'
+import { IPollQuestionAnswers } from './PollQuestionsAnswers'
 
 export const defaultPollQuestion = {
   question: '',
@@ -21,6 +22,7 @@ export interface IPollQuestions {
   type?: string
   position?: number
   poll_id?: number
+  answers?: Array<IPollQuestionAnswers>
   company_id?: number
   deleted_at?: string
   created_at?: string
@@ -54,7 +56,12 @@ export async function updatePollQuestions(
   return res.data
 }
 
-export async function deletePoll(id: number): Promise<IPollQuestions> {
-  const res = await api.delete(`${endpoints.polls}/${id}`)
+export async function deletePollQuestions(
+  pollId: number,
+  id: number
+): Promise<IPollQuestions> {
+  const res = await api.delete(
+    `${endpoints.polls}/${pollId}/questions/${id}?force=true`
+  )
   return res.data
 }
