@@ -32,12 +32,12 @@ const useStyles = makeStyles(theme => ({
   list: {
     display: 'flex',
     width: '100%',
-    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     marginTop: 16,
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column'
+      flexDirection: 'column',
+      width: 'auto'
     }
   },
   left: {
@@ -50,21 +50,21 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
       flexDirection: 'row',
+      flexWrap: 'nowrap',
       overflowX: 'auto',
       marginBottom: 16,
+      width: '100%',
       overflowScrolling: 'touch'
     }
   },
   right: {
     display: 'flex',
     width: '70%',
-    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'row',
-      width: 'auto',
-      marginBottom: 16
+      marginBottom: 16,
+      width: '100%'
     }
   },
   options: {

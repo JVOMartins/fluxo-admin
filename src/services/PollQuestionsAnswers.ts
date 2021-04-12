@@ -1,16 +1,14 @@
 import api, { endpoints } from './api'
 
 export const defaultPollQuestionAnswers = {
-  question: '',
+  value: '',
   description: '',
-  type: '',
   position: 1
 }
 
 export interface RequestPollQuestionAnswers {
-  question: string
+  value: string
   description: string
-  type: string
   position: string
 }
 
@@ -20,6 +18,7 @@ export interface IPollQuestionAnswers {
   description?: string
   position?: number
   poll_question_id?: number
+  poll_id?: number
   company_id?: number
   deleted_at?: string
   created_at?: string
@@ -55,7 +54,7 @@ export async function updatePollQuestionAnswers(
   data: IPollQuestionAnswers
 ): Promise<IPollQuestionAnswers> {
   const res = await api.put(
-    `${endpoints.polls}/${pollId}/question/${questionId}/answers/${id}`,
+    `${endpoints.polls}/${pollId}/questions/${questionId}/answers/${id}`,
     data
   )
   return res.data

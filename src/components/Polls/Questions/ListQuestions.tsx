@@ -8,6 +8,7 @@ import {
   Typography
 } from '@material-ui/core'
 import {
+  defaultPollQuestion,
   deletePollQuestions,
   getPollQuestions,
   IPollQuestions,
@@ -20,6 +21,7 @@ import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import { InputNumber } from '@components/InputNumber'
 import Swal from 'sweetalert2'
 import { ListAnswers } from '../Answers/ListAnswers'
+import { ModalAnswers } from '../Answers/ModalAnswers'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -74,7 +76,11 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [questions, setQuestions] = useState<Array<IPollQuestions>>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [editQuestion, setEditQuestion] = useState<number>(-1)
+  const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
+    defaultPollQuestion
+  )
   const [editDescription, setEditDescription] = useState<number>(-1)
+  const [formNewAnswer, setFormNewAnswer] = useState<boolean>(false)
 
   const getAllQuestionsByPoll = async (pollId: number) => {
     setLoading(true)
@@ -152,6 +158,15 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         type={toast.type}
         message={toast.message}
       />
+      <ModalAnswers
+        open={formNewAnswer}
+        onClose={() => {
+          setFormNewAnswer(!formNewAnswer)
+          setAddQuestionAnswer(defaultPollQuestion)
+        }}
+        pollId={currentPoll}
+        question={addQuestionAnswer}
+      />
       {loading && <LoadingDiv />}
       {!loading && questions.length === 0 && (
         <Typography>{text('registersEmpty')}</Typography>
@@ -163,10 +178,17 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
             <Box className="options">
               <ActionsButton tooltip={text('tooltipOptions')}>
                 {item.type.includes('multiple') && (
-                  <MenuItem>Nova Resposta</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setAddQuestionAnswer(item)
+                      setFormNewAnswer(true)
+                    }}
+                  >
+                    {text('btnNewResponse')}
+                  </MenuItem>
                 )}
                 <MenuItem onClick={() => handleDelete(item.id)}>
-                  Excluir
+                  {text('btnDelete')}
                 </MenuItem>
               </ActionsButton>
               <InputNumber
@@ -176,13 +198,12 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
               />
             </Box>
             <Box className="details">
-              <Box className={classes.index}></Box>
               <Box>
                 <Box className={classes.question} tabIndex={-1}>
                   {editQuestion === index ? (
                     <TextField
                       id={`${item.poll_id}_${item?.id}`}
-                      label="Editar Pergunta"
+                      label={text('labelEditQuestion')}
                       multiline
                       rows={2}
                       variant="outlined"
@@ -214,8 +235,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   {editDescription === index ? (
                     <TextField
                       id={`${item.poll_id}_${item?.id}`}
-                      label="Editar Descrição"
-                      multiline
+                      label={text('labelEditDescription')}
                       rows={1}
                       variant="outlined"
                       fullWidth
@@ -245,14 +265,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   )}
                 </Box>
               </Box>
-              {item.type.includes('multiple') && (
-                <Box>
-                  <ListAnswers
-                    currentPoll={currentPoll}
-                    currentQuestion={item.id}
-                  />
-                </Box>
-              )}
+
+              <Box>
+                <ListAnswers currentQuestionAnswers={item.answers} />
+              </Box>
             </Box>
           </Box>
         ))}

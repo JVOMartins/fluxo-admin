@@ -15,17 +15,17 @@ import {
 import { FormControl, InputLabel, Select } from '@material-ui/core'
 import { AddButton } from '@components/Buttons'
 
-interface ModalPollsProps {
+interface ModalQuestionsProps {
   open: boolean
   pollId: number
   onClose: (event: any) => void
 }
 
-const ModalQuestions: React.FC<ModalPollsProps> = ({
+const ModalQuestions: React.FC<ModalQuestionsProps> = ({
   open,
   pollId,
   onClose
-}: ModalPollsProps) => {
+}: ModalQuestionsProps) => {
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [loading, setLoading] = useState<boolean>(false)
@@ -83,7 +83,7 @@ const ModalQuestions: React.FC<ModalPollsProps> = ({
           <TextField
             name="position"
             type="number"
-            label={`${text('labelPollQuestionPosition')}`}
+            label={`${text('labelPollPosition')}`}
             variant="outlined"
             value={question.position}
             onChange={event => handleChange(event)}
