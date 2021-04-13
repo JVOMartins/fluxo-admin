@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
@@ -12,13 +12,15 @@ import { AddButton } from '@components/Buttons'
 import {
   createPollQuestionAnswers,
   defaultPollQuestionAnswers,
-  IPollQuestionAnswers
+  IPollQuestionAnswers,
+  updatePollQuestionAnswers
 } from '@services/PollQuestionsAnswers'
 
 interface ModalAnswersProps {
   open: boolean
-  pollId: number
-  question: IPollQuestions
+  pollId?: number
+  question?: IPollQuestions
+  editAnswer?: IPollQuestionAnswers
   onClose: (event: any) => void
 }
 
@@ -26,13 +28,14 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
   open,
   pollId,
   question,
+  editAnswer,
   onClose
 }: ModalAnswersProps) => {
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [loading, setLoading] = useState<boolean>(false)
   const [answer, setAnswer] = useState<IPollQuestionAnswers>(
-    defaultPollQuestionAnswers
+    editAnswer || defaultPollQuestionAnswers
   )
 
   const handleChange = (
@@ -41,19 +44,35 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
     >
   ): void => {
     const { name, value } = event.target
-    setAnswer({ ...answer, [name]: value })
+    setAnswer({
+      ...answer,
+      [name]: typeof value === 'string' ? value.trim() : value
+    })
   }
 
   const handleClick = async () => {
     setLoading(true)
     try {
-      await createPollQuestionAnswers(pollId, question.id, answer)
-      setAnswer(defaultPollQuestionAnswers)
+      let edited = {}
+      !!editAnswer
+        ? (edited = await updatePollQuestionAnswers(
+            pollId,
+            editAnswer.poll_question_id,
+            editAnswer.id,
+            answer
+          ))
+        : (edited = await createPollQuestionAnswers(
+            pollId,
+            question.id,
+            answer
+          ))
       setToast({
         type: 'success',
         open: true,
         message: 'Gravado com sucesso!'
       })
+      setAnswer(defaultPollQuestionAnswers)
+      onClose(edited)
     } catch (error) {
       setToast({
         type: 'error',
@@ -62,8 +81,11 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
       })
     }
     setLoading(false)
-    onClose(true)
   }
+
+  useEffect(() => {
+    !!editAnswer && setAnswer(editAnswer)
+  }, [editAnswer])
 
   return (
     <>
@@ -81,7 +103,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
         maxWidth="sm"
       >
         <DialogTitle id="form-question">
-          {text('titleNewQuestions')}
+          {!!editAnswer ? text('titleEditAnswer') : text('titleNewAnswer')}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -89,17 +111,17 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
             type="number"
             label={`${text('labelPollPosition')}`}
             variant="outlined"
-            value={answer.position}
+            value={answer?.position}
             onChange={event => handleChange(event)}
             fullWidth
             margin="normal"
           />
-          {question.type.includes('text') && (
+          {(question?.type.includes('text') || !!editAnswer?.value) && (
             <TextField
               name="value"
               label={`${text('labelPollAnswerValue')}`}
               variant="outlined"
-              value={answer.value}
+              value={answer?.value}
               onChange={event => handleChange(event)}
               multiline
               rows={4}
@@ -107,7 +129,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
               margin="normal"
             />
           )}
-          {question.type.includes('image') && (
+          {question?.type.includes('image') && (
             <label htmlFor="button-file">
               <input
                 accept="image/*"
@@ -115,7 +137,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
                 multiple
                 type="file"
                 style={{ display: 'none' }}
-                value={answer.value}
+                value={answer?.value}
                 onChange={event => handleChange(event)}
               />
               <Button variant="contained" color="primary" component="span">
@@ -127,7 +149,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
             name="description"
             label={`${text('labelPollAnswerDescription')}`}
             variant="outlined"
-            value={answer.description}
+            value={answer?.description}
             onChange={event => handleChange(event)}
             multiline
             rows={4}

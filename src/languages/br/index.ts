@@ -19,6 +19,9 @@ export const StringsPortuguese = {
   /** Botoes */
   btnClose: 'Fechar',
   btnSave: 'Salvar',
+  btnEdit: 'Editar',
+  btnDuplicate: 'Duplicar',
+  btnQrCode: 'QRCODE',
   btnDelete: 'Excluir',
 
   /** Login Page */
@@ -63,6 +66,8 @@ export const StringsPortuguese = {
   titleNewPolls: 'Nova Enquete',
   btnNewQuestions: 'Pergunta',
   titleNewQuestions: 'Nova Pergunta',
+  titleNewAnswer: 'Nova Resposta',
+  titleEditAnswer: 'Editar Resposta',
 
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',

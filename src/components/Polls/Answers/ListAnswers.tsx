@@ -1,8 +1,7 @@
-import { InputNumber } from '@components/InputNumber'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
 import {
-  Box,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -12,10 +11,13 @@ import {
   Tooltip
 } from '@material-ui/core'
 import {
-  IPollQuestionAnswers,
-  updatePollQuestionAnswers
+  deletePollQuestionAnswers,
+  IPollQuestionAnswers
 } from '@services/PollQuestionsAnswers'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { ModalAnswers } from './ModalAnswers'
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
+import Swal from 'sweetalert2'
 
 interface ListAnswersProps {
   currentQuestionAnswers: Array<IPollQuestionAnswers>
@@ -28,8 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     cursor: 'pointer',
-    borderBottom: '1px solid #eee',
-    padding: 16
+    borderBottom: '1px solid #eee'
   }
 }))
 
@@ -43,33 +44,55 @@ const ListAnswers: React.FC<ListAnswersProps> = ({
   const [answers, setAnswers] = useState<Array<IPollQuestionAnswers>>([])
 
   const handleEditQuestionAnswer = async (
-    id: number,
-    column: string,
-    value: string | number
+    edit: IPollQuestionAnswers
   ): Promise<void> => {
-    const val = typeof value === 'string' ? value.trim() : value
-    const index = answers.findIndex(
-      item => item.id === id && item[column] !== val
-    )
+    const index = answers.findIndex(item => item.id === edit.id)
     if (index >= 0) {
-      await updatePollQuestionAnswers(
-        answers[index].poll_id,
-        answers[index].poll_question_id,
-        id,
-        { [column]: val }
-      )
       let temp = answers.slice()
-      temp[index][column] = val
-      if (column === 'position') {
-        temp = temp.sort((a, b) => a.position - b.position).slice()
-      }
+      temp[index] = edit
+      temp = temp.sort((a, b) => a.position - b.position).slice()
       setAnswers(temp)
-      setToast({
-        type: 'success',
-        open: true,
-        message: 'Editado com sucesso!'
-      })
     }
+  }
+
+  const handleDeleteQuestionAnswer = async (
+    pollId: number,
+    pollQuestionId: number,
+    id: number
+  ): Promise<void> => {
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Isso irá excluir o item e seus registros',
+      icon: 'error',
+      showCancelButton: true,
+      cancelButtonText: 'Não',
+      confirmButtonText: 'Sim'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          await deletePollQuestionAnswers(pollId, pollQuestionId, id)
+          setToast({
+            type: 'success',
+            open: true,
+            message: 'Gravado com sucesso!'
+          })
+          const index = answers.findIndex(item => item.id === id)
+          if (index >= 0) {
+            let temp = answers.slice()
+            temp = temp
+              .filter(item => item.id !== id)
+              .sort((a, b) => a.position - b.position)
+            setAnswers(temp)
+          }
+        } catch (error) {
+          setToast({
+            type: 'error',
+            open: true,
+            message: error.message
+          })
+        }
+      }
+    })
   }
 
   useEffect(() => {
@@ -84,52 +107,51 @@ const ListAnswers: React.FC<ListAnswersProps> = ({
         type={toast.type}
         message={toast.message}
       />
-
-      <List
-        dense
-        className={classes.list}
-        onBlur={() => setEditAnswer(-1)}
-        tabIndex={-1}
-      >
+      <ModalAnswers
+        open={editAnswer === -1 ? false : true}
+        onClose={answer => {
+          handleEditQuestionAnswer(answer)
+          setEditAnswer(-1)
+        }}
+        editAnswer={answers.find(item => item.id === editAnswer)}
+      />
+      <List dense className={classes.list}>
         {!!answers &&
           answers.map(item => (
-            <>
-              {editAnswer !== item.id ? (
-                <Tooltip
-                  title={`${text('tooltipEditQuestion')}`}
-                  placement="top-start"
-                >
-                  <ListItem
-                    key={item.id}
-                    className={classes.listItem}
-                    onDoubleClick={() => setEditAnswer(item.id)}
-                  >
-                    <ListItemIcon>{item.position}</ListItemIcon>
-                    <ListItemText
-                      primary={item.value}
-                      secondary={item.description}
-                    />
-                  </ListItem>
-                </Tooltip>
-              ) : (
+            <React.Fragment key={item.id}>
+              <Tooltip
+                title={`${text('tooltipEditQuestion')}`}
+                placement="top-start"
+              >
                 <ListItem
                   key={item.id}
                   className={classes.listItem}
-                  onDoubleClick={() => setEditAnswer(item.id)}
+                  onDoubleClick={() => {
+                    setEditAnswer(item.id)
+                  }}
                 >
-                  <Box>{item.value}</Box>
+                  <ListItemIcon>{item.position}</ListItemIcon>
+                  <ListItemText
+                    primary={item.value}
+                    secondary={item.description}
+                  />
                   <ListItemSecondaryAction>
-                    <InputNumber
-                      number={item.position}
-                      min={1}
-                      onBlur={num =>
-                        handleEditQuestionAnswer(item.id, 'position', num)
+                    <IconButton
+                      size="small"
+                      onClick={() =>
+                        handleDeleteQuestionAnswer(
+                          item.poll_id,
+                          item.poll_question_id,
+                          item.id
+                        )
                       }
-                    />
+                    >
+                      <DeleteOutlineOutlinedIcon fontSize="inherit" />
+                    </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
-              )}
-            </>
+              </Tooltip>
+            </React.Fragment>
           ))}
       </List>
     </>

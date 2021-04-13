@@ -184,18 +184,24 @@ const Polls: NextPage = () => {
                         https://enquetes.fluxo.live/{poll.code}
                       </Typography>
                     </Box>
-                    <Box className={classes.options}>
-                      <ActionsButton tooltip={text('tooltipOptions')}>
-                        <MenuItem onClick={console.log}>Baixar QRCODE</MenuItem>
-                        <MenuItem onClick={console.log}>Duplicar</MenuItem>
-                        <MenuItem onClick={() => handleUpdate(poll.id)}>
-                          Editar
-                        </MenuItem>
-                        <MenuItem onClick={() => handleDelete(poll.id)}>
-                          Excluir
-                        </MenuItem>
-                      </ActionsButton>
-                    </Box>
+                    {currentPoll === poll.id && (
+                      <Box className={classes.options}>
+                        <ActionsButton tooltip={text('tooltipOptions')}>
+                          <MenuItem onClick={console.log}>
+                            {text('btnQrCode')}
+                          </MenuItem>
+                          <MenuItem onClick={console.log}>
+                            {text('btnDuplicate')}
+                          </MenuItem>
+                          <MenuItem onClick={() => handleUpdate(poll.id)}>
+                            {text('btnEdit')}
+                          </MenuItem>
+                          <MenuItem onClick={() => handleDelete(poll.id)}>
+                            {text('btnDelete')}
+                          </MenuItem>
+                        </ActionsButton>
+                      </Box>
+                    )}
                   </CardItems>
                 ))}
             </Box>
