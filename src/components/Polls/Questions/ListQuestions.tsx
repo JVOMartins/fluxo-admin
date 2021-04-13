@@ -22,6 +22,7 @@ import { InputNumber } from '@components/InputNumber'
 import Swal from 'sweetalert2'
 import { ListAnswers } from '../Answers/ListAnswers'
 import { ModalAnswers } from '../Answers/ModalAnswers'
+import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -87,6 +88,19 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     const res = await getPollQuestions(pollId)
     setQuestions(res)
     setLoading(false)
+  }
+
+  const handleAddQuestionAnswer = (add: IPollQuestionAnswers): void => {
+    console.log(add)
+    const index = questions.findIndex(item => item.id == add.poll_question_id)
+    if (index >= 0) {
+      let temp = questions.slice()
+      temp[index].answers.push(add)
+      temp[index].answers = temp[index].answers.sort(
+        (a, b) => a.position - b.position
+      )
+      setQuestions(temp)
+    }
   }
 
   const handleEditQuestion = async (
@@ -160,9 +174,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
       />
       <ModalAnswers
         open={formNewAnswer}
-        onClose={() => {
+        onClose={answer => {
           setFormNewAnswer(!formNewAnswer)
           setAddQuestionAnswer(defaultPollQuestion)
+          handleAddQuestionAnswer(answer)
         }}
         pollId={currentPoll}
         question={addQuestionAnswer}
