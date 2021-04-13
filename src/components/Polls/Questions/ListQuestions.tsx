@@ -274,16 +274,17 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                         onDoubleClick={() => setEditDescription(index)}
                         className="editable"
                       >
-                        Descrição: {item.description}
+                        {text('labelPollDescription')}: {item.description}
                       </Typography>
                     </Tooltip>
                   )}
                 </Box>
               </Box>
-
-              <Box>
-                <ListAnswers currentQuestionAnswers={item.answers} />
-              </Box>
+              {item.type.includes('multiple') && (
+                <Box>
+                  <ListAnswers currentQuestionAnswers={item.answers} />
+                </Box>
+              )}
             </Box>
           </Box>
         ))}
