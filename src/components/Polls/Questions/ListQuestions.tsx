@@ -91,16 +91,17 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   }
 
   const handleAddQuestionAnswer = (add: IPollQuestionAnswers): void => {
-    console.log(add)
+    setLoading(true)
     const index = questions.findIndex(item => item.id == add.poll_question_id)
     if (index >= 0) {
       let temp = questions.slice()
       temp[index].answers.push(add)
-      temp[index].answers = temp[index].answers.sort(
-        (a, b) => a.position - b.position
-      )
+      temp[index].answers = temp[index].answers
+        .sort((a, b) => a.position - b.position)
+        .slice()
       setQuestions(temp)
     }
+    setLoading(false)
   }
 
   const handleEditQuestion = async (
@@ -179,7 +180,6 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
           setAddQuestionAnswer(defaultPollQuestion)
           handleAddQuestionAnswer(answer)
         }}
-        pollId={currentPoll}
         question={addQuestionAnswer}
       />
       {loading && <LoadingDiv />}

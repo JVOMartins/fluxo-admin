@@ -46,6 +46,7 @@ const ListAnswers: React.FC<ListAnswersProps> = ({
   const handleEditQuestionAnswer = async (
     edit: IPollQuestionAnswers
   ): Promise<void> => {
+    console.log(edit)
     const index = answers.findIndex(item => item.id === edit.id)
     if (index >= 0) {
       let temp = answers.slice()
