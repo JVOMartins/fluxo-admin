@@ -18,7 +18,6 @@ import {
 
 interface ModalAnswersProps {
   open: boolean
-  pollId?: number
   question?: IPollQuestions
   editAnswer?: IPollQuestionAnswers
   onClose: (event: any) => void
@@ -26,7 +25,6 @@ interface ModalAnswersProps {
 
 const ModalAnswers: React.FC<ModalAnswersProps> = ({
   open,
-  pollId,
   question,
   editAnswer,
   onClose
@@ -56,13 +54,13 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
       let edited = {}
       !!editAnswer
         ? (edited = await updatePollQuestionAnswers(
-            pollId,
+            editAnswer.poll_id,
             editAnswer.poll_question_id,
             editAnswer.id,
             answer
           ))
         : (edited = await createPollQuestionAnswers(
-            pollId,
+            question.poll_id,
             question.id,
             answer
           ))
