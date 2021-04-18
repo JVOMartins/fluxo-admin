@@ -11,17 +11,65 @@ import { IPollQuestions } from '@services/PollQuestions'
 import { AddButton } from '@components/Buttons'
 import {
   createPollQuestionAnswers,
+  createPollQuestionAnswersImage,
   defaultPollQuestionAnswers,
   IPollQuestionAnswers,
   updatePollQuestionAnswers
 } from '@services/PollQuestionsAnswers'
+import { IconButton, makeStyles } from '@material-ui/core'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 
 interface ModalAnswersProps {
   open: boolean
   question?: IPollQuestions
   editAnswer?: IPollQuestionAnswers
   onClose: (event: any) => void
+  onSave: (event: any) => void
 }
+
+const useStyles = makeStyles(theme => ({
+  dropzone: {
+    width: '100%',
+    height: 100,
+    backgroundColor: '#eee',
+    border: '2px dashed #ccc',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    '& > label': {
+      cursor: 'pointer',
+      color: '#999',
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
+  },
+  imageSelected: {
+    width: '100%',
+    height: '100%',
+    minHeight: 150,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+
+    '& > button': {
+      color: 'red',
+      position: 'absolute',
+      zIndex: 2,
+      bottom: -20
+    },
+    '& > img': {
+      position: 'absolute',
+      zIndex: 1
+    }
+  }
+}))
 
 const ModalAnswers: React.FC<ModalAnswersProps> = ({
   open,
@@ -29,9 +77,11 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
   editAnswer,
   onClose
 }: ModalAnswersProps) => {
+  const classes = useStyles()
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [loading, setLoading] = useState<boolean>(false)
+  const [file, setFile] = useState(null)
   const [answer, setAnswer] = useState<IPollQuestionAnswers>(
     editAnswer || defaultPollQuestionAnswers
   )
@@ -71,6 +121,28 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
       })
       setAnswer(defaultPollQuestionAnswers)
       onClose(edited)
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+    setLoading(false)
+  }
+
+  const handleUpload = async () => {
+    try {
+      const formData = new FormData()
+      formData.append('position', (answer.position as unknown) as string)
+      formData.append('description', answer.description)
+      formData.append('file', file)
+
+      await createPollQuestionAnswersImage(
+        question.poll_id,
+        question.id,
+        formData
+      )
     } catch (error) {
       setToast({
         type: 'error',
@@ -128,20 +200,30 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
             />
           )}
           {question?.type.includes('image') && (
-            <label htmlFor="button-file">
-              <input
-                accept="image/*"
-                id="button-file"
-                multiple
-                type="file"
-                style={{ display: 'none' }}
-                value={answer?.value}
-                onChange={event => handleChange(event)}
-              />
-              <Button variant="contained" color="primary" component="span">
-                Upload
-              </Button>
-            </label>
+            <>
+              {!file ? (
+                <div className={classes.dropzone}>
+                  <input
+                    accept="image/*"
+                    id="button-file"
+                    multiple
+                    type="file"
+                    style={{ display: 'none' }}
+                    onChange={event => setFile(event.target.files[0])}
+                  />
+                  <label htmlFor="button-file">
+                    {text('labelPollSelectImage')}
+                  </label>
+                </div>
+              ) : (
+                <div className={classes.imageSelected}>
+                  <IconButton onClick={() => setFile(null)}>
+                    <HighlightOffIcon />
+                  </IconButton>
+                  <img src={URL.createObjectURL(file)} width={200} />
+                </div>
+              )}
+            </>
           )}
           <TextField
             name="description"
@@ -159,11 +241,19 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
           <Button onClick={onClose} color="primary">
             {text('btnClose')}
           </Button>
-          <AddButton
-            label={text('btnSave')}
-            loading={loading}
-            onClick={() => handleClick()}
-          />
+          {question?.type.includes('image') ? (
+            <AddButton
+              label={text('btnSave')}
+              loading={loading}
+              onClick={() => handleUpload()}
+            />
+          ) : (
+            <AddButton
+              label={text('btnSave')}
+              loading={loading}
+              onClick={() => handleClick()}
+            />
+          )}
         </DialogActions>
       </Dialog>
     </>

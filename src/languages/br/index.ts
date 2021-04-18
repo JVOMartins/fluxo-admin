@@ -76,6 +76,7 @@ export const StringsPortuguese = {
 
   labelPollName: 'Nome',
   labelPollDescription: 'Descrição',
+  labelPollSelectImage: 'Selecione a imagem (PNG, JPEG, JPG ou GIF)',
 
   labelPollPosition: 'Posição',
   labelPollQuestion: 'Pergunta',

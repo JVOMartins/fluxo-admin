@@ -47,6 +47,23 @@ export async function createPollQuestionAnswers(
   return res.data
 }
 
+export async function createPollQuestionAnswersImage(
+  pollId: number,
+  questionId: number,
+  data: FormData
+): Promise<IPollQuestionAnswers> {
+  const res = await api.post(
+    `${endpoints.polls}/${pollId}/questions/${questionId}/answers`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  )
+  return res.data
+}
+
 export async function updatePollQuestionAnswers(
   pollId: number,
   questionId: number,
