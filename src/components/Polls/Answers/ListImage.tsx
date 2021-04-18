@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper
     },
     gridList: {
-      width: 480
+      width: 300
     },
     icon: {
       color: theme.palette.error.main
