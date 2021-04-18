@@ -282,7 +282,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
               </Box>
               {item.type.includes('multiple') && (
                 <Box>
-                  <ListAnswers currentQuestionAnswers={item.answers} />
+                  <ListAnswers
+                    currentQuestionAnswers={item.answers}
+                    type={item.type}
+                  />
                 </Box>
               )}
             </Box>

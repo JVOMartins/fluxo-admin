@@ -24,7 +24,7 @@ interface ModalAnswersProps {
   question?: IPollQuestions
   editAnswer?: IPollQuestionAnswers
   onClose: (event: any) => void
-  onSave: (event: any) => void
+  onSave?: (event: any) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -101,15 +101,15 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
   const handleClick = async () => {
     setLoading(true)
     try {
-      let edited = {}
+      let res = {}
       !!editAnswer
-        ? (edited = await updatePollQuestionAnswers(
+        ? (res = await updatePollQuestionAnswers(
             editAnswer.poll_id,
             editAnswer.poll_question_id,
             editAnswer.id,
             answer
           ))
-        : (edited = await createPollQuestionAnswers(
+        : (res = await createPollQuestionAnswers(
             question.poll_id,
             question.id,
             answer
@@ -120,7 +120,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
         message: 'Gravado com sucesso!'
       })
       setAnswer(defaultPollQuestionAnswers)
-      onClose(edited)
+      onClose(res)
     } catch (error) {
       setToast({
         type: 'error',
@@ -132,17 +132,21 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
   }
 
   const handleUpload = async () => {
+    setLoading(true)
     try {
       const formData = new FormData()
       formData.append('position', (answer.position as unknown) as string)
       formData.append('description', answer.description)
       formData.append('file', file)
 
-      await createPollQuestionAnswersImage(
+      const res = await createPollQuestionAnswersImage(
         question.poll_id,
         question.id,
         formData
       )
+      setAnswer(defaultPollQuestionAnswers)
+      setFile(null)
+      onClose(res)
     } catch (error) {
       setToast({
         type: 'error',

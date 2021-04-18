@@ -23,6 +23,7 @@ export const StringsPortuguese = {
   btnDuplicate: 'Duplicar',
   btnQrCode: 'QRCODE',
   btnDelete: 'Excluir',
+  btnLoadingText: 'Aguarde ...',
 
   /** Login Page */
   loginTitle: 'Bem Vindo à Fluxo',

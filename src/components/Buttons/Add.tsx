@@ -1,3 +1,4 @@
+import useTranslation from '@contexts/Intl'
 import {
   Box,
   Button,
@@ -45,6 +46,7 @@ const AddButton: React.FC<AddButtonProps> = ({
   onClick
 }: AddButtonProps) => {
   const classes = useStyles()
+  const { text } = useTranslation()
   return (
     <>
       <Box className={classes.wrapper}>
@@ -56,7 +58,7 @@ const AddButton: React.FC<AddButtonProps> = ({
           startIcon={!!icon && icon}
           onClick={onClick}
         >
-          {label}
+          {loading ? text('btnLoadingText') : label}
         </Button>
         {loading && (
           <CircularProgress size={24} className={classes.buttonProgress} />
