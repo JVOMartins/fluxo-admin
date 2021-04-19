@@ -23,6 +23,7 @@ import Swal from 'sweetalert2'
 import { ListAnswers } from '../Answers/ListAnswers'
 import { ModalAnswers } from '../Answers/ModalAnswers'
 import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
+import { ModalFollowUp } from './ModalFollowUp'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -80,6 +81,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
     defaultPollQuestion
   )
+  const [followUpQuestion, setFollowUpQuestion] = useState<number>(-1)
   const [editDescription, setEditDescription] = useState<number>(-1)
   const [formNewAnswer, setFormNewAnswer] = useState<boolean>(false)
 
@@ -182,6 +184,15 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         }}
         question={addQuestionAnswer}
       />
+
+      <ModalFollowUp
+        open={followUpQuestion > 0}
+        pollId={currentPoll}
+        questionId={followUpQuestion}
+        onClose={() => setFollowUpQuestion(-1)}
+        onSave={console.log}
+      />
+
       {loading && <LoadingDiv />}
       {!loading && questions.length === 0 && (
         <Typography>{text('registersEmpty')}</Typography>
@@ -202,6 +213,13 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                     {text('btnNewResponse')}
                   </MenuItem>
                 )}
+                <MenuItem
+                  onClick={() => {
+                    setFollowUpQuestion(item.id)
+                  }}
+                >
+                  {text('btnNewFollowUp')}
+                </MenuItem>
                 <MenuItem onClick={() => handleDelete(item.id)}>
                   {text('btnDelete')}
                 </MenuItem>

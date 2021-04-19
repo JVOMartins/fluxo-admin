@@ -92,10 +92,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
     >
   ): void => {
     const { name, value } = event.target
-    setAnswer({
-      ...answer,
-      [name]: typeof value === 'string' ? value.trim() : value
-    })
+    setAnswer({ ...answer, [name]: value })
   }
 
   const handleClick = async () => {

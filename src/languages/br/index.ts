@@ -67,6 +67,8 @@ export const StringsPortuguese = {
   titleNewPolls: 'Nova Enquete',
   btnNewQuestions: 'Pergunta',
   titleNewQuestions: 'Nova Pergunta',
+  titleNewQuestionsFollowUp: 'Novo FollowUp',
+  titleEditQuestionsFollowUp: 'Editar FollowUp',
   titleNewAnswer: 'Nova Resposta',
   titleEditAnswer: 'Editar Resposta',
 
@@ -74,6 +76,7 @@ export const StringsPortuguese = {
   titleTabIndividual: 'Individual',
 
   btnNewResponse: 'Nova Resposta',
+  btnNewFollowUp: 'Novo FollowUp',
 
   labelPollName: 'Nome',
   labelPollDescription: 'Descrição',

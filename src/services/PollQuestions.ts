@@ -22,6 +22,8 @@ export interface IPollQuestions {
   type?: string
   position?: number
   poll_id?: number
+  follow_up?: number
+  follow_up_role?: string
   answers?: Array<IPollQuestionAnswers>
   company_id?: number
   deleted_at?: string
