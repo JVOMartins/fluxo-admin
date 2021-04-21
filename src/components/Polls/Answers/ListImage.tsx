@@ -12,6 +12,7 @@ import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import useTranslation from '@contexts/Intl'
 import React from 'react'
+import personalStyles from '@styles/styles'
 
 interface ListImageProps {
   answers: Array<IPollQuestionAnswers>
@@ -29,10 +30,10 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper
     },
     gridList: {
-      width: 300
+      width: '100%'
     },
     icon: {
-      color: theme.palette.error.main
+      color: personalStyles.colors.white80
     }
   })
 )
@@ -46,7 +47,11 @@ const ListImage: React.FC<ListImageProps> = ({
   const { text } = useTranslation()
   return (
     <>
-      <GridList cellHeight={150} className={classes.gridList}>
+      <GridList
+        cellHeight={150}
+        cols={answers.length}
+        className={classes.gridList}
+      >
         {answers.map(item => (
           <Tooltip
             title={`${text('tooltipEditQuestion')}`}

@@ -1,4 +1,4 @@
-export const convertDate = (date: string): string => {
+const convertDate = (date: string): string => {
   const options: any = {
     day: '2-digit',
     month: '2-digit',
@@ -9,3 +9,5 @@ export const convertDate = (date: string): string => {
   }
   return new Intl.DateTimeFormat('pt-Br', options).format(new Date(date))
 }
+
+export default convertDate

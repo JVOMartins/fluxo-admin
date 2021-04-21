@@ -7,17 +7,16 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import useTranslation from '@contexts/Intl'
 import { defaultPollQuestion, IPollQuestions } from '@services/PollQuestions'
-import { FormControl, InputLabel, Select } from '@material-ui/core'
+import { FormControl, InputLabel, Select, Typography } from '@material-ui/core'
 import { AddButton } from '@components/Buttons'
-import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
+import { SelectImage } from './SelectImage'
 
 interface ModalFollowUpProps {
   open: boolean
   pollId: number
-  questionId: number
+  currentQuestion: IPollQuestions
   type?: string
   editFollowUp?: IPollQuestions | null
-  answers?: IPollQuestionAnswers
   loading?: boolean
   onSave: (question: IPollQuestions) => void
   onClose: (event: any) => void
@@ -26,8 +25,7 @@ interface ModalFollowUpProps {
 const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
   open,
   pollId,
-  questionId,
-  answers,
+  currentQuestion,
   editFollowUp = null,
   loading,
   type,
@@ -52,10 +50,11 @@ const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
     const data = {
       ...question,
       poll_id: pollId,
-      follow_up: questionId
+      follow_up: currentQuestion.id
     }
-
     onSave(data)
+    setQuestion(defaultPollQuestion)
+    if (!loading) onClose(true)
   }
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
             : text('titleEditQuestionsFollowUp')}
         </DialogTitle>
         <DialogContent>
-          {!!type && type.includes('zeroten') && (
+          {currentQuestion?.type.includes('zeroten') && (
             <FormControl variant="outlined" fullWidth margin="normal">
               <InputLabel htmlFor="outlined-age-native-simple">
                 Mostre se a resposta for
@@ -98,6 +97,40 @@ const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
                 <option value="promotor">promotor</option>
               </Select>
             </FormControl>
+          )}
+          {currentQuestion?.type.includes('multiple_text') && (
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel htmlFor="outlined-age-native-simple">
+                Mostre se a resposta for
+              </InputLabel>
+              <Select
+                native
+                value={question.follow_up_role}
+                onChange={event => handleChange(event)}
+                label={`Mostre se a resposta for`}
+                inputProps={{
+                  name: 'follow_up_role',
+                  id: 'follow_up_role'
+                }}
+              >
+                <option aria-label="None" value="" />
+                {currentQuestion.answers.map(item => (
+                  <option value={item.id}>{item.value}</option>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+          {currentQuestion?.type.includes('multiple_image') && (
+            <>
+              <Typography>Mostre se a resposta for</Typography>
+              <SelectImage
+                answers={currentQuestion.answers}
+                selected={question.follow_up_role}
+                onSelect={id => {
+                  setQuestion({ ...question, follow_up_role: id })
+                }}
+              />
+            </>
           )}
           <TextField
             name="position"
