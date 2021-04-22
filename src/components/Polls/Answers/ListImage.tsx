@@ -48,8 +48,8 @@ const ListImage: React.FC<ListImageProps> = ({
   return (
     <>
       <GridList
-        cellHeight={150}
-        cols={answers.length}
+        cellHeight={100}
+        cols={answers.length > 5 ? answers.length : 5}
         className={classes.gridList}
       >
         {answers.map(item => (

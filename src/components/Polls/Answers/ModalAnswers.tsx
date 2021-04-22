@@ -18,11 +18,11 @@ import {
 } from '@services/PollQuestionsAnswers'
 import { IconButton, makeStyles } from '@material-ui/core'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
-import isUrl from '@utils/isUrl'
 
 interface ModalAnswersProps {
   open: boolean
   question?: IPollQuestions
+  type?: string
   editAnswer?: IPollQuestionAnswers
   onClose: (event: any) => void
   onSave?: (event: any) => void
@@ -192,7 +192,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
             fullWidth
             margin="normal"
           />
-          {(question?.type.includes('text') || !isUrl(answer?.value)) && (
+          {question?.type.includes('text') && (
             <TextField
               name="value"
               label={`${text('labelPollAnswerValue')}`}
@@ -205,7 +205,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
               margin="normal"
             />
           )}
-          {(question?.type.includes('image') || isUrl(answer?.value)) && (
+          {question?.type.includes('image') && (
             <>
               {!file ? (
                 <div className={classes.dropzone}>
@@ -226,10 +226,7 @@ const ModalAnswers: React.FC<ModalAnswersProps> = ({
                   <IconButton onClick={() => setFile(null)}>
                     <HighlightOffIcon />
                   </IconButton>
-                  <img
-                    src={URL.createObjectURL(file) || answer?.value}
-                    width={200}
-                  />
+                  <img src={URL.createObjectURL(file)} width={200} />
                 </div>
               )}
             </>

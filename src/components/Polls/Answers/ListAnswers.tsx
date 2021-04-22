@@ -8,14 +8,15 @@ import { ModalAnswers } from './ModalAnswers'
 import Swal from 'sweetalert2'
 import { ListText } from './ListText'
 import { ListImage } from './ListImage'
+import { IPollQuestions } from '@services/PollQuestions'
 
 interface ListAnswersProps {
-  type: string
+  question: IPollQuestions
   currentQuestionAnswers: Array<IPollQuestionAnswers>
 }
 
 const ListAnswers: React.FC<ListAnswersProps> = ({
-  type,
+  question,
   currentQuestionAnswers
 }: ListAnswersProps) => {
   const [toast, setToast] = useState<ToastProps>(defaultToast)
@@ -93,9 +94,10 @@ const ListAnswers: React.FC<ListAnswersProps> = ({
           handleEditQuestionAnswer(answer)
           setEditAnswer(-1)
         }}
+        question={question}
         editAnswer={answers.find(item => item.id === editAnswer)}
       />
-      {type.includes('text') ? (
+      {question?.type.includes('text') ? (
         <ListText
           answers={answers}
           onDelete={(pollId: number, questionId: number, id: number) =>

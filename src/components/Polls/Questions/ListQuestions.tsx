@@ -25,6 +25,8 @@ import { ListAnswers } from '../Answers/ListAnswers'
 import { ModalAnswers } from '../Answers/ModalAnswers'
 import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
 import { ModalFollowUp } from './ModalFollowUp'
+import { ModalQuestions } from './ModalQuestions'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -76,23 +78,25 @@ const useStyles = makeStyles(theme => ({
 
 interface ListQuestionsProps {
   currentPoll: number
-  checkNewsQuestions: boolean
+  addNewQuestion: boolean
+  closeModal: (event: any) => void
 }
 
 const ListQuestions: React.FC<ListQuestionsProps> = ({
   currentPoll,
-  checkNewsQuestions
+  addNewQuestion,
+  closeModal
 }: ListQuestionsProps) => {
   const classes = useStyles()
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [questions, setQuestions] = useState<Array<IPollQuestions>>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [loadingFollowUp, setLoadingFollowUp] = useState<boolean>(false)
-  const [editQuestion, setEditQuestion] = useState<number>(-1)
+  const [editQuestion, setEditQuestion] = useState<IPollQuestions>(null)
   const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
     defaultPollQuestion
   )
+  const [addQuestion, setAddQuestion] = useState<boolean>(false)
   const [followUpQuestion, setFollowUpQuestion] = useState<IPollQuestions>(null)
   const [editDescription, setEditDescription] = useState<number>(-1)
   const [formNewAnswer, setFormNewAnswer] = useState<boolean>(false)
@@ -123,18 +127,28 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     column: string,
     value: string | number
   ): Promise<void> => {
-    const val = typeof value === 'string' ? value.trim() : value
-    await updatePollQuestions(currentPoll, id, { [column]: val })
-    await getAllQuestionsByPoll(currentPoll)
-    setToast({
-      type: 'success',
-      open: true,
-      message: 'Editado com sucesso!'
-    })
+    setLoading(true)
+    try {
+      const val = typeof value === 'string' ? value.trim() : value
+      await updatePollQuestions(currentPoll, id, { [column]: val })
+      await getAllQuestionsByPoll(currentPoll)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Editado com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+    setLoading(false)
   }
 
   const handleAddQuestion = async (question: IPollQuestions) => {
-    setLoadingFollowUp(true)
+    setLoading(true)
     try {
       await createPollQuestions(currentPoll, question)
       getAllQuestionsByPoll(currentPoll)
@@ -150,7 +164,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         message: error.message
       })
     }
-    setLoadingFollowUp(false)
+    setLoading(false)
   }
 
   const handleDelete = async (id: number) => {
@@ -183,8 +197,9 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   }
 
   useEffect(() => {
-    if (!checkNewsQuestions) getAllQuestionsByPoll(currentPoll)
-  }, [currentPoll, checkNewsQuestions])
+    if (!addNewQuestion) getAllQuestionsByPoll(currentPoll)
+    setAddQuestion(addNewQuestion)
+  }, [currentPoll, addNewQuestion])
 
   return (
     <>
@@ -194,6 +209,20 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         type={toast.type}
         message={toast.message}
       />
+
+      <ModalQuestions
+        open={addQuestion || !!editQuestion}
+        editQuestion={editQuestion}
+        onClose={() => {
+          setAddQuestion(false)
+          setEditQuestion(null)
+          closeModal(true)
+        }}
+        onSave={question => {
+          handleAddQuestion(question)
+        }}
+      />
+
       <ModalAnswers
         open={formNewAnswer}
         onClose={answer => {
@@ -212,7 +241,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         onSave={followup => {
           handleAddQuestion(followup)
         }}
-        loading={loadingFollowUp}
+        loading={loading}
       />
 
       {loading && <LoadingDiv />}
@@ -224,6 +253,9 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         questions.map((item, index) => (
           <Box key={item.id} className={classes.questions}>
             <Box className="options">
+              <Tooltip title={text(item.type)}>
+                <InfoOutlinedIcon />
+              </Tooltip>
               <ActionsButton tooltip={text('tooltipOptions')}>
                 {item.type.includes('multiple') && (
                   <MenuItem
@@ -235,13 +267,15 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                     {text('btnNewResponse')}
                   </MenuItem>
                 )}
-                <MenuItem
-                  onClick={() => {
-                    setFollowUpQuestion(item)
-                  }}
-                >
-                  {text('btnNewFollowUp')}
-                </MenuItem>
+                {item.answers.length > 0 && (
+                  <MenuItem
+                    onClick={() => {
+                      setFollowUpQuestion(item)
+                    }}
+                  >
+                    {text('btnNewFollowUp')}
+                  </MenuItem>
+                )}
                 <MenuItem onClick={() => handleDelete(item.id)}>
                   {text('btnDelete')}
                 </MenuItem>
@@ -254,77 +288,29 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
             </Box>
             <Box className="details">
               <Box>
-                <Box className={classes.question} tabIndex={-1}>
-                  {editQuestion === index ? (
-                    <TextField
-                      id={`${item.poll_id}_${item?.id}`}
-                      label={text('labelEditQuestion')}
-                      multiline
-                      rows={2}
-                      variant="outlined"
-                      fullWidth
-                      defaultValue={item.question}
-                      onBlur={event => {
-                        handleEditQuestion(
-                          item.id,
-                          'question',
-                          event.target.value
-                        )
-                        setEditQuestion(-1)
-                      }}
-                    />
-                  ) : (
-                    <Tooltip
-                      title={`${text('tooltipEditQuestion')}`}
-                      placement="top-start"
-                    >
-                      <Typography
-                        variant="body1"
-                        onDoubleClick={() => setEditQuestion(index)}
-                        className="editable"
-                      >
-                        {item.question}
-                      </Typography>
-                    </Tooltip>
-                  )}
-                  {editDescription === index ? (
-                    <TextField
-                      id={`${item.poll_id}_${item?.id}`}
-                      label={text('labelEditDescription')}
-                      rows={1}
-                      variant="outlined"
-                      fullWidth
-                      defaultValue={item.description}
-                      onBlur={event => {
-                        handleEditQuestion(
-                          item.id,
-                          'description',
-                          event.target.value
-                        )
-                        setEditDescription(-1)
-                      }}
-                    />
-                  ) : (
-                    <Tooltip
-                      title={`${text('tooltipEditQuestion')}`}
-                      placement="top-start"
-                    >
-                      <Typography
-                        variant="caption"
-                        onDoubleClick={() => setEditDescription(index)}
-                        className="editable"
-                      >
-                        {text('labelPollDescription')}: {item.description}
-                      </Typography>
-                    </Tooltip>
-                  )}
-                </Box>
+                <Tooltip
+                  title={`${text('tooltipEditQuestion')}`}
+                  placement="top-start"
+                >
+                  <Box
+                    className={classes.question}
+                    tabIndex={-1}
+                    onDoubleClick={() => setEditQuestion(item)}
+                  >
+                    <Typography variant="body1" className="editable">
+                      {item.question}
+                    </Typography>
+                    <Typography variant="caption" className="editable">
+                      {text('labelPollDescription')}: {item.description}
+                    </Typography>
+                  </Box>
+                </Tooltip>
               </Box>
               {item.type.includes('multiple') && (
                 <Box>
                   <ListAnswers
                     currentQuestionAnswers={item.answers}
-                    type={item.type}
+                    question={item}
                   />
                 </Box>
               )}
@@ -334,6 +320,9 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                   {item.followups.map(item => (
                     <Box key={item.id} className={classes.questions}>
                       <Box className="options">
+                        <Tooltip title={text(item.type)}>
+                          <InfoOutlinedIcon />
+                        </Tooltip>
                         <ActionsButton tooltip={text('tooltipOptions')}>
                           {item.type.includes('multiple') && (
                             <MenuItem
@@ -360,80 +349,33 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                       </Box>
                       <Box className="details">
                         <Box>
-                          <Box className={classes.question} tabIndex={-1}>
-                            {editQuestion === item.id ? (
-                              <TextField
-                                id={`${item.poll_id}_${item?.id}`}
-                                label={text('labelEditQuestion')}
-                                multiline
-                                rows={2}
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={item.question}
-                                onBlur={event => {
-                                  handleEditQuestion(
-                                    item.id,
-                                    'question',
-                                    event.target.value
-                                  )
-                                  setEditQuestion(-1)
-                                }}
-                              />
-                            ) : (
-                              <Tooltip
-                                title={`${text('tooltipEditQuestion')}`}
-                                placement="top-start"
+                          <Tooltip
+                            title={`${text('tooltipEditQuestion')}`}
+                            placement="top-start"
+                          >
+                            <Box
+                              className={classes.question}
+                              tabIndex={-1}
+                              onDoubleClick={() => setEditQuestion(item)}
+                            >
+                              <Typography variant="body1" className="editable">
+                                {item.question}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                className="editable"
                               >
-                                <Typography
-                                  variant="body1"
-                                  onDoubleClick={() => setEditQuestion(item.id)}
-                                  className="editable"
-                                >
-                                  {item.question}
-                                </Typography>
-                              </Tooltip>
-                            )}
-                            {editDescription === item.id ? (
-                              <TextField
-                                id={`${item.poll_id}_${item?.id}`}
-                                label={text('labelEditDescription')}
-                                rows={1}
-                                variant="outlined"
-                                fullWidth
-                                defaultValue={item.description}
-                                onBlur={event => {
-                                  handleEditQuestion(
-                                    item.id,
-                                    'description',
-                                    event.target.value
-                                  )
-                                  setEditDescription(-1)
-                                }}
-                              />
-                            ) : (
-                              <Tooltip
-                                title={`${text('tooltipEditQuestion')}`}
-                                placement="top-start"
-                              >
-                                <Typography
-                                  variant="caption"
-                                  onDoubleClick={() =>
-                                    setEditDescription(item.id)
-                                  }
-                                  className="editable"
-                                >
-                                  {text('labelPollDescription')}:{' '}
-                                  {item.description}
-                                </Typography>
-                              </Tooltip>
-                            )}
-                          </Box>
+                                {text('labelPollDescription')}:{' '}
+                                {item.description}
+                              </Typography>
+                            </Box>
+                          </Tooltip>
                         </Box>
                         {item.type.includes('multiple') && (
                           <Box>
                             <ListAnswers
                               currentQuestionAnswers={item.answers}
-                              type={item.type}
+                              question={item}
                             />
                           </Box>
                         )}

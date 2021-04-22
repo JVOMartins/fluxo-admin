@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
@@ -7,29 +7,29 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
-import {
-  createPollQuestions,
-  defaultPollQuestion,
-  IPollQuestions
-} from '@services/PollQuestions'
+import { defaultPollQuestion, IPollQuestions } from '@services/PollQuestions'
 import { FormControl, InputLabel, Select } from '@material-ui/core'
 import { AddButton } from '@components/Buttons'
 
 interface ModalQuestionsProps {
   open: boolean
-  pollId: number
+  editQuestion?: IPollQuestions
+  loading?: boolean
   onClose: (event: any) => void
+  onSave: (question: IPollQuestions) => void
 }
 
 const ModalQuestions: React.FC<ModalQuestionsProps> = ({
   open,
-  pollId,
-  onClose
+  editQuestion,
+  loading,
+  onClose,
+  onSave
 }: ModalQuestionsProps) => {
   const { text } = useTranslation()
-  const [toast, setToast] = useState<ToastProps>(defaultToast)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [question, setQuestion] = useState<IPollQuestions>(defaultPollQuestion)
+  const [question, setQuestion] = useState<IPollQuestions>(
+    editQuestion || defaultPollQuestion
+  )
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -40,35 +40,17 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
     setQuestion({ ...question, [name]: value })
   }
 
-  const handleClick = async () => {
-    setLoading(true)
-    try {
-      await createPollQuestions(pollId, question)
-      setQuestion(defaultPollQuestion)
-      setToast({
-        type: 'success',
-        open: true,
-        message: 'Gravado com sucesso!'
-      })
-    } catch (error) {
-      setToast({
-        type: 'error',
-        open: true,
-        message: error.message
-      })
-    }
-    setLoading(false)
-    onClose(true)
+  const handleOnSubmit = async () => {
+    onSave(question)
+    if (!loading) onClose(true)
   }
+
+  useEffect(() => {
+    !!editQuestion && setQuestion(editQuestion)
+  }, [editQuestion])
 
   return (
     <>
-      <ToastFloat
-        open={toast.open}
-        onClose={() => setToast({ open: false })}
-        type={toast.type}
-        message={toast.message}
-      />
       <Dialog
         open={open}
         onClose={onClose}
@@ -143,13 +125,19 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
           />
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          <Button onClick={onClose} color="primary">
+          <Button
+            onClick={() => {
+              setQuestion(defaultPollQuestion)
+              onClose(true)
+            }}
+            color="primary"
+          >
             {text('btnClose')}
           </Button>
           <AddButton
             label={text('btnSave')}
             loading={loading}
-            onClick={() => handleClick()}
+            onClick={() => handleOnSubmit()}
           />
         </DialogActions>
       </Dialog>

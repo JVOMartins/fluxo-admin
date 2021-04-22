@@ -72,6 +72,12 @@ export const StringsPortuguese = {
   titleNewAnswer: 'Nova Resposta',
   titleEditAnswer: 'Editar Resposta',
 
+  /** Type Question */
+  paragraph: 'Pergunta de Texto Simples',
+  multiple_text: 'Pergunta de Multipla escolha de texto',
+  multiple_image: 'Pergunta de Multipla escolha de imagem',
+  zeroten: 'Pergunta de Escala de 0 a 10 (NPS)',
+
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',
 
