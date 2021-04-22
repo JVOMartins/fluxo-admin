@@ -1,44 +1,24 @@
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
-import useTranslation from '@contexts/Intl'
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  makeStyles,
-  Tooltip
-} from '@material-ui/core'
 import {
   deletePollQuestionAnswers,
   IPollQuestionAnswers
 } from '@services/PollQuestionsAnswers'
 import React, { useEffect, useState } from 'react'
 import { ModalAnswers } from './ModalAnswers'
-import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import Swal from 'sweetalert2'
+import { ListText } from './ListText'
+import { ListImage } from './ListImage'
+import { IPollQuestions } from '@services/PollQuestions'
 
 interface ListAnswersProps {
+  question: IPollQuestions
   currentQuestionAnswers: Array<IPollQuestionAnswers>
 }
 
-const useStyles = makeStyles(theme => ({
-  list: {
-    maxWidth: 300,
-    outline: 'none'
-  },
-  listItem: {
-    cursor: 'pointer',
-    borderBottom: '1px solid #eee'
-  }
-}))
-
 const ListAnswers: React.FC<ListAnswersProps> = ({
+  question,
   currentQuestionAnswers
 }: ListAnswersProps) => {
-  const classes = useStyles()
-  const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [editAnswer, setEditAnswer] = useState<number>(-1)
   const [answers, setAnswers] = useState<Array<IPollQuestionAnswers>>([])
@@ -114,47 +94,26 @@ const ListAnswers: React.FC<ListAnswersProps> = ({
           handleEditQuestionAnswer(answer)
           setEditAnswer(-1)
         }}
+        question={question}
         editAnswer={answers.find(item => item.id === editAnswer)}
       />
-      <List dense className={classes.list}>
-        {!!answers &&
-          answers.map(item => (
-            <React.Fragment key={item.id}>
-              <Tooltip
-                title={`${text('tooltipEditQuestion')}`}
-                placement="top-start"
-              >
-                <ListItem
-                  key={item.id}
-                  className={classes.listItem}
-                  onDoubleClick={() => {
-                    setEditAnswer(item.id)
-                  }}
-                >
-                  <ListItemIcon>{item.position}</ListItemIcon>
-                  <ListItemText
-                    primary={item.value}
-                    secondary={item.description}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        handleDeleteQuestionAnswer(
-                          item.poll_id,
-                          item.poll_question_id,
-                          item.id
-                        )
-                      }
-                    >
-                      <DeleteOutlineOutlinedIcon fontSize="inherit" />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </Tooltip>
-            </React.Fragment>
-          ))}
-      </List>
+      {question?.type.includes('text') ? (
+        <ListText
+          answers={answers}
+          onDelete={(pollId: number, questionId: number, id: number) =>
+            handleDeleteQuestionAnswer(pollId, questionId, id)
+          }
+          onEdit={id => setEditAnswer(id)}
+        />
+      ) : (
+        <ListImage
+          answers={answers}
+          onDelete={(pollId: number, questionId: number, id: number) =>
+            handleDeleteQuestionAnswer(pollId, questionId, id)
+          }
+          onEdit={id => setEditAnswer(id)}
+        />
+      )}
     </>
   )
 }

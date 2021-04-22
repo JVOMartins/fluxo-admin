@@ -23,6 +23,7 @@ export const StringsPortuguese = {
   btnDuplicate: 'Duplicar',
   btnQrCode: 'QRCODE',
   btnDelete: 'Excluir',
+  btnLoadingText: 'Aguarde ...',
 
   /** Login Page */
   loginTitle: 'Bem Vindo à Fluxo',
@@ -66,16 +67,26 @@ export const StringsPortuguese = {
   titleNewPolls: 'Nova Enquete',
   btnNewQuestions: 'Pergunta',
   titleNewQuestions: 'Nova Pergunta',
+  titleNewQuestionsFollowUp: 'Novo FollowUp',
+  titleEditQuestionsFollowUp: 'Editar FollowUp',
   titleNewAnswer: 'Nova Resposta',
   titleEditAnswer: 'Editar Resposta',
+
+  /** Type Question */
+  paragraph: 'Pergunta de Texto Simples',
+  multiple_text: 'Pergunta de Multipla escolha de texto',
+  multiple_image: 'Pergunta de Multipla escolha de imagem',
+  zeroten: 'Pergunta de Escala de 0 a 10 (NPS)',
 
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',
 
   btnNewResponse: 'Nova Resposta',
+  btnNewFollowUp: 'Novo FollowUp',
 
   labelPollName: 'Nome',
   labelPollDescription: 'Descrição',
+  labelPollSelectImage: 'Selecione a imagem (PNG, JPEG, JPG ou GIF)',
 
   labelPollPosition: 'Posição',
   labelPollQuestion: 'Pergunta',

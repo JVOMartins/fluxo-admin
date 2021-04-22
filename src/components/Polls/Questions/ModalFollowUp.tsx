@@ -5,30 +5,36 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
 import { defaultPollQuestion, IPollQuestions } from '@services/PollQuestions'
-import { FormControl, InputLabel, Select } from '@material-ui/core'
+import { FormControl, InputLabel, Select, Typography } from '@material-ui/core'
 import { AddButton } from '@components/Buttons'
+import { SelectImage } from './SelectImage'
 
-interface ModalQuestionsProps {
+interface ModalFollowUpProps {
   open: boolean
-  editQuestion?: IPollQuestions
+  pollId: number
+  currentQuestion: IPollQuestions
+  type?: string
+  editFollowUp?: IPollQuestions | null
   loading?: boolean
-  onClose: (event: any) => void
   onSave: (question: IPollQuestions) => void
+  onClose: (event: any) => void
 }
 
-const ModalQuestions: React.FC<ModalQuestionsProps> = ({
+const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
   open,
-  editQuestion,
+  pollId,
+  currentQuestion,
+  editFollowUp = null,
   loading,
+  type,
   onClose,
   onSave
-}: ModalQuestionsProps) => {
+}: ModalFollowUpProps) => {
   const { text } = useTranslation()
   const [question, setQuestion] = useState<IPollQuestions>(
-    editQuestion || defaultPollQuestion
+    editFollowUp || defaultPollQuestion
   )
 
   const handleChange = (
@@ -40,14 +46,20 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
     setQuestion({ ...question, [name]: value })
   }
 
-  const handleOnSubmit = async () => {
-    onSave(question)
+  const handleOnSave = () => {
+    const data = {
+      ...question,
+      poll_id: pollId,
+      follow_up: currentQuestion.id
+    }
+    onSave(data)
+    setQuestion(defaultPollQuestion)
     if (!loading) onClose(true)
   }
 
   useEffect(() => {
-    !!editQuestion && setQuestion(editQuestion)
-  }, [editQuestion])
+    editFollowUp && setQuestion(editFollowUp)
+  }, [editFollowUp])
 
   return (
     <>
@@ -59,9 +71,67 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
         maxWidth="sm"
       >
         <DialogTitle id="form-question">
-          {text('titleNewQuestions')}
+          {!editFollowUp
+            ? text('titleNewQuestionsFollowUp')
+            : text('titleEditQuestionsFollowUp')}
         </DialogTitle>
         <DialogContent>
+          {currentQuestion?.type.includes('zeroten') && (
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel htmlFor="outlined-age-native-simple">
+                Mostre se a resposta for
+              </InputLabel>
+              <Select
+                native
+                value={question.follow_up_role}
+                onChange={event => handleChange(event)}
+                label={`Mostre se a resposta for`}
+                inputProps={{
+                  name: 'follow_up_role',
+                  id: 'follow_up_role'
+                }}
+              >
+                <option aria-label="None" value="" />
+                <option value="detrator">detrator</option>
+                <option value="neutro">neutro</option>
+                <option value="promotor">promotor</option>
+              </Select>
+            </FormControl>
+          )}
+          {currentQuestion?.type.includes('multiple_text') && (
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel htmlFor="outlined-age-native-simple">
+                Mostre se a resposta for
+              </InputLabel>
+              <Select
+                native
+                value={question.follow_up_role}
+                onChange={event => handleChange(event)}
+                label={`Mostre se a resposta for`}
+                inputProps={{
+                  name: 'follow_up_role',
+                  id: 'follow_up_role'
+                }}
+              >
+                <option aria-label="None" value="" />
+                {currentQuestion.answers.map(item => (
+                  <option value={item.id}>{item.value}</option>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+          {currentQuestion?.type.includes('multiple_image') && (
+            <>
+              <Typography>Mostre se a resposta for</Typography>
+              <SelectImage
+                answers={currentQuestion.answers}
+                selected={question.follow_up_role}
+                onSelect={id => {
+                  setQuestion({ ...question, follow_up_role: id })
+                }}
+              />
+            </>
+          )}
           <TextField
             name="position"
             type="number"
@@ -125,19 +195,13 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
           />
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          <Button
-            onClick={() => {
-              setQuestion(defaultPollQuestion)
-              onClose(true)
-            }}
-            color="primary"
-          >
+          <Button onClick={onClose} color="primary">
             {text('btnClose')}
           </Button>
           <AddButton
             label={text('btnSave')}
             loading={loading}
-            onClick={() => handleOnSubmit()}
+            onClick={() => handleOnSave()}
           />
         </DialogActions>
       </Dialog>
@@ -145,4 +209,4 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
   )
 }
 
-export { ModalQuestions }
+export { ModalFollowUp }

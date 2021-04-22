@@ -10,7 +10,6 @@ import {
 import personalStyles from '@styles/styles'
 import { useState } from 'react'
 import { ListQuestions } from './ListQuestions'
-import { ModalQuestions } from './ModalQuestions'
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import useTranslation from '@contexts/Intl'
@@ -64,7 +63,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
 }: QuestionListProps) => {
   const classes = useStyles()
   const { text } = useTranslation()
-  const [formNewQuestion, setFormNewQuestion] = useState<boolean>(false)
+  const [addNewQuestion, setAddNewQuestion] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('general')
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -73,12 +72,6 @@ const QuestionList: React.FC<QuestionListProps> = ({
 
   return (
     <>
-      <ModalQuestions
-        open={formNewQuestion}
-        onClose={() => setFormNewQuestion(!formNewQuestion)}
-        pollId={currentPoll}
-      />
-
       <Paper elevation={0} className={classes.contentPage}>
         <Box className={classes.titlePage}>
           <Typography variant="h6" component="h4">
@@ -86,7 +79,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
           </Typography>
           <AddButton
             label={`${text('btnNewQuestions')}`}
-            onClick={() => setFormNewQuestion(true)}
+            onClick={() => setAddNewQuestion(true)}
             icon={<AddOutlinedIcon />}
           />
         </Box>
@@ -103,8 +96,9 @@ const QuestionList: React.FC<QuestionListProps> = ({
           </Tabs>
           <TabPanel value={tab} index="general">
             <ListQuestions
+              addNewQuestion={addNewQuestion}
+              closeModal={() => setAddNewQuestion(false)}
               currentPoll={currentPoll}
-              checkNewsQuestions={formNewQuestion}
             />
           </TabPanel>
           <TabPanel value={tab} index="individual">

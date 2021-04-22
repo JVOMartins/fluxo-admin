@@ -1,7 +1,7 @@
 import classes from './InputNumber.module.css'
 import ExpandLessOutlinedIcon from '@material-ui/icons/ExpandLessOutlined'
 import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export interface InputNumberProps {
   number: number
@@ -21,6 +21,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
   size = 'medium'
 }: InputNumberProps) => {
   const [num, setNum] = useState<number>(number)
+  const divRef = useRef()
 
   const handleUp = () => (num + step > max ? setNum(num) : setNum(num + step))
   const handleDown = () => (num - step < min ? setNum(num) : setNum(num - step))
@@ -28,7 +29,12 @@ const InputNumber: React.FC<InputNumberProps> = ({
   useEffect(() => setNum(number), [number])
 
   return (
-    <div className={classes.position} onBlur={() => onBlur(num)} tabIndex={-1}>
+    <div
+      className={classes.position}
+      onBlur={() => onBlur(num)}
+      tabIndex={-1}
+      ref={divRef}
+    >
       <div className={classes.up} onClick={() => handleUp()}>
         <ExpandLessOutlinedIcon />
       </div>
