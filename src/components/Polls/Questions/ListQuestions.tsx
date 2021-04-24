@@ -267,7 +267,8 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                     {text('btnNewResponse')}
                   </MenuItem>
                 )}
-                {item.answers.length > 0 && (
+                {(item.type.includes('multiple') ||
+                  item.type.includes('zeroten')) && (
                   <MenuItem
                     onClick={() => {
                       setFollowUpQuestion(item)
