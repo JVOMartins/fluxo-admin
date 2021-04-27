@@ -6,6 +6,7 @@ interface IUser {
   type: string
   email: string
   avatar?: string
+  company?: { logo: string }
   created_at: string
   updated_at: string
 }
