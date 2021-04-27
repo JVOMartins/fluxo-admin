@@ -8,6 +8,7 @@ interface IUser {
   first_name: string
   type: string
   avatar?: string
+  company?: { name: string; logo: string }
   created_at?: string
   updated_at?: string
 }

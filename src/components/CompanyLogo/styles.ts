@@ -6,7 +6,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     height: 200,
-    backgroundColor: '#fff'
+    padding: 20,
+    backgroundColor: '#fff',
+    '& > img': {
+      maxWidth: ' 100%',
+      height: 'auto'
+    }
   }
 }))
 

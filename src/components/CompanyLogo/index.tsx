@@ -1,5 +1,4 @@
 import useStyles from './styles'
-import Image from 'next/image'
 import useAuth from '@contexts/auth'
 
 const CompanyLogo: React.FC = () => {
@@ -8,13 +7,7 @@ const CompanyLogo: React.FC = () => {
   return (
     <>
       <div className={classes.logo}>
-        <Image
-          src={'/logos/fluxo_logo.svg'}
-          alt="Logo"
-          width={150}
-          height={80}
-          loading="eager"
-        />
+        <img src={user.company.logo || '/logos/fluxo_logo.svg'} alt="Logo" />
       </div>
     </>
   )
