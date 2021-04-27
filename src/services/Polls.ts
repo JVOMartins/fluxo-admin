@@ -37,6 +37,16 @@ export async function updatePoll(id: number, data: IPolls): Promise<IPolls> {
   return res.data
 }
 
+export async function updateCodePoll(id: number): Promise<IPolls> {
+  const res = await api.get(`${endpoints.polls}/${id}/update_code`)
+  return res.data
+}
+
+export async function duplicatePoll(id: number): Promise<IPolls> {
+  const res = await api.get(`${endpoints.polls}/${id}/duplicate`)
+  return res.data
+}
+
 export async function deletePoll(id: number): Promise<IPolls> {
   const res = await api.delete(`${endpoints.polls}/${id}?force=true`)
   return res.data

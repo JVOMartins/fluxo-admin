@@ -3,17 +3,31 @@ import useTranslation from '@contexts/Intl'
 import { NextPage } from 'next'
 import PollOutlinedIcon from '@material-ui/icons/PollOutlined'
 import ImportExportIcon from '@material-ui/icons/ImportExport'
-import { Box, Grid, makeStyles, MenuItem, Typography } from '@material-ui/core'
+import {
+  Box,
+  makeStyles,
+  MenuItem,
+  Tooltip,
+  Typography
+} from '@material-ui/core'
 import { AddButton, ActionsButton } from '@components/Buttons'
 import { CardItems } from '@components/CardItems'
 import { useEffect, useState } from 'react'
-import { defaultPoll, deletePoll, getPolls, IPolls } from '@services/Polls'
+import {
+  defaultPoll,
+  deletePoll,
+  getPolls,
+  IPolls,
+  updateCodePoll,
+  duplicatePoll
+} from '@services/Polls'
 import { ModalPolls } from '@components/Polls/ModalPolls'
 import withAuth from '@utils/withAuth'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import Swal from 'sweetalert2'
 import { QuestionList } from '@components/Polls/Questions'
+import { ModalQrcode } from '@components/Polls/ModalQrcode'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -82,6 +96,7 @@ const Polls: NextPage = () => {
   const [polls, setPolls] = useState<Array<IPolls>>([])
   const [currentEditPoll, setCurrentEditPoll] = useState<IPolls>(defaultPoll)
   const [formNewPoll, setFormNewOpen] = useState<boolean>(false)
+  const [currentQrCodePoll, setCurrentQrCodePoll] = useState<string>('')
 
   const getAllPolls = async () => {
     const polls = await getPolls()
@@ -116,14 +131,69 @@ const Polls: NextPage = () => {
       }
     })
   }
+
   const handleUpdate = async (id: number) => {
     const current = polls.find(item => item.id === id)
     setCurrentEditPoll(current)
     setFormNewOpen(true)
   }
+
+  const handleUpdateCode = async (id: number) => {
+    try {
+      await updateCodePoll(id)
+      getAllPolls()
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Código atualizado com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+  }
+
+  const handleDuplicate = async (id: number) => {
+    try {
+      await duplicatePoll(id)
+      getAllPolls()
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Código atualizado com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+  }
+
   const handleNew = async () => {
     setCurrentEditPoll(defaultPoll)
     setFormNewOpen(true)
+  }
+
+  const copyToClipBoard = async (copyMe: string) => {
+    try {
+      await navigator.clipboard.writeText(copyMe)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Endereço copiado'
+      })
+    } catch (err) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: 'Falha ao copiar texto'
+      })
+    }
   }
 
   useEffect(() => {
@@ -144,6 +214,14 @@ const Polls: NextPage = () => {
         currentEditPoll={currentEditPoll}
         onClose={() => {
           setFormNewOpen(!formNewPoll)
+        }}
+      />
+
+      <ModalQrcode
+        open={!!currentQrCodePoll}
+        pollAddress={currentQrCodePoll}
+        onClose={() => {
+          setCurrentQrCodePoll('')
         }}
       />
 
@@ -180,18 +258,36 @@ const Polls: NextPage = () => {
                   >
                     <Box>
                       <Typography variant="body1">{poll.name}</Typography>
-                      <Typography variant="caption">
-                        https://enquetes.fluxo.live/{poll.code}
-                      </Typography>
+                      <Tooltip title="Clique duas vezes para copiar o endereço">
+                        <Typography
+                          variant="caption"
+                          onDoubleClick={() =>
+                            copyToClipBoard(
+                              `${window.location.protocol}://${window.location.hostname}/${poll.code}`
+                            )
+                          }
+                        >
+                          {`${window.location.protocol}://${window.location.hostname}/${poll.code}`}
+                        </Typography>
+                      </Tooltip>
                     </Box>
                     {currentPoll === poll.id && (
                       <Box className={classes.options}>
                         <ActionsButton tooltip={text('tooltipOptions')}>
-                          <MenuItem onClick={console.log}>
+                          <MenuItem
+                            onClick={() =>
+                              setCurrentQrCodePoll(
+                                `${window.location.protocol}://${window.location.hostname}/${poll.code}`
+                              )
+                            }
+                          >
                             {text('btnQrCode')}
                           </MenuItem>
-                          <MenuItem onClick={console.log}>
+                          <MenuItem onClick={() => handleDuplicate(poll.id)}>
                             {text('btnDuplicate')}
+                          </MenuItem>
+                          <MenuItem onClick={() => handleUpdateCode(poll.id)}>
+                            {text('btnUpdateCode')}
                           </MenuItem>
                           <MenuItem onClick={() => handleUpdate(poll.id)}>
                             {text('btnEdit')}

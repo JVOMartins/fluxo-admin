@@ -10,7 +10,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu'
 import CloseIcon from '@material-ui/icons/Close'
 import MoreVert from '@material-ui/icons/MoreVert'
-
+import useAuth from '@contexts/auth'
 import SearchBar from '@components/SearchBar'
 import useStyles from './styles'
 import useSettings from '@contexts/Settings'
@@ -21,6 +21,7 @@ import Image from 'next/image'
 const TopBar: React.FC = () => {
   const classes = useStyles()
   const { settings, saveSettings } = useSettings()
+  const { user } = useAuth()
 
   const handleOpenMenu = (): void => {
     saveSettings({ ...settings, openMenu: !settings.openMenu })
@@ -58,7 +59,17 @@ const TopBar: React.FC = () => {
           <IconButton className={classes.icons}>
             <MoreVert />
           </IconButton>
-          <Avatar className={classes.avatar}>H</Avatar>
+          {!user?.avatar ? (
+            <Avatar className={classes.avatar}>
+              {user?.first_name[0].toUpperCase()}
+            </Avatar>
+          ) : (
+            <Avatar
+              className={classes.avatar}
+              src={user.avatar}
+              alt={user.first_name}
+            />
+          )}
         </Box>
       </Toolbar>
     </AppBar>
