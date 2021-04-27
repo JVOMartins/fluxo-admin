@@ -2,7 +2,8 @@ import api, { endpoints } from './api'
 
 interface IUser {
   id: string
-  name: string
+  first_name: string
+  type: string
   email: string
   avatar?: string
   created_at: string

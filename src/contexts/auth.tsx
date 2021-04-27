@@ -5,10 +5,11 @@ import Cookies from 'js-cookie'
 
 interface IUser {
   id: string
-  name: string
-  email: string
-  created_at: string
-  updated_at: string
+  first_name: string
+  type: string
+  avatar?: string
+  created_at?: string
+  updated_at?: string
 }
 
 interface AuthContextData {
@@ -28,7 +29,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
 
   const loadStorageData = () => {
     const storageUser = window.localStorage.getItem('@AuthFluxo:user')

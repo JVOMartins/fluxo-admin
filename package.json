@@ -30,6 +30,7 @@
     "next-images": "^1.7.0",
     "nextjs-progressbar": "^0.0.7",
     "nprogress": "^0.2.0",
+    "qrcode.react": "^1.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "sweetalert2": "^10.16.0"
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@types/node": "^14.14.25",
     "@types/nprogress": "^0.2.0",
+    "@types/qrcode.react": "^1.0.1",
     "@types/react": "^17.0.1",
     "babel-plugin-inline-react-svg": "^1.1.2",
     "husky": "^5.0.9",
