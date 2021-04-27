@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const BASE_URL = 'https://dev-api-fluxo-v2.herokuapp.com/api/v1'
+const BASE_URL = 'https://api-fluxo-v2.herokuapp.com/api/v1/'
 
 const api = axios.create({
   baseURL: BASE_URL
