@@ -50,6 +50,7 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
         message: error.message
       })
     }
+    setPoll(defaultPoll)
     setLoading(false)
     onClose(true)
   }
