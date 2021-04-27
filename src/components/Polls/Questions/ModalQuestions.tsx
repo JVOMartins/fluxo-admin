@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import useTranslation from '@contexts/Intl'
 import { defaultPollQuestion, IPollQuestions } from '@services/PollQuestions'
 import { FormControl, InputLabel, Select } from '@material-ui/core'
@@ -42,7 +41,11 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
 
   const handleOnSubmit = async () => {
     onSave(question)
-    if (!loading) onClose(true)
+
+    if (!loading) {
+      onClose(true)
+      setQuestion(defaultPollQuestion)
+    }
   }
 
   useEffect(() => {

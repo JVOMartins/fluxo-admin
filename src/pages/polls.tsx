@@ -258,16 +258,16 @@ const Polls: NextPage = () => {
                   >
                     <Box>
                       <Typography variant="body1">{poll.name}</Typography>
-                      <Tooltip title="Clique duas vezes para copiar o endereço">
+                      <Tooltip title={text('tooltipEditQuestion')}>
                         <Typography
                           variant="caption"
                           onDoubleClick={() =>
                             copyToClipBoard(
-                              `${window.location.protocol}://${window.location.hostname}/${poll.code}`
+                              `https://enquetes.fluxo.live/${poll.code}`
                             )
                           }
                         >
-                          {`${window.location.protocol}://${window.location.hostname}/${poll.code}`}
+                          {`https://enquetes.fluxo.live/${poll.code}`}
                         </Typography>
                       </Tooltip>
                     </Box>
@@ -277,7 +277,7 @@ const Polls: NextPage = () => {
                           <MenuItem
                             onClick={() =>
                               setCurrentQrCodePoll(
-                                `${window.location.protocol}://${window.location.hostname}/${poll.code}`
+                                `https://enquetes.fluxo.live/${poll.code}`
                               )
                             }
                           >
