@@ -179,7 +179,7 @@ const Polls: NextPage = () => {
     setFormNewOpen(true)
   }
 
-  const copyToClipBoard = async (copyMe: string) => {
+  const copyToClipBoard = async (event: any, copyMe: string) => {
     try {
       await navigator.clipboard.writeText(copyMe)
       setToast({
@@ -261,9 +261,11 @@ const Polls: NextPage = () => {
                       <Typography variant="body1">{poll.name}</Typography>
                       <Tooltip title={text('tooltipEditQuestion')}>
                         <Typography
+                          style={{ userSelect: 'none' }}
                           variant="caption"
-                          onDoubleClick={() =>
+                          onDoubleClick={event =>
                             copyToClipBoard(
+                              event,
                               `https://enquetes.fluxo.live/${poll.code}`
                             )
                           }
