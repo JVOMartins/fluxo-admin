@@ -247,6 +247,7 @@ const Polls: NextPage = () => {
               </ActionsButton>
             </Box>
           </Box>
+          {polls.length === 0 && 'Sem enquetes cadastradas'}
           <Box className={classes.list}>
             <Box className={classes.left}>
               {!!polls &&

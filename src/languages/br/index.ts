@@ -67,7 +67,7 @@ export const StringsPortuguese = {
   btnNewPolls: 'Nova Enquete',
   titleNewPolls: 'Nova Enquete',
   titleQrCodePolls: 'QR-Code',
-  btnNewQuestions: 'Pergunta',
+  btnNewQuestions: 'Adicionar Pergunta',
   titleNewQuestions: 'Nova Pergunta',
   titleNewQuestionsFollowUp: 'Novo FollowUp',
   titleEditQuestionsFollowUp: 'Editar FollowUp',
@@ -82,6 +82,7 @@ export const StringsPortuguese = {
 
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',
+  titleTabFeedback: 'Feedback',
 
   btnNewResponse: 'Nova Resposta',
   btnNewFollowUp: 'Novo FollowUp',

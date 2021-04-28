@@ -7,7 +7,7 @@ const CompanyLogo: React.FC = () => {
   return (
     <>
       <div className={classes.logo}>
-        <img src={user.company.logo || '/logos/fluxo_logo.svg'} alt="Logo" />
+        <img src={user?.company.logo || '/logos/fluxo_logo.svg'} alt="Logo" />
       </div>
     </>
   )

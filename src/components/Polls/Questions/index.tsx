@@ -11,8 +11,8 @@ import personalStyles from '@styles/styles'
 import { useState } from 'react'
 import { ListQuestions } from './ListQuestions'
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import useTranslation from '@contexts/Intl'
+import { InlineButton } from '@components/Buttons/InlineButton'
 
 const useStyles = makeStyles(theme => ({
   contentPage: {
@@ -22,9 +22,13 @@ const useStyles = makeStyles(theme => ({
   },
   titlePage: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: personalStyles.metrics.margin
+    marginBottom: personalStyles.metrics.margin,
+
+    '& > svg': {
+      marginRight: 10
+    }
   }
 }))
 
@@ -74,14 +78,10 @@ const QuestionList: React.FC<QuestionListProps> = ({
     <>
       <Paper elevation={0} className={classes.contentPage}>
         <Box className={classes.titlePage}>
+          <DescriptionOutlinedIcon />
           <Typography variant="h6" component="h4">
-            <DescriptionOutlinedIcon /> {text('pageSubtitleQuestions')}
+            {text('pageSubtitleQuestions')}
           </Typography>
-          <AddButton
-            label={`${text('btnNewQuestions')}`}
-            onClick={() => setAddNewQuestion(true)}
-            icon={<AddOutlinedIcon />}
-          />
         </Box>
         <Box>
           <Tabs
@@ -93,6 +93,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
           >
             <Tab label={text('titleTabGeneral')} value="general" />
             <Tab label={text('titleTabIndividual')} value="individual" />
+            <Tab label={text('titleTabFeedback')} value="feedback" />
           </Tabs>
           <TabPanel value={tab} index="general">
             <ListQuestions
@@ -100,9 +101,16 @@ const QuestionList: React.FC<QuestionListProps> = ({
               closeModal={() => setAddNewQuestion(false)}
               currentPoll={currentPoll}
             />
+            <InlineButton
+              label={`${text('btnNewQuestions')}`}
+              onClick={() => setAddNewQuestion(true)}
+            />
           </TabPanel>
           <TabPanel value={tab} index="individual">
-            Item Two
+            Individual
+          </TabPanel>
+          <TabPanel value={tab} index="feedback">
+            Feedback
           </TabPanel>
         </Box>
       </Paper>
