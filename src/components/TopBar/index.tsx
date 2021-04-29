@@ -21,7 +21,7 @@ import Image from 'next/image'
 const TopBar: React.FC = () => {
   const classes = useStyles()
   const { settings, saveSettings } = useSettings()
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
 
   const handleOpenMenu = (): void => {
     saveSettings({ ...settings, openMenu: !settings.openMenu })
@@ -60,7 +60,7 @@ const TopBar: React.FC = () => {
             <MoreVert />
           </IconButton>
           {!user?.avatar ? (
-            <Avatar className={classes.avatar}>
+            <Avatar className={classes.avatar} onClick={() => signOut()}>
               {user?.first_name[0].toUpperCase()}
             </Avatar>
           ) : (
@@ -68,6 +68,7 @@ const TopBar: React.FC = () => {
               className={classes.avatar}
               src={user.avatar}
               alt={user.first_name}
+              onClick={() => signOut()}
             />
           )}
         </Box>
