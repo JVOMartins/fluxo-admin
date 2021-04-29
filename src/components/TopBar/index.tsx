@@ -17,9 +17,11 @@ import useSettings from '@contexts/Settings'
 import clsx from 'clsx'
 import SelectLanguage from '@components/SelectLanguages'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const TopBar: React.FC = () => {
   const classes = useStyles()
+  const router = useRouter()
   const { settings, saveSettings } = useSettings()
   const { user, signOut } = useAuth()
 
@@ -60,7 +62,13 @@ const TopBar: React.FC = () => {
             <MoreVert />
           </IconButton>
           {!user?.avatar ? (
-            <Avatar className={classes.avatar} onClick={() => signOut()}>
+            <Avatar
+              className={classes.avatar}
+              onClick={() => {
+                signOut()
+                router.push('/login')
+              }}
+            >
               {user?.first_name[0].toUpperCase()}
             </Avatar>
           ) : (
@@ -68,7 +76,10 @@ const TopBar: React.FC = () => {
               className={classes.avatar}
               src={user.avatar}
               alt={user.first_name}
-              onClick={() => signOut()}
+              onClick={() => {
+                signOut()
+                router.push('/login')
+              }}
             />
           )}
         </Box>
