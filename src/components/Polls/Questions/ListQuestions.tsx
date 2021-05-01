@@ -123,11 +123,9 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     column: string,
     value: string | number
   ): Promise<void> => {
-    setLoading(true)
     try {
       const val = typeof value === 'string' ? value.trim() : value
       await updatePollQuestions(currentPoll, id, { [column]: val })
-      await getAllQuestionsByPoll(currentPoll)
       setToast({
         type: 'success',
         open: true,
@@ -140,7 +138,6 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
         message: error.message
       })
     }
-    setLoading(false)
   }
 
   const handleAddQuestion = async (question: IPollQuestions) => {

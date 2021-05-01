@@ -88,7 +88,7 @@ const Polls: NextPage = () => {
   const { text } = useTranslation()
   const classes = useStyles()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
-  const [currentPoll, setCurrentPoll] = useState<number>()
+  const [currentPoll, setCurrentPoll] = useState<number | null>()
   const [polls, setPolls] = useState<Array<IPolls>>([])
   const [currentEditPoll, setCurrentEditPoll] = useState<IPolls>(defaultPoll)
   const [formNewPoll, setFormNewOpen] = useState<boolean>(false)
@@ -112,6 +112,7 @@ const Polls: NextPage = () => {
         try {
           await deletePoll(id)
           getAllPolls()
+          setCurrentPoll(null)
           setToast({
             type: 'success',
             open: true,
