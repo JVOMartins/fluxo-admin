@@ -65,7 +65,6 @@ const QuestionList: React.FC<QuestionListProps> = ({
 }: QuestionListProps) => {
   const classes = useStyles()
   const { text } = useTranslation()
-  const [addNewQuestion, setAddNewQuestion] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('general')
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -90,11 +89,15 @@ const QuestionList: React.FC<QuestionListProps> = ({
             aria-label="tabs example"
           >
             <Tab label={text('titleTabGeneral')} value="general" />
+            <Tab label={text('titleTabResponses')} value="responses" />
             <Tab label={text('titleTabIndividual')} value="individual" />
             <Tab label={text('titleTabFeedback')} value="feedback" />
           </Tabs>
           <TabPanel value={tab} index="general">
             <ListQuestions currentPoll={currentPoll} />
+          </TabPanel>
+          <TabPanel value={tab} index="responses">
+            Respostas
           </TabPanel>
           <TabPanel value={tab} index="individual">
             Individual

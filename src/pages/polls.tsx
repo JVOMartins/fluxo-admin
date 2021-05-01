@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   buttons: {
     width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   list: {
@@ -227,13 +227,11 @@ const Polls: NextPage = () => {
       >
         <Box className={classes.content}>
           <Box className={classes.buttons}>
-            <Box>
-              <AddButton
-                label={text('btnNewPolls')}
-                icon={<AddOutlinedIcon />}
-                onClick={() => handleNew()}
-              />
-            </Box>
+            <AddButton
+              label={text('btnNewPolls')}
+              icon={<AddOutlinedIcon />}
+              onClick={() => handleNew()}
+            />
           </Box>
           {polls.length === 0 && 'Sem enquetes cadastradas'}
           <Box className={classes.list}>

@@ -83,7 +83,8 @@ export const StringsPortuguese = {
 
   titleTabGeneral: 'Geral',
   titleTabIndividual: 'Individual',
-  titleTabFeedback: 'Feedback',
+  titleTabResponses: 'Respostas',
+  titleTabFeedback: 'Feedbacks',
 
   btnNewResponse: 'Nova Resposta',
   btnNewFollowUp: 'Novo FollowUp',
