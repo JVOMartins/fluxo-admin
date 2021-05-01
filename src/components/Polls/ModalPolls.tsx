@@ -33,11 +33,14 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
     setPoll({ ...poll, [name]: value })
   }
 
+  console.log(currentEditPoll)
+
   const handleClick = async () => {
     setLoading(true)
     try {
-      poll.id ? await updatePoll(poll.id, poll) : await createPolls(poll)
-      setPoll(defaultPoll)
+      currentEditPoll.id
+        ? await updatePoll(currentEditPoll.id, poll)
+        : await createPolls(poll)
       setToast({
         type: 'success',
         open: true,

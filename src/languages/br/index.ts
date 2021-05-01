@@ -22,8 +22,9 @@ export const StringsPortuguese = {
   btnEdit: 'Editar',
   btnDuplicate: 'Duplicar',
   btnUpdateCode: 'Trocar Código',
-  btnQrCode: 'QRCODE',
+  btnQrCode: 'QrCode',
   btnDelete: 'Excluir',
+  btnExportExcel: 'Exportar Excel',
   btnLoadingText: 'Aguarde ...',
 
   /** Login Page */

@@ -41,7 +41,6 @@ const ModalQuestions: React.FC<ModalQuestionsProps> = ({
 
   const handleOnSubmit = async () => {
     onSave(question)
-
     if (!loading) {
       onClose(true)
       setQuestion(defaultPollQuestion)

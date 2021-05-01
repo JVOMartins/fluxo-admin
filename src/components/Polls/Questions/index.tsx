@@ -11,7 +11,6 @@ import { useState } from 'react'
 import { ListQuestions } from './ListQuestions'
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 import useTranslation from '@contexts/Intl'
-import { InlineButton } from '@components/Buttons/InlineButton'
 
 const useStyles = makeStyles(theme => ({
   contentPage: {
@@ -95,15 +94,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
             <Tab label={text('titleTabFeedback')} value="feedback" />
           </Tabs>
           <TabPanel value={tab} index="general">
-            <ListQuestions
-              addNewQuestion={addNewQuestion}
-              closeModal={() => setAddNewQuestion(false)}
-              currentPoll={currentPoll}
-            />
-            <InlineButton
-              label={`${text('btnNewQuestions')}`}
-              onClick={() => setAddNewQuestion(true)}
-            />
+            <ListQuestions currentPoll={currentPoll} />
           </TabPanel>
           <TabPanel value={tab} index="individual">
             Individual
