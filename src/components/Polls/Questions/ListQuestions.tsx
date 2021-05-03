@@ -293,7 +293,9 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                       )
                     }}
                     onEdit={id => {
-                      setEditQuestion(questions.find(item => item.id === id))
+                      setEditQuestion(
+                        question.followups.find(item => item.id === id)
+                      )
                     }}
                     onDelete={id => handleDelete(id)}
                     onEditPosition={(id, num) =>
@@ -322,7 +324,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                             }}
                             onEdit={id => {
                               setEditQuestion(
-                                questions.find(item => item.id === id)
+                                followup.followups.find(item => item.id === id)
                               )
                             }}
                             onDelete={id => handleDelete(id)}
