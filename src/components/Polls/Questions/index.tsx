@@ -27,6 +27,11 @@ const useStyles = makeStyles(theme => ({
     '& > svg': {
       marginRight: 10
     }
+  },
+  tab: {
+    '& .MuiBox-root': {
+      padding: '0px'
+    }
   }
 }))
 
@@ -47,11 +52,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`wrapped-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography component="span">{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={1}>{children}</Box>}
     </div>
   )
 }
@@ -76,7 +77,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
       <Paper elevation={0} className={classes.contentPage}>
         <Box className={classes.titlePage}>
           <DescriptionOutlinedIcon />
-          <Typography variant="h6" component="h4">
+          <Typography variant="h6" component="h5">
             {text('pageSubtitleQuestions')}
           </Typography>
         </Box>
