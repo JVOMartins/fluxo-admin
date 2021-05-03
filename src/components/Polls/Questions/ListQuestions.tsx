@@ -91,6 +91,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [loading, setLoading] = useState<boolean>(false)
   const [current, setCurrent] = useState<number | null>()
   const [currentFollowUp, setCurrentFollowUp] = useState<number | null>()
+  const [currentFollowUp2, setCurrentFollowUp2] = useState<number | null>()
   const [editQuestion, setEditQuestion] = useState<IPollQuestions>(null)
   const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
     defaultPollQuestion
@@ -306,8 +307,8 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                           <CardQuestions
                             key={followup.id}
                             question={followup}
-                            current={currentFollowUp}
-                            onClickToExpand={id => setCurrentFollowUp(id)}
+                            current={currentFollowUp2}
+                            onClickToExpand={id => setCurrentFollowUp2(id)}
                             onAddAnswer={id => {
                               setAddQuestionAnswer(
                                 followup.followups.find(item => item.id === id)
