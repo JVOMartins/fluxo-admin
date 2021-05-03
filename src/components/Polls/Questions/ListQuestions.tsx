@@ -129,6 +129,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
     try {
       const val = typeof value === 'string' ? value.trim() : value
       await updatePollQuestions(currentPoll, id, { [column]: val })
+      await getAllQuestionsByPoll(currentPoll)
       setToast({
         type: 'success',
         open: true,
@@ -154,7 +155,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
       } else {
         await createPollQuestions(currentPoll, question)
       }
-      getAllQuestionsByPoll(currentPoll)
+      await getAllQuestionsByPoll(currentPoll)
       setToast({
         type: 'success',
         open: true,
@@ -182,7 +183,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
       if (result.isConfirmed) {
         try {
           await deletePollQuestions(currentPoll, id)
-          getAllQuestionsByPoll(currentPoll)
+          await getAllQuestionsByPoll(currentPoll)
           setToast({
             type: 'success',
             open: true,
