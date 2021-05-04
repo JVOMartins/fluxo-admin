@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { IPollQuestions } from '@services/PollQuestions'
 import { ReactNode } from 'react'
 import { ListAnswers } from '../Answers/ListAnswers'
+import ShowMoreText from 'react-show-more-text'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,6 +62,20 @@ const useStyles = makeStyles((theme: Theme) =>
       '& > div': {
         width: '100%'
       }
+    },
+    question: {
+      wordBreak: 'break-word',
+      marginRight: 16,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      display: 'inline-block',
+      lineClamp: 2,
+      boxOrient: 'vertical'
+    },
+    showMore: {
+      fontSize: 12,
+      textDecoration: 'none',
+      color: theme.palette.primary.main
     }
   })
 )
@@ -122,7 +137,17 @@ const CardQuestions: React.FC<CardQuestion> = ({
                 onClickToExpand(question.id === current ? null : question.id)
               }
             >
-              <Typography variant="body2">{question.question}</Typography>
+              <ShowMoreText
+                lines={2}
+                more="ver mais"
+                less="ver menos"
+                anchorClass={classes.showMore}
+                expanded={false}
+              >
+                <Typography variant="body2" className={classes.question}>
+                  {question.question}
+                </Typography>
+              </ShowMoreText>
             </Box>
             <Box className={classes.secondaryHeading}>
               <Typography variant="caption" className={classes.type}>

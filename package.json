@@ -33,6 +33,7 @@
     "qrcode.react": "^1.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-show-more-text": "^1.4.6",
     "sweetalert2": "^10.16.0"
   },
   "devDependencies": {
