@@ -16,11 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      opacity: 0.5,
-      transition: 'all 0.5s',
+      opacity: 0.7,
+      transition: 'all 0.3s',
       cursor: 'pointer',
       '&:hover': {
-        opacity: 1
+        opacity: 1,
+        fontSize: '1.2em'
       }
     },
     link: {

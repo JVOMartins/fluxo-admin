@@ -1,11 +1,5 @@
 import { LoadingDiv } from '@components/LoadingDiv'
-import {
-  Box,
-  makeStyles,
-  MenuItem,
-  Tooltip,
-  Typography
-} from '@material-ui/core'
+import { Box, makeStyles, Typography } from '@material-ui/core'
 import {
   createPollQuestions,
   defaultPollQuestion,
@@ -15,12 +9,9 @@ import {
   updatePollQuestions
 } from '@services/PollQuestions'
 import React, { useEffect, useState } from 'react'
-import { ActionsButton } from '@components/Buttons'
 import useTranslation from '@contexts/Intl'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
-import { InputNumber } from '@components/InputNumber'
 import Swal from 'sweetalert2'
-import { ListAnswers } from '../Answers/ListAnswers'
 import { ModalAnswers } from '../Answers/ModalAnswers'
 import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
 import { ModalFollowUp } from './ModalFollowUp'

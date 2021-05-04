@@ -33,8 +33,6 @@ const ModalPolls: React.FC<ModalPollsProps> = ({
     setPoll({ ...poll, [name]: value })
   }
 
-  console.log(currentEditPoll)
-
   const handleClick = async () => {
     setLoading(true)
     try {

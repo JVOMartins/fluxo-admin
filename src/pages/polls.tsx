@@ -29,6 +29,7 @@ import Swal from 'sweetalert2'
 import { QuestionList } from '@components/Polls/Questions'
 import { ModalQrcode } from '@components/Polls/ModalQrcode'
 import { CardPoll } from '@components/Polls/CardPoll'
+import { LoadingDiv } from '@components/LoadingDiv'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -92,11 +93,14 @@ const Polls: NextPage = () => {
   const [polls, setPolls] = useState<Array<IPolls>>([])
   const [currentEditPoll, setCurrentEditPoll] = useState<IPolls>(defaultPoll)
   const [formNewPoll, setFormNewOpen] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [currentQrCodePoll, setCurrentQrCodePoll] = useState<string>('')
 
   const getAllPolls = async () => {
+    setLoading(true)
     const polls = await getPolls()
     setPolls(polls)
+    setLoading(false)
   }
 
   const handleDelete = async (id: number) => {
@@ -234,7 +238,10 @@ const Polls: NextPage = () => {
               onClick={() => handleNew()}
             />
           </Box>
-          {polls.length === 0 && 'Sem enquetes cadastradas'}
+          {loading && <LoadingDiv />}
+          {!loading && polls.length === 0 && (
+            <Typography>{text('registersEmpty')}</Typography>
+          )}
           <Box className={classes.list}>
             <Box className={classes.left}>
               {!!polls &&
