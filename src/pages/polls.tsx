@@ -2,16 +2,8 @@ import Layout from '@components/Layout'
 import useTranslation from '@contexts/Intl'
 import { NextPage } from 'next'
 import PollOutlinedIcon from '@material-ui/icons/PollOutlined'
-import ImportExportIcon from '@material-ui/icons/ImportExport'
-import {
-  Box,
-  makeStyles,
-  MenuItem,
-  Tooltip,
-  Typography
-} from '@material-ui/core'
-import { AddButton, ActionsButton } from '@components/Buttons'
-import { CardItems } from '@components/CardItems'
+import { Box, makeStyles, Typography } from '@material-ui/core'
+import { AddButton } from '@components/Buttons'
 import { useEffect, useState } from 'react'
 import {
   defaultPoll,
@@ -96,8 +88,8 @@ const Polls: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [currentQrCodePoll, setCurrentQrCodePoll] = useState<string>('')
 
-  const getAllPolls = async () => {
-    setLoading(true)
+  const getAllPolls = async (loading = true) => {
+    setLoading(loading)
     const polls = await getPolls()
     setPolls(polls)
     setLoading(false)
@@ -115,7 +107,7 @@ const Polls: NextPage = () => {
       if (result.isConfirmed) {
         try {
           await deletePoll(id)
-          getAllPolls()
+          await getAllPolls()
           setCurrentPoll(null)
           setToast({
             type: 'success',
@@ -142,7 +134,7 @@ const Polls: NextPage = () => {
   const handleUpdateCode = async (id: number) => {
     try {
       await updateCodePoll(id)
-      getAllPolls()
+      await getAllPolls(false)
       setToast({
         type: 'success',
         open: true,
@@ -160,11 +152,11 @@ const Polls: NextPage = () => {
   const handleDuplicate = async (id: number) => {
     try {
       await duplicatePoll(id)
-      getAllPolls()
+      await getAllPolls(false)
       setToast({
         type: 'success',
         open: true,
-        message: 'Código atualizado com sucesso!'
+        message: 'Enquete duplicada com sucesso!'
       })
     } catch (error) {
       setToast({
