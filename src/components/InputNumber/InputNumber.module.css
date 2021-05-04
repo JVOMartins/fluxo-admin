@@ -9,11 +9,10 @@
 }
 
 .position input {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 16px;
   border: none;
   background-color: transparent;
-  font-size: 18px;
   text-align: center;
   color: #777;
 }

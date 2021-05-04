@@ -36,7 +36,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
       ref={divRef}
     >
       <div className={classes.up} onClick={() => handleUp()}>
-        <ExpandLessOutlinedIcon />
+        <ExpandLessOutlinedIcon fontSize="small" />
       </div>
       <input
         className={classes.input}
@@ -48,7 +48,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
         readOnly
       />
       <div className={classes.down} onClick={() => handleDown()}>
-        <ExpandMoreOutlinedIcon />
+        <ExpandMoreOutlinedIcon fontSize="small" />
       </div>
     </div>
   )
