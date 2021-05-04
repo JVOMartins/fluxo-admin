@@ -64,7 +64,7 @@ export const StringsPortuguese = {
 
   /** Polls Page */
   pageTitlePolls: 'Enquetes',
-  pageSubtitleQuestions: 'Perguntas',
+  pageSubtitleQuestions: 'Questões',
   btnNewPolls: 'Nova Enquete',
   titleNewPolls: 'Nova Enquete',
   titleQrCodePolls: 'QR-Code',

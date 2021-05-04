@@ -25,20 +25,24 @@ const useStyles = makeStyles((theme: Theme) =>
     sumary: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      width: '100%'
     },
     heading: {
-      fontSize: theme.typography.pxToRem(15),
-      flexBasis: '60%',
-      flexShrink: 0,
-      '& > span': {
-        fontWeight: 700,
-        marginRight: 10
-      }
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      width: '100%',
+      marginLeft: 16
     },
     secondaryHeading: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    type: {
+      whiteSpace: 'nowrap',
       fontSize: theme.typography.pxToRem(10),
-      color: theme.palette.text.secondary,
       backgroundColor: '#eee',
       display: 'flex',
       alignItems: 'center',
@@ -48,22 +52,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     questions: {
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'stretch',
-      width: '100%',
-      '& > .options': {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: '1 12 auto',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#fafafa',
-        marginRight: 8,
-        padding: 8,
-        height: '100%'
-      },
-
-      '& > .details': {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      flex: '1 1 auto',
+      padding: '0 16px',
+      marginBottom: 16,
+      '& > div': {
         width: '100%'
       }
     }
@@ -100,74 +95,80 @@ const CardQuestions: React.FC<CardQuestion> = ({
     <>
       <Accordion
         expanded={question.id === current}
-        onChange={() =>
-          onClickToExpand(question.id === current ? null : question.id)
-        }
         square={true}
-        elevation={question.id === current ? 1 : 0}
+        elevation={question.id === current ? 4 : 0}
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon fontSize="small" />}
+          expandIcon={
+            <ExpandMoreIcon
+              fontSize="small"
+              onClick={() =>
+                onClickToExpand(question.id === current ? null : question.id)
+              }
+            />
+          }
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          className={classes.sumary}
         >
-          <Typography className={classes.heading}>
-            <span>#{question.position}</span> {question.question}
-          </Typography>
-          <Typography className={classes.secondaryHeading}>
-            {text(question.type)}
-          </Typography>
+          <Box className={classes.sumary}>
+            <InputNumber
+              number={question.position}
+              min={1}
+              onBlur={num => onEditPosition(question.id, num)}
+            />
+            <Box
+              className={classes.heading}
+              onClick={() =>
+                onClickToExpand(question.id === current ? null : question.id)
+              }
+            >
+              <Typography variant="body2">{question.question}</Typography>
+            </Box>
+            <Box className={classes.secondaryHeading}>
+              <Typography variant="caption" className={classes.type}>
+                {text(question.type)}
+              </Typography>
+            </Box>
+            <ActionsButton tooltip={text('tooltipOptions')}>
+              {question.type.includes('multiple') && (
+                <MenuItem onClick={() => onAddAnswer(question.id)}>
+                  {text('btnNewResponse')}
+                </MenuItem>
+              )}
+              {(question.type.includes('multiple') ||
+                question.type.includes('zeroten')) && (
+                <MenuItem
+                  onClick={() => {
+                    onFollowUp(question.id)
+                  }}
+                >
+                  {text('btnNewFollowUp')}
+                </MenuItem>
+              )}
+              <MenuItem onClick={() => onEdit(question.id)}>
+                {text('btnEdit')}
+              </MenuItem>
+              <MenuItem onClick={() => onDelete(question.id)}>
+                {text('btnDelete')}
+              </MenuItem>
+            </ActionsButton>
+          </Box>
         </AccordionSummary>
-        <AccordionDetails>
-          <Box key={question.id} className={classes.questions}>
-            <Box className="options">
-              <ActionsButton tooltip={text('tooltipOptions')}>
-                {question.type.includes('multiple') && (
-                  <MenuItem onClick={() => onAddAnswer(question.id)}>
-                    {text('btnNewResponse')}
-                  </MenuItem>
-                )}
-                {(question.type.includes('multiple') ||
-                  question.type.includes('zeroten')) && (
-                  <MenuItem
-                    onClick={() => {
-                      onFollowUp(question.id)
-                    }}
-                  >
-                    {text('btnNewFollowUp')}
-                  </MenuItem>
-                )}
-                <MenuItem onClick={() => onEdit(question.id)}>
-                  {text('btnEdit')}
-                </MenuItem>
-                <MenuItem onClick={() => onDelete(question.id)}>
-                  {text('btnDelete')}
-                </MenuItem>
-              </ActionsButton>
-              <InputNumber
-                number={question.position}
-                min={1}
-                onBlur={num => onEditPosition(question.id, num)}
+        <AccordionDetails className={classes.questions}>
+          <Box>
+            <Typography variant="caption" className="editable">
+              {text('labelPollDescription')}: {question.description}
+            </Typography>
+          </Box>
+          {question.type.includes('multiple') && (
+            <Box>
+              <ListAnswers
+                currentQuestionAnswers={question.answers}
+                question={question}
               />
             </Box>
-            <Box className="details">
-              <Box>
-                <Typography variant="caption" className="editable">
-                  {text('labelPollDescription')}: {question.description}
-                </Typography>
-              </Box>
-              {question.type.includes('multiple') && (
-                <Box>
-                  <ListAnswers
-                    currentQuestionAnswers={question.answers}
-                    question={question}
-                  />
-                </Box>
-              )}
-              {children}
-            </Box>
-          </Box>
+          )}
+          {children}
         </AccordionDetails>
       </Accordion>
     </>
