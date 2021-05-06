@@ -84,6 +84,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [currentFollowUp, setCurrentFollowUp] = useState<number | null>()
   const [currentFollowUp2, setCurrentFollowUp2] = useState<number | null>()
   const [editQuestion, setEditQuestion] = useState<IPollQuestions>(null)
+  const [
+    editQuestionFollowUp,
+    setEditQuestionFollowUp
+  ] = useState<IPollQuestions>(null)
   const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
     defaultPollQuestion
   )
@@ -227,10 +231,14 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
       />
 
       <ModalFollowUp
-        open={!!followUpQuestion}
+        open={!!followUpQuestion || !!editQuestionFollowUp}
         pollId={currentPoll}
         currentQuestion={followUpQuestion}
-        onClose={() => setFollowUpQuestion(null)}
+        editFollowUp={editQuestionFollowUp}
+        onClose={() => {
+          setFollowUpQuestion(null)
+          setEditQuestionFollowUp(null)
+        }}
         onSave={followup => {
           handleAddQuestion(followup)
         }}
@@ -285,9 +293,8 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                       )
                     }}
                     onEdit={id => {
-                      setEditQuestion(
-                        question.followups.find(item => item.id === id)
-                      )
+                      setFollowUpQuestion(question)
+                      setEditQuestionFollowUp(followup)
                     }}
                     onDelete={id => handleDelete(id)}
                     onEditPosition={(id, num) =>
@@ -297,10 +304,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                     {!!followup.followups && followup.followups.length > 0 && (
                       <Box className={classes.followups}>
                         <Typography component="h6">Follow Ups</Typography>
-                        {followup.followups.map(followup => (
+                        {followup.followups.map(followup1 => (
                           <CardQuestions
-                            key={followup.id}
-                            question={followup}
+                            key={followup1.id}
+                            question={followup1}
                             current={currentFollowUp2}
                             onClickToExpand={id => setCurrentFollowUp2(id)}
                             onAddAnswer={id => {
@@ -315,9 +322,8 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
                               )
                             }}
                             onEdit={id => {
-                              setEditQuestion(
-                                followup.followups.find(item => item.id === id)
-                              )
+                              setFollowUpQuestion(followup)
+                              setEditQuestionFollowUp(followup1)
                             }}
                             onDelete={id => handleDelete(id)}
                             onEditPosition={(id, num) =>

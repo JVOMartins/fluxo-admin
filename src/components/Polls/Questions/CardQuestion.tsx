@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Box,
   createStyles,
+  FormControlLabel,
   makeStyles,
   MenuItem,
   Theme,
@@ -114,15 +115,11 @@ const CardQuestions: React.FC<CardQuestion> = ({
         elevation={question.id === current ? 4 : 0}
       >
         <AccordionSummary
-          expandIcon={
-            <ExpandMoreIcon
-              fontSize="small"
-              onClick={() =>
-                onClickToExpand(question.id === current ? null : question.id)
-              }
-            />
-          }
+          expandIcon={<ExpandMoreIcon fontSize="small" />}
           aria-controls="panel1bh-content"
+          onClick={() =>
+            onClickToExpand(question.id === current ? null : question.id)
+          }
           id="panel1bh-header"
         >
           <Box className={classes.sumary}>
@@ -154,29 +151,37 @@ const CardQuestions: React.FC<CardQuestion> = ({
                 {text(question.type)}
               </Typography>
             </Box>
-            <ActionsButton tooltip={text('tooltipOptions')}>
-              {question.type.includes('multiple') && (
-                <MenuItem onClick={() => onAddAnswer(question.id)}>
-                  {text('btnNewResponse')}
-                </MenuItem>
-              )}
-              {(question.type.includes('multiple') ||
-                question.type.includes('zeroten')) && (
-                <MenuItem
-                  onClick={() => {
-                    onFollowUp(question.id)
-                  }}
-                >
-                  {text('btnNewFollowUp')}
-                </MenuItem>
-              )}
-              <MenuItem onClick={() => onEdit(question.id)}>
-                {text('btnEdit')}
-              </MenuItem>
-              <MenuItem onClick={() => onDelete(question.id)}>
-                {text('btnDelete')}
-              </MenuItem>
-            </ActionsButton>
+
+            <FormControlLabel
+              label=""
+              onClick={event => event.stopPropagation()}
+              onFocus={event => event.stopPropagation()}
+              control={
+                <ActionsButton>
+                  {question.type.includes('multiple') && (
+                    <MenuItem onClick={() => onAddAnswer(question.id)}>
+                      {text('btnNewResponse')}
+                    </MenuItem>
+                  )}
+                  {(question.type.includes('multiple') ||
+                    question.type.includes('zeroten')) && (
+                    <MenuItem
+                      onClick={() => {
+                        onFollowUp(question.id)
+                      }}
+                    >
+                      {text('btnNewFollowUp')}
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={() => onEdit(question.id)}>
+                    {text('btnEdit')}
+                  </MenuItem>
+                  <MenuItem onClick={() => onDelete(question.id)}>
+                    {text('btnDelete')}
+                  </MenuItem>
+                </ActionsButton>
+              }
+            />
           </Box>
         </AccordionSummary>
         <AccordionDetails className={classes.questions}>

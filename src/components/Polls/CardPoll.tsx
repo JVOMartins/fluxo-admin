@@ -51,7 +51,6 @@ const CardPoll: React.FC<CardPollProps> = ({
       <CardItems
         active={currentPoll === poll.id}
         onClick={() => setCurrent(poll.id)}
-        key={poll.id}
       >
         <Box>
           <Typography variant="body1">{poll.name}</Typography>

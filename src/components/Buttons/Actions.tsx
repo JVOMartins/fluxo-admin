@@ -1,3 +1,4 @@
+import useTranslation from '@contexts/Intl'
 import { IconButton, Menu, Tooltip } from '@material-ui/core'
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined'
 import { ReactNode, useState } from 'react'
@@ -15,6 +16,7 @@ const ActionsButton: React.FC<ActionsButtonProps> = ({
   tooltip,
   icon
 }: ActionsButtonProps) => {
+  const { text } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -27,7 +29,7 @@ const ActionsButton: React.FC<ActionsButtonProps> = ({
   }
   return (
     <>
-      <Tooltip title={tooltip}>
+      <Tooltip title={tooltip || text('tooltipOptions')}>
         <IconButton onClick={handleClick} size={size}>
           {!!icon ? icon : <MoreVertOutlinedIcon fontSize="inherit" />}
         </IconButton>

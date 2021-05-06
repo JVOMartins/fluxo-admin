@@ -15,7 +15,6 @@ interface ModalFollowUpProps {
   open: boolean
   pollId: number
   currentQuestion: IPollQuestions
-  type?: string
   editFollowUp?: IPollQuestions | null
   loading?: boolean
   onSave: (question: IPollQuestions) => void
@@ -28,7 +27,6 @@ const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
   currentQuestion,
   editFollowUp = null,
   loading,
-  type,
   onClose,
   onSave
 }: ModalFollowUpProps) => {
@@ -76,7 +74,8 @@ const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
             : text('titleEditQuestionsFollowUp')}
         </DialogTitle>
         <DialogContent>
-          {currentQuestion?.type.includes('zeroten') && (
+          {(currentQuestion?.type.includes('zeroten') ||
+            editFollowUp?.type.includes('zeroten')) && (
             <FormControl variant="outlined" fullWidth margin="normal">
               <InputLabel htmlFor="outlined-age-native-simple">
                 Mostre se a resposta for
@@ -92,13 +91,14 @@ const ModalFollowUp: React.FC<ModalFollowUpProps> = ({
                 }}
               >
                 <option aria-label="None" value="" />
-                <option value="detrator">detrator</option>
-                <option value="neutro">neutro</option>
-                <option value="promotor">promotor</option>
+                <option value="detrator">Detrator</option>
+                <option value="neutro">Neutro</option>
+                <option value="promotor">Promotor</option>
               </Select>
             </FormControl>
           )}
-          {currentQuestion?.type.includes('multiple_text') && (
+          {(currentQuestion?.type.includes('multiple_text') ||
+            editFollowUp?.type.includes('multiple_text')) && (
             <FormControl variant="outlined" fullWidth margin="normal">
               <InputLabel htmlFor="outlined-age-native-simple">
                 Mostre se a resposta for

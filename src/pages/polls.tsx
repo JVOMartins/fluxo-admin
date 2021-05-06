@@ -240,6 +240,7 @@ const Polls: NextPage = () => {
                 polls.map(poll => (
                   <CardPoll
                     poll={poll}
+                    key={poll.id}
                     currentPoll={currentPoll}
                     setCurrent={id => setCurrentPoll(id)}
                     copyCode={code => copyToClipBoard(code)}
