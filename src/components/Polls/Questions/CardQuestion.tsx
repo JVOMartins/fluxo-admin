@@ -50,7 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       padding: 8,
-      borderRadius: 8
+      borderRadius: 8,
+      marginRight: 16
     },
     questions: {
       display: 'flex',
