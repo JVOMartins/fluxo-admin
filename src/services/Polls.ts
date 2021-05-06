@@ -48,6 +48,6 @@ export async function duplicatePoll(id: number): Promise<IPolls> {
 }
 
 export async function deletePoll(id: number): Promise<IPolls> {
-  const res = await api.delete(`${endpoints.polls}/${id}`)
+  const res = await api.delete(`${endpoints.polls}/${id}?force=true`)
   return res.data
 }
