@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { ListQuestions } from './ListQuestions'
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 import useTranslation from '@contexts/Intl'
+import { ResponsesPolls } from '../Responses'
 
 const useStyles = makeStyles(theme => ({
   contentPage: {
@@ -87,18 +88,17 @@ const QuestionList: React.FC<QuestionListProps> = ({
             onChange={handleChangeTab}
             indicatorColor="primary"
             textColor="primary"
-            aria-label="tabs example"
           >
-            <Tab label={text('titleTabGeneral')} value="general" />
+            <Tab label={text('titleTabQuestions')} value="questions" />
             <Tab label={text('titleTabResponses')} value="responses" />
             <Tab label={text('titleTabIndividual')} value="individual" />
             <Tab label={text('titleTabFeedback')} value="feedback" />
           </Tabs>
-          <TabPanel value={tab} index="general">
+          <TabPanel value={tab} index="questions">
             <ListQuestions currentPoll={currentPoll} />
           </TabPanel>
           <TabPanel value={tab} index="responses">
-            Respostas
+            <ResponsesPolls currentPoll={currentPoll} />
           </TabPanel>
           <TabPanel value={tab} index="individual">
             Individual

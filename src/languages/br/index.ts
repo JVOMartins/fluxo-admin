@@ -81,7 +81,7 @@ export const StringsPortuguese = {
   multiple_image: 'Multipla escolha de imagem',
   zeroten: 'Escala de 0 a 10 (NPS)',
 
-  titleTabGeneral: 'Geral',
+  titleTabQuestions: 'Questões',
   titleTabIndividual: 'Individual',
   titleTabResponses: 'Respostas',
   titleTabFeedback: 'Feedbacks',

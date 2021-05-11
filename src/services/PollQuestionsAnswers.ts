@@ -23,6 +23,23 @@ export interface IPollQuestionAnswers {
   deleted_at?: string
   created_at?: string
   updated_at?: string
+  votes?: Array<IPollQuestionAnswersVotes>
+  __meta__?: {
+    total_votes: string
+  }
+}
+
+export interface IPollQuestionAnswersVotes {
+  id?: number
+  token?: string
+  vote?: string
+  poll_question_id?: number
+  poll_answer_id?: number
+  poll_id?: number
+  company_id?: number
+  deleted_at?: string
+  created_at?: string
+  updated_at?: string
 }
 
 export async function getPollQuestionAnswers(

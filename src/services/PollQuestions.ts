@@ -1,5 +1,8 @@
 import api, { endpoints } from './api'
-import { IPollQuestionAnswers } from './PollQuestionsAnswers'
+import {
+  IPollQuestionAnswers,
+  IPollQuestionAnswersVotes
+} from './PollQuestionsAnswers'
 
 export const defaultPollQuestion = {
   question: '',
@@ -25,11 +28,15 @@ export interface IPollQuestions {
   follow_up?: number
   follow_up_role?: string
   answers?: Array<IPollQuestionAnswers>
+  votes?: Array<IPollQuestionAnswersVotes>
   followups?: Array<IPollQuestions>
   company_id?: number
   deleted_at?: string
   created_at?: string
   updated_at?: string
+  __meta__?: {
+    total_votes: string
+  }
 }
 
 export async function getPollQuestions(
