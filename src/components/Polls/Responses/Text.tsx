@@ -23,7 +23,7 @@ const Text: React.FC<TextProps> = ({ votes }) => {
 
   return (
     <>
-      <div style={{ minHeight: 400, width: '100%' }}>
+      <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={data} columns={columns} pageSize={10} />
       </div>
     </>
