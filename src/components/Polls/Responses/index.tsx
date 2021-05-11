@@ -9,6 +9,7 @@ import { getPollResults, IPolls } from '@services/Polls'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useEffect, useState } from 'react'
 import { Text } from './Text'
+import { LoadingDiv } from '@components/LoadingDiv'
 
 interface ResponsesPollsProps {
   currentPoll: number
@@ -36,6 +37,7 @@ const ResponsesPolls: React.FC<ResponsesPollsProps> = ({
 
   return (
     <>
+      {!results && <LoadingDiv />}
       {!!results &&
         results.questions.map(item => (
           <Accordion
