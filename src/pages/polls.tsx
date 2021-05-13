@@ -132,21 +132,32 @@ const Polls: NextPage = () => {
   }
 
   const handleUpdateCode = async (id: number) => {
-    try {
-      await updateCodePoll(id)
-      await getAllPolls(false)
-      setToast({
-        type: 'success',
-        open: true,
-        message: 'Código atualizado com sucesso!'
-      })
-    } catch (error) {
-      setToast({
-        type: 'error',
-        open: true,
-        message: error.message
-      })
-    }
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Isso irá Alterar o código da pesquisa e o antigo código ficará inacessível',
+      icon: 'error',
+      showCancelButton: true,
+      cancelButtonText: 'Não',
+      confirmButtonText: 'Sim'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          await updateCodePoll(id)
+          await getAllPolls(false)
+          setToast({
+            type: 'success',
+            open: true,
+            message: 'Código atualizado com sucesso!'
+          })
+        } catch (error) {
+          setToast({
+            type: 'error',
+            open: true,
+            message: error.message
+          })
+        }
+      }
+    })
   }
 
   const handleDuplicate = async (id: number) => {
