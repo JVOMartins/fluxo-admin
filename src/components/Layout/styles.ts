@@ -79,8 +79,8 @@ const useStyles = makeStyles(theme => ({
   contentContainer: {
     display: 'flex',
     width: '100%',
-    height: '100%',
-    marginBottom: 100
+    height: 'auto',
+    minHeight: '100%'
   },
   content: {
     flex: '1 1 auto',
@@ -89,7 +89,8 @@ const useStyles = makeStyles(theme => ({
   },
   children: {
     marginTop: 48,
-    marginBottom: 48,
+    height: 'auto',
+    paddingBottom: 100,
     [theme.breakpoints.down('sm')]: {
       marginTop: 24
     }

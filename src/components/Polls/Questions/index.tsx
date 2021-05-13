@@ -67,7 +67,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
 }: QuestionListProps) => {
   const classes = useStyles()
   const { text } = useTranslation()
-  const [tab, setTab] = useState<string>('general')
+  const [tab, setTab] = useState<string>('questions')
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     setTab(newValue)
