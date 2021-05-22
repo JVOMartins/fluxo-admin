@@ -1,21 +1,21 @@
 import Layout from '@components/Layout'
 import useTranslation from '@contexts/Intl'
 import { useRouter } from 'next/router'
-import CompareOutlinedIcon from '@material-ui/icons/CompareOutlined'
+import DonutLargeOutlinedIcon from '@material-ui/icons/DonutLargeOutlined'
 
-const Benchmark: React.FC = () => {
+const Reports: React.FC = () => {
   const { text } = useTranslation()
   const router = useRouter()
   return (
     <>
       <Layout
-        title="pageTitleBenchmark"
-        icon={<CompareOutlinedIcon fontSize="large" />}
+        title="pageTitleReports"
+        icon={<DonutLargeOutlinedIcon fontSize="large" />}
       >
-        Benchmark
+        Reports
       </Layout>
     </>
   )
 }
 
-export default Benchmark
+export default Reports

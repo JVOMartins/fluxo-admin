@@ -108,5 +108,14 @@ export const StringsPortuguese = {
   labelPollQuestionTypeParagraph: 'Texto Simples',
   labelPollQuestionTypeMultipleText: 'Multipla escolha de texto',
   labelPollQuestionTypeMultipleImage: 'Multipla escolha de imagem',
-  labelPollQuestionTypeZeroten: 'Escala de 0 a 10 (NPS)'
+  labelPollQuestionTypeZeroten: 'Escala de 0 a 10 (NPS)',
+
+  /** Feedback Page */
+  pageTitleFeedbacks: 'Feedbacks',
+
+  /** Benchmark Page */
+  pageTitleBenchmark: 'Benchmark',
+
+  /** Reports Page */
+  pageTitleReports: 'Relatórios'
 }
