@@ -1,5 +1,5 @@
 import { ActionsButton } from '@components/Buttons'
-import { InputNumber } from '@components/InputNumber'
+import { InputNumber } from '@components/Polls/InputNumber'
 import useTranslation from '@contexts/Intl'
 import {
   Accordion,

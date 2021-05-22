@@ -1,11 +1,11 @@
 import { Drawer, Box } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import useStyles from './styles'
-import CompanyLogo from '@components/CompanyLogo'
+import CompanyLogo from '@components/Layout/CompanyLogo'
 import useSettings from '@contexts/Settings'
 
 import Image from 'next/image'
-import AppMenu from '@components/AppMenu'
+import AppMenu from '@components/Layout/AppMenu'
 
 const NavBar: React.FC = () => {
   const { settings, saveSettings } = useSettings()
