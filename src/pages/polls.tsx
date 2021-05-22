@@ -2,7 +2,7 @@ import Layout from '@components/Layout'
 import useTranslation from '@contexts/Intl'
 import { NextPage } from 'next'
 import PollOutlinedIcon from '@material-ui/icons/PollOutlined'
-import { Box, makeStyles, Typography } from '@material-ui/core'
+import { Box, makeStyles, Paper, Tab, Tabs } from '@material-ui/core'
 import { AddButton } from '@components/Buttons'
 import { useEffect, useState } from 'react'
 import {
@@ -20,8 +20,10 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import Swal from 'sweetalert2'
 import { QuestionList } from '@components/Polls/Questions'
 import { ModalQrcode } from '@components/Polls/ModalQrcode'
-import { CardPoll } from '@components/Polls/CardPoll'
 import { LoadingDiv } from '@components/LoadingDiv'
+import { DashboardPolls, SelectPoll, TitlePoll } from '@components/Polls'
+import personalStyles from '@styles/styles'
+import Alert from '@material-ui/lab/Alert'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -35,47 +37,41 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 16
   },
-  list: {
-    display: 'flex',
+  details: {
     width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    marginTop: 16,
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-      width: 'auto'
-    }
-  },
-  left: {
     display: 'flex',
-    width: '25%',
-    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginRight: 16,
-    [theme.breakpoints.down('sm')]: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      overflowX: 'auto',
-      marginBottom: 16,
-      width: '100%',
-      overflowScrolling: 'touch'
-    }
-  },
-  right: {
-    display: 'flex',
-    width: '75%',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: 16,
-      width: '100%'
-    }
+    flexDirection: 'column',
+    borderRadius: personalStyles.metrics.borderRadius,
+    padding: personalStyles.metrics.padding
   }
 }))
+
+interface TabPanelProps {
+  children?: React.ReactNode
+  index: any
+  value: any
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={1}>{children}</Box>}
+    </div>
+  )
+}
 
 const Polls: NextPage = () => {
   const { text } = useTranslation()
@@ -87,6 +83,11 @@ const Polls: NextPage = () => {
   const [formNewPoll, setFormNewOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [currentQrCodePoll, setCurrentQrCodePoll] = useState<string>('')
+  const [tab, setTab] = useState<string>('dashboard')
+
+  const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
+    setTab(newValue)
+  }
 
   const getAllPolls = async (loading = true) => {
     setLoading(loading)
@@ -158,6 +159,23 @@ const Polls: NextPage = () => {
         }
       }
     })
+  }
+
+  const handleExport = async (id: number) => {
+    try {
+      //await exportll(id)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Código atualizado com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
   }
 
   const handleDuplicate = async (id: number) => {
@@ -233,27 +251,46 @@ const Polls: NextPage = () => {
         title="pageTitlePolls"
         icon={<PollOutlinedIcon fontSize="large" />}
       >
-        <Box className={classes.content}>
-          <Box className={classes.buttons}>
-            <AddButton
-              label={text('btnNewPolls')}
-              icon={<AddOutlinedIcon />}
-              onClick={() => handleNew()}
-            />
-          </Box>
-          {loading && <LoadingDiv />}
-          {!loading && polls.length === 0 && (
-            <Typography>{text('registersEmpty')}</Typography>
-          )}
-          <Box className={classes.list}>
-            <Box className={classes.left}>
-              {!!polls &&
-                polls.map(poll => (
-                  <CardPoll
-                    poll={poll}
-                    key={poll.id}
+        <Box style={{ width: '100%' }}>
+          <Tabs
+            value={tab}
+            onChange={handleChangeTab}
+            indicatorColor="primary"
+            textColor="primary"
+          >
+            <Tab label={text('titleTabDashboard')} value="dashboard" />
+            <Tab label={text('titleTabResearchs')} value="research" />
+          </Tabs>
+          <TabPanel value={tab} index="dashboard">
+            <DashboardPolls />
+          </TabPanel>
+          <TabPanel value={tab} index="research">
+            <Box className={classes.content}>
+              <Box className={classes.buttons}>
+                {polls.length > 0 && (
+                  <SelectPoll
+                    polls={polls}
+                    onSelect={pollId => setCurrentPoll(pollId)}
+                  />
+                )}
+                <AddButton
+                  label={text('btnNewPolls')}
+                  icon={<AddOutlinedIcon />}
+                  onClick={() => handleNew()}
+                />
+              </Box>
+              {loading && <LoadingDiv />}
+              {!loading && polls.length === 0 && (
+                <Alert severity="warning" style={{ width: '100%' }}>
+                  {text('registersEmpty')}
+                </Alert>
+              )}
+
+              {currentPoll && (
+                <Paper elevation={1} className={classes.details}>
+                  <TitlePoll
+                    poll={polls.find(poll => poll.id === currentPoll)}
                     currentPoll={currentPoll}
-                    setCurrent={id => setCurrentPoll(id)}
                     copyCode={code => copyToClipBoard(code)}
                     onGetQrCode={code =>
                       setCurrentQrCodePoll(
@@ -261,19 +298,16 @@ const Polls: NextPage = () => {
                       )
                     }
                     onUpdateCode={id => handleUpdateCode(id)}
-                    onExportExcel={id => handleUpdateCode(id)}
+                    onExportExcel={id => handleExport(id)}
                     onDuplicate={id => handleDuplicate(id)}
                     onUpdate={id => handleUpdate(id)}
                     onDelete={id => handleDelete(id)}
                   />
-                ))}
+                  <QuestionList currentPoll={currentPoll} />
+                </Paper>
+              )}
             </Box>
-            {currentPoll && (
-              <Box className={classes.right}>
-                <QuestionList currentPoll={currentPoll} />
-              </Box>
-            )}
-          </Box>
+          </TabPanel>
         </Box>
       </Layout>
     </>

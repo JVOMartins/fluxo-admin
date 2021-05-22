@@ -1,5 +1,5 @@
 import useTranslation from '@contexts/Intl'
-import { Box, Breadcrumbs, Link, Typography } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import { ReactNode } from 'react'
 import useStyles from './styles'
 
@@ -21,15 +21,6 @@ const TitlePage: React.FC<TitlePageProps> = ({
         <Typography variant="h4" component="h1" className={classes.title}>
           {text(title)}
         </Typography>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/">
-            Material-UI
-          </Link>
-          <Link color="inherit" href="/getting-started/installation/">
-            Core
-          </Link>
-          <Typography color="textPrimary">Breadcrumb</Typography>
-        </Breadcrumbs>
       </Box>
     </Box>
   )

@@ -18,6 +18,7 @@ import { ModalFollowUp } from './ModalFollowUp'
 import { ModalQuestions } from './ModalQuestions'
 import { InlineButton } from '@components/Buttons/InlineButton'
 import { CardQuestions } from './CardQuestion'
+import Alert from '@material-ui/lab/Alert'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -84,13 +85,10 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
   const [currentFollowUp, setCurrentFollowUp] = useState<number | null>()
   const [currentFollowUp2, setCurrentFollowUp2] = useState<number | null>()
   const [editQuestion, setEditQuestion] = useState<IPollQuestions>(null)
-  const [
-    editQuestionFollowUp,
-    setEditQuestionFollowUp
-  ] = useState<IPollQuestions>(null)
-  const [addQuestionAnswer, setAddQuestionAnswer] = useState<IPollQuestions>(
-    defaultPollQuestion
-  )
+  const [editQuestionFollowUp, setEditQuestionFollowUp] =
+    useState<IPollQuestions>(null)
+  const [addQuestionAnswer, setAddQuestionAnswer] =
+    useState<IPollQuestions>(defaultPollQuestion)
   const [addQuestion, setAddQuestion] = useState<boolean>(false)
   const [followUpQuestion, setFollowUpQuestion] = useState<IPollQuestions>(null)
   const [formNewAnswer, setFormNewAnswer] = useState<boolean>(false)
@@ -247,7 +245,9 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
 
       {loading && <LoadingDiv />}
       {!loading && questions.length === 0 && (
-        <Typography>{text('registersEmpty')}</Typography>
+        <Alert severity="warning" style={{ width: '100%' }}>
+          {text('registersEmpty')}
+        </Alert>
       )}
       {!loading &&
         questions.length > 0 &&

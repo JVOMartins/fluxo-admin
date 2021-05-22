@@ -65,6 +65,7 @@ export const StringsPortuguese = {
   /** Polls Page */
   pageTitlePolls: 'Enquetes',
   pageSubtitleQuestions: 'Questões',
+  selectPollLabel: 'Selecione a enquete',
   btnNewPolls: 'Nova Enquete',
   titleNewPolls: 'Nova Enquete',
   titleQrCodePolls: 'QR-Code',
@@ -74,6 +75,9 @@ export const StringsPortuguese = {
   titleEditQuestionsFollowUp: 'Editar FollowUp',
   titleNewAnswer: 'Nova Resposta',
   titleEditAnswer: 'Editar Resposta',
+  tooltipCopyCode: 'Clique duas vezes para copiar o código',
+  titleTabDashboard: 'Dashboard',
+  titleTabResearchs: 'Pesquisas',
 
   /** Type Question */
   paragraph: 'Texto Simples',
@@ -100,8 +104,6 @@ export const StringsPortuguese = {
   labelEditDescription: 'Editar Descrição',
   labelPollAnswerValue: 'Valor',
   labelPollAnswerDescription: 'Descrição',
-
-  tooltipEditQuestion: 'Clique duas vezes para editar',
 
   labelPollQuestionTypeParagraph: 'Texto Simples',
   labelPollQuestionTypeMultipleText: 'Multipla escolha de texto',
