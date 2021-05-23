@@ -6,14 +6,14 @@ import { Box, makeStyles, Paper, Tab, Tabs } from '@material-ui/core'
 import { AddButton } from '@components/Buttons'
 import { useEffect, useState } from 'react'
 import {
-  defaultPoll,
   deletePoll,
   getPolls,
   IPolls,
   updateCodePoll,
-  duplicatePoll
+  duplicatePoll,
+  updatePoll,
+  createPolls
 } from '@services/Polls'
-import { ModalPolls } from '@components/Polls/ModalPolls'
 import withAuth from '@utils/withAuth'
 import ToastFloat, { defaultToast, ToastProps } from '@components/Snackbar'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
@@ -21,9 +21,15 @@ import Swal from 'sweetalert2'
 import { QuestionList } from '@components/Polls/Questions'
 import { ModalQrcode } from '@components/Polls/ModalQrcode'
 import { LoadingDiv } from '@components/LoadingDiv'
-import { DashboardPolls, SelectPoll, TitlePoll } from '@components/Polls'
+import {
+  DashboardPolls,
+  PollsForm,
+  SelectPoll,
+  TitlePoll
+} from '@components/Polls'
 import personalStyles from '@styles/styles'
 import Alert from '@material-ui/lab/Alert'
+import { ModalCustom } from '@components/Modal'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -46,7 +52,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'column',
-    borderRadius: personalStyles.metrics.borderRadius,
     padding: personalStyles.metrics.padding
   }
 }))
@@ -79,8 +84,8 @@ const Polls: NextPage = () => {
   const [toast, setToast] = useState<ToastProps>(defaultToast)
   const [currentPoll, setCurrentPoll] = useState<number | null>()
   const [polls, setPolls] = useState<Array<IPolls>>([])
-  const [currentEditPoll, setCurrentEditPoll] = useState<IPolls>(defaultPoll)
-  const [formNewPoll, setFormNewOpen] = useState<boolean>(false)
+  const [poll, setPoll] = useState<IPolls>()
+  const [modalNewPoll, setModalNewPoll] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [currentQrCodePoll, setCurrentQrCodePoll] = useState<string>('')
   const [tab, setTab] = useState<string>('dashboard')
@@ -108,6 +113,7 @@ const Polls: NextPage = () => {
       if (result.isConfirmed) {
         try {
           await deletePoll(id)
+          setCurrentPoll(null)
           await getAllPolls()
           setCurrentPoll(null)
           setToast({
@@ -128,8 +134,8 @@ const Polls: NextPage = () => {
 
   const handleUpdate = async (id: number) => {
     const current = polls.find(item => item.id === id)
-    setCurrentEditPoll(current)
-    setFormNewOpen(true)
+    setPoll(current)
+    setModalNewPoll(true)
   }
 
   const handleUpdateCode = async (id: number) => {
@@ -197,8 +203,25 @@ const Polls: NextPage = () => {
   }
 
   const handleNew = async () => {
-    setCurrentEditPoll(defaultPoll)
-    setFormNewOpen(true)
+    setLoading(true)
+    try {
+      poll.id ? await updatePoll(poll.id, poll) : await createPolls(poll)
+      setToast({
+        type: 'success',
+        open: true,
+        message: 'Gravado com sucesso!'
+      })
+    } catch (error) {
+      setToast({
+        type: 'error',
+        open: true,
+        message: error.message
+      })
+    }
+    setPoll(null)
+    setModalNewPoll(false)
+    getAllPolls(false)
+    setLoading(false)
   }
 
   const copyToClipBoard = async (code: string) => {
@@ -219,8 +242,8 @@ const Polls: NextPage = () => {
   }
 
   useEffect(() => {
-    if (!formNewPoll) getAllPolls()
-  }, [formNewPoll])
+    getAllPolls(false)
+  }, [])
 
   return (
     <>
@@ -231,13 +254,22 @@ const Polls: NextPage = () => {
         message={toast.message}
       />
 
-      <ModalPolls
-        open={formNewPoll}
-        currentEditPoll={currentEditPoll}
+      <ModalCustom
+        loading={loading}
+        validate={true}
+        title="Nova Enquete"
+        open={modalNewPoll}
+        onSave={() => handleNew()}
         onClose={() => {
-          setFormNewOpen(!formNewPoll)
+          setModalNewPoll(!modalNewPoll)
         }}
-      />
+      >
+        <PollsForm
+          edit={poll}
+          isValidForm={true}
+          onChange={poll => setPoll(poll)}
+        />
+      </ModalCustom>
 
       <ModalQrcode
         open={!!currentQrCodePoll}
@@ -276,7 +308,7 @@ const Polls: NextPage = () => {
                 <AddButton
                   label={text('btnNewPolls')}
                   icon={<AddOutlinedIcon />}
-                  onClick={() => handleNew()}
+                  onClick={() => setModalNewPoll(true)}
                 />
               </Box>
               {loading && <LoadingDiv />}
@@ -287,7 +319,7 @@ const Polls: NextPage = () => {
               )}
 
               {currentPoll && (
-                <Paper elevation={1} className={classes.details}>
+                <Paper elevation={1} square={false} className={classes.details}>
                   <TitlePoll
                     poll={polls.find(poll => poll.id === currentPoll)}
                     currentPoll={currentPoll}

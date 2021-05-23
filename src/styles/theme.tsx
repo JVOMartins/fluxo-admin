@@ -53,6 +53,7 @@ const theme = createMuiTheme({
         fontWeight: 700
       }
     },
+
     MuiAccordionDetails: {
       root: {
         padding: 0

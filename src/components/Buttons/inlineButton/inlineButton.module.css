@@ -1,0 +1,32 @@
+.wrapper {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  position: relative;
+  border-bottom: 2px solid #00ab64;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.wrapper:hover {
+  opacity: 1;
+  font-size: 1.2em;
+}
+
+.link {
+  color: #00ab64;
+  position: absolute;
+  background-color: #fff;
+  padding: 0 40px;
+  margin-top: 0;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.link svg {
+  margin-right: 10px;
+}

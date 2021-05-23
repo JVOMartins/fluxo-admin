@@ -16,7 +16,7 @@ import { ModalAnswers } from '../Answers/ModalAnswers'
 import { IPollQuestionAnswers } from '@services/PollQuestionsAnswers'
 import { ModalFollowUp } from './ModalFollowUp'
 import { ModalQuestions } from './ModalQuestions'
-import { InlineButton } from '@components/Buttons/InlineButton'
+import { InlineButton } from '@components/Buttons'
 import { CardQuestions } from './CardQuestion'
 import Alert from '@material-ui/lab/Alert'
 
