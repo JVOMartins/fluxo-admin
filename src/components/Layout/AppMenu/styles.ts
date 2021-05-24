@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme =>
     },
     appSubMenu: {
       width: '100%',
-      backgroundColor: '#fbfbfb'
+      backgroundColor: '#fcfcfc'
     },
     navList: {
       width: drawerWidth,
@@ -33,6 +33,10 @@ const useStyles = makeStyles(theme =>
     },
     menuItemSubGroup: {
       paddingLeft: theme.spacing(4)
+    },
+    menuItemSubGroupSelected: {
+      paddingLeft: theme.spacing(4),
+      backgroundColor: '#f4f4f4'
     },
     menuItemText: {
       fontSize: 14
