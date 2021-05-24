@@ -19,6 +19,7 @@ import { ModalQuestions } from './ModalQuestions'
 import { InlineButton } from '@components/Buttons'
 import { CardQuestions } from './CardQuestion'
 import Alert from '@material-ui/lab/Alert'
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles(theme => ({
   index: {
@@ -76,6 +77,8 @@ interface ListQuestionsProps {
 const ListQuestions: React.FC<ListQuestionsProps> = ({
   currentPoll
 }: ListQuestionsProps) => {
+  const router = useRouter()
+
   const classes = useStyles()
   const { text } = useTranslation()
   const [toast, setToast] = useState<ToastProps>(defaultToast)
@@ -342,7 +345,7 @@ const ListQuestions: React.FC<ListQuestionsProps> = ({
 
       <InlineButton
         label={`${text('btnNewQuestions')}`}
-        onClick={() => setAddQuestion(true)}
+        onClick={() => router.push('polls/questions')}
       />
     </>
   )

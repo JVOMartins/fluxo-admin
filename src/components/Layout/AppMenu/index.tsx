@@ -80,7 +80,12 @@ const AppMenu: React.FC = () => {
         <List component="div" disablePadding>
           <ListItem
             button
-            className={classes.menuItemSubGroup}
+            className={clsx({
+              [classes.menuItemSubGroup]: !isSelected('/engagement/benchmark'),
+              [classes.menuItemSubGroupSelected]: isSelected(
+                '/engagement/benchmark'
+              )
+            })}
             onClick={() => router.push('/engagement/benchmark')}
           >
             <ListItemIcon>
@@ -95,7 +100,12 @@ const AppMenu: React.FC = () => {
 
           <ListItem
             button
-            className={classes.menuItemSubGroup}
+            className={clsx({
+              [classes.menuItemSubGroup]: !isSelected('/engagement/reports'),
+              [classes.menuItemSubGroupSelected]: isSelected(
+                '/engagement/reports'
+              )
+            })}
             onClick={() => router.push('/engagement/reports')}
           >
             <ListItemIcon>
@@ -171,7 +181,10 @@ const AppMenu: React.FC = () => {
         <List component="div" disablePadding>
           <ListItem
             button
-            className={classes.menuItemSubGroup}
+            className={clsx({
+              [classes.menuItemSubGroup]: !isSelected('/manager/users'),
+              [classes.menuItemSubGroupSelected]: isSelected('/manager/users')
+            })}
             onClick={() => router.push('/manager/users')}
           >
             <ListItemIcon>
@@ -185,7 +198,10 @@ const AppMenu: React.FC = () => {
           </ListItem>
           <ListItem
             button
-            className={classes.menuItemSubGroup}
+            className={clsx({
+              [classes.menuItemSubGroup]: !isSelected('/manager/groups'),
+              [classes.menuItemSubGroupSelected]: isSelected('/manager/groups')
+            })}
             onClick={() => router.push('/manager/groups')}
           >
             <ListItemIcon>
@@ -199,7 +215,10 @@ const AppMenu: React.FC = () => {
           </ListItem>
           <ListItem
             button
-            className={classes.menuItemSubGroup}
+            className={clsx({
+              [classes.menuItemSubGroup]: !isSelected('/manager/goals'),
+              [classes.menuItemSubGroupSelected]: isSelected('/manager/goals')
+            })}
             onClick={() => router.push('/manager/goals')}
           >
             <ListItemIcon>
