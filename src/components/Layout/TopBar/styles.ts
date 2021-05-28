@@ -57,6 +57,9 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: theme.spacing(5),
     height: theme.spacing(5)
+  },
+  paper: {
+    marginRight: theme.spacing(2),
   }
 }))
 
